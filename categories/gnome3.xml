@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about gnome3)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/gnome3.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Changing Terminal preferences in Gnome 3</title><link>https://blog.cyplo.net/posts/2014/03/29/changing-terminal-preferences-gnome-3.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;It turns out this was not that obvious, at least for me, how to change
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Adventurous Computing (Posts about gnome3)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/gnome3.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:25:27 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Changing Terminal preferences in Gnome 3</title><link>https://blog.cyplo.net/posts/2014/03/29/changing-terminal-preferences-gnome-3.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;It turns out this was not that obvious, at least for me, how to change
 various profile preferences for Gnome Terminal under Gnome 3. You can go
 and fetch the list of profiles this way:&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_407e743fb40b46c595ddb563d10aca3b-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf list /org/gnome/terminal/legacy/profiles:/&lt;/span&gt;
-&lt;a name="rest_code_407e743fb40b46c595ddb563d10aca3b-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_0cb4d06eb0fe4293977de44dfcd93517-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf list /org/gnome/terminal/legacy/profiles:/&lt;/span&gt;
+&lt;a name="rest_code_0cb4d06eb0fe4293977de44dfcd93517-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;And then you can use the profile id to list and change various settings:&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf list /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;foreground-color&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;login-shell&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;palette&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;use-system-font&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;use-theme-colors&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;font&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;bold-color-same-as-fg&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;bold-color&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;background-color&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-11"&gt;&lt;/a&gt;&lt;span class="go"&gt;audible-bell&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-12"&gt;&lt;/a&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Inconsolata for Powerline Medium 18'"&lt;/span&gt;
-&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/login-shell true&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf list /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;foreground-color&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;login-shell&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;palette&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;use-system-font&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;use-theme-colors&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;font&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;bold-color-same-as-fg&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;bold-color&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;background-color&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-11"&gt;&lt;/a&gt;&lt;span class="go"&gt;audible-bell&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-12"&gt;&lt;/a&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Inconsolata for Powerline Medium 18'"&lt;/span&gt;
+&lt;a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/login-shell true&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</description><category>commandline</category><category>dconf</category><category>font</category><category>gnome</category><category>gnome3</category><category>shell</category><category>terminal</category><guid>https://blog.cyplo.net/posts/2014/03/29/changing-terminal-preferences-gnome-3.html</guid><pubDate>Sat, 29 Mar 2014 22:34:21 GMT</pubDate></item></channel></rss>

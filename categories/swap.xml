@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about swap)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/swap.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>When life gives you temp space - make lemonade !</title><link>https://blog.cyplo.net/posts/2015/09/02/swap-on-temp-disk.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Some VPS providers, e.g. Azure (I know..) provide you with 2 disks for
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Adventurous Computing (Posts about swap)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/swap.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:25:27 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>When life gives you temp space - make lemonade !</title><link>https://blog.cyplo.net/posts/2015/09/02/swap-on-temp-disk.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Some VPS providers, e.g. Azure (I know..) provide you with 2 disks for
 your VPSes. One, of very limited size, system disk, and the other one,
 spacy but with not guarantees that the data survives reboot. Basically
 it means that you can have a small VPS, with a small amount of RAM but
@@ -9,25 +9,25 @@ swapping is allowed. Like complex nightly builds. Here is a set of super
 simple scripts I've come up with to quickly boot up a system, and then
 in the background add a new swap file on the temp drive there. The temp
 drive is assumed to be under /mnt.&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-1"&gt;&lt;/a&gt;root@someazurehost:~# cat /etc/rc.local
-&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/sh -e&lt;/span&gt;
-&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
-&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-4"&gt;&lt;/a&gt;
-&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-5"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# do not wait for swap to become online,&lt;/span&gt;
-&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-6"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# proceed with the boot further,&lt;/span&gt;
-&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-7"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# with swap being created in the background&lt;/span&gt;
-&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-8"&gt;&lt;/a&gt;/etc/make_and_enable_swap &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
-&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-9"&gt;&lt;/a&gt;
-&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-10"&gt;&lt;/a&gt;&lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
-&lt;/pre&gt;&lt;pre class="code bash"&gt;&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-1"&gt;&lt;/a&gt;root@someazurehost:~# cat /etc/make_and_enable_swap
-&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/sh&lt;/span&gt;
-&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
-&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-4"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
-&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-5"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# create new 2GB swap file&lt;/span&gt;
-&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-6"&gt;&lt;/a&gt;dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mnt/swap &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2048&lt;/span&gt;
-&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-7"&gt;&lt;/a&gt;chmod &lt;span class="m"&gt;0600&lt;/span&gt; /mnt/swap
-&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-8"&gt;&lt;/a&gt;mkswap /mnt/swap
-&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-9"&gt;&lt;/a&gt;swapon /mnt/swap
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_1e54769e8b834cb5a145bb640959c614-1"&gt;&lt;/a&gt;root@someazurehost:~# cat /etc/rc.local
+&lt;a name="rest_code_1e54769e8b834cb5a145bb640959c614-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/sh -e&lt;/span&gt;
+&lt;a name="rest_code_1e54769e8b834cb5a145bb640959c614-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_1e54769e8b834cb5a145bb640959c614-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_1e54769e8b834cb5a145bb640959c614-5"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# do not wait for swap to become online,&lt;/span&gt;
+&lt;a name="rest_code_1e54769e8b834cb5a145bb640959c614-6"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# proceed with the boot further,&lt;/span&gt;
+&lt;a name="rest_code_1e54769e8b834cb5a145bb640959c614-7"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# with swap being created in the background&lt;/span&gt;
+&lt;a name="rest_code_1e54769e8b834cb5a145bb640959c614-8"&gt;&lt;/a&gt;/etc/make_and_enable_swap &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+&lt;a name="rest_code_1e54769e8b834cb5a145bb640959c614-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_1e54769e8b834cb5a145bb640959c614-10"&gt;&lt;/a&gt;&lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;pre class="code bash"&gt;&lt;a name="rest_code_748c3e7e63c14faf85a408a6045691f8-1"&gt;&lt;/a&gt;root@someazurehost:~# cat /etc/make_and_enable_swap
+&lt;a name="rest_code_748c3e7e63c14faf85a408a6045691f8-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/sh&lt;/span&gt;
+&lt;a name="rest_code_748c3e7e63c14faf85a408a6045691f8-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_748c3e7e63c14faf85a408a6045691f8-4"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_748c3e7e63c14faf85a408a6045691f8-5"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# create new 2GB swap file&lt;/span&gt;
+&lt;a name="rest_code_748c3e7e63c14faf85a408a6045691f8-6"&gt;&lt;/a&gt;dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mnt/swap &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2048&lt;/span&gt;
+&lt;a name="rest_code_748c3e7e63c14faf85a408a6045691f8-7"&gt;&lt;/a&gt;chmod &lt;span class="m"&gt;0600&lt;/span&gt; /mnt/swap
+&lt;a name="rest_code_748c3e7e63c14faf85a408a6045691f8-8"&gt;&lt;/a&gt;mkswap /mnt/swap
+&lt;a name="rest_code_748c3e7e63c14faf85a408a6045691f8-9"&gt;&lt;/a&gt;swapon /mnt/swap
 &lt;/pre&gt;&lt;p&gt;Don't forget to make &lt;strong&gt;/etc/make_and_enable_swap&lt;/strong&gt; executable !
 Do not add this swap file to fstab, as it is being read before rc.local,
 and this may certainly result in a boot failure, as the swap file would

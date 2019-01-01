@@ -65,38 +65,38 @@ aria2c https://www.tarsnap.com/download/tar">
             <div>
 <p>Just a quickie for tarsnap 1.0.35. Featuring my new favourite, the
 download software called aria2.</p>
-<pre class="code console"><a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-1"></a><span class="go">aptitude install aria2 libssl-dev zlib1g-dev e2fslibs-dev</span>
-<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-2"></a><span class="go">aria2c https://www.tarsnap.com/download/tarsnap-autoconf-1.0.35.tgz</span>
-<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-3"></a><span class="go">aria2c https://www.tarsnap.com/download/tarsnap-sigs-1.0.35.asc</span>
-<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-4"></a><span class="go">gpg --recv-key 2F102ABB</span>
-<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-5"></a><span class="go">gpg --decrypt tarsnap-sigs-1.0.35.asc</span>
-<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-6"></a><span class="go">sha256sum tarsnap-autoconf-1.0.35.tgz # should get the value from sig file, 6c9f67....9a</span>
-<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-7"></a><span class="go">tar xf tarsnap-autoconf-1.0.35.tgz</span>
-<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-8"></a><span class="go">cd tarsnap-autoconf-1.0.35/</span>
-<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-9"></a><span class="go">./configure</span>
-<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-10"></a><span class="go">time nice ionice make -j2</span>
+<pre class="code console"><a name="rest_code_7eefbfb694d3402293836098524d3de9-1"></a><span class="go">aptitude install aria2 libssl-dev zlib1g-dev e2fslibs-dev</span>
+<a name="rest_code_7eefbfb694d3402293836098524d3de9-2"></a><span class="go">aria2c https://www.tarsnap.com/download/tarsnap-autoconf-1.0.35.tgz</span>
+<a name="rest_code_7eefbfb694d3402293836098524d3de9-3"></a><span class="go">aria2c https://www.tarsnap.com/download/tarsnap-sigs-1.0.35.asc</span>
+<a name="rest_code_7eefbfb694d3402293836098524d3de9-4"></a><span class="go">gpg --recv-key 2F102ABB</span>
+<a name="rest_code_7eefbfb694d3402293836098524d3de9-5"></a><span class="go">gpg --decrypt tarsnap-sigs-1.0.35.asc</span>
+<a name="rest_code_7eefbfb694d3402293836098524d3de9-6"></a><span class="go">sha256sum tarsnap-autoconf-1.0.35.tgz # should get the value from sig file, 6c9f67....9a</span>
+<a name="rest_code_7eefbfb694d3402293836098524d3de9-7"></a><span class="go">tar xf tarsnap-autoconf-1.0.35.tgz</span>
+<a name="rest_code_7eefbfb694d3402293836098524d3de9-8"></a><span class="go">cd tarsnap-autoconf-1.0.35/</span>
+<a name="rest_code_7eefbfb694d3402293836098524d3de9-9"></a><span class="go">./configure</span>
+<a name="rest_code_7eefbfb694d3402293836098524d3de9-10"></a><span class="go">time nice ionice make -j2</span>
 </pre>
 <p>How do I know that -j2 really gives some advantage on raspi ? Well, here
 are the timings:</p>
-<pre class="code console"><a name="rest_code_b984b50834f84ab485293509900341a0-1"></a><span class="gp">#</span>fresh, j1
-<a name="rest_code_b984b50834f84ab485293509900341a0-2"></a><span class="go">real    14m7.129s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-3"></a><span class="go">user    6m30.790s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-4"></a><span class="go">sys 0m21.640s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-5"></a>
-<a name="rest_code_b984b50834f84ab485293509900341a0-6"></a><span class="gp">#</span>-j2
-<a name="rest_code_b984b50834f84ab485293509900341a0-7"></a><span class="go">real    11m33.868s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-8"></a><span class="go">user    6m36.690s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-9"></a><span class="go">sys 0m19.880s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-10"></a>
-<a name="rest_code_b984b50834f84ab485293509900341a0-11"></a><span class="gp">#</span>-j1 again, caches warmed up
-<a name="rest_code_b984b50834f84ab485293509900341a0-12"></a><span class="go">real    12m38.598s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-13"></a><span class="go">user    6m30.960s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-14"></a><span class="go">sys 0m20.470s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-15"></a>
-<a name="rest_code_b984b50834f84ab485293509900341a0-16"></a><span class="gp">#</span>-j2 again
-<a name="rest_code_b984b50834f84ab485293509900341a0-17"></a><span class="go">real    10m14.975s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-18"></a><span class="go">user    6m34.980s</span>
-<a name="rest_code_b984b50834f84ab485293509900341a0-19"></a><span class="go">sys 0m20.710s</span>
+<pre class="code console"><a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-1"></a><span class="gp">#</span>fresh, j1
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-2"></a><span class="go">real    14m7.129s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-3"></a><span class="go">user    6m30.790s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-4"></a><span class="go">sys 0m21.640s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-5"></a>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-6"></a><span class="gp">#</span>-j2
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-7"></a><span class="go">real    11m33.868s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-8"></a><span class="go">user    6m36.690s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-9"></a><span class="go">sys 0m19.880s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-10"></a>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-11"></a><span class="gp">#</span>-j1 again, caches warmed up
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-12"></a><span class="go">real    12m38.598s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-13"></a><span class="go">user    6m30.960s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-14"></a><span class="go">sys 0m20.470s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-15"></a>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-16"></a><span class="gp">#</span>-j2 again
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-17"></a><span class="go">real    10m14.975s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-18"></a><span class="go">user    6m34.980s</span>
+<a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-19"></a><span class="go">sys 0m20.710s</span>
 </pre>
 </div>
         </div>

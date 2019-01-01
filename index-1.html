@@ -143,13 +143,13 @@ up. Go ahead and find <strong>eclipse.ini</strong> or <strong>aptana.ini</strong
 contents look similar. These settings are from my Linux box, I know that
 MacOS might be kinda scared by so high values, try lowering the Xmx
 and/or others in such a case.</p>
-<pre class="code text"><a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-1"></a>--launcher.XXMaxPermSize
-<a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-2"></a>512m
-<a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-3"></a>--launcher.defaultAction
-<a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-4"></a>openFile
-<a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-5"></a>-vmargs
-<a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-6"></a>-Xms128m
-<a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-7"></a>-Xmx2048m
+<pre class="code text"><a name="rest_code_dba1ad276f6d456cb61744724d81fe59-1"></a>--launcher.XXMaxPermSize
+<a name="rest_code_dba1ad276f6d456cb61744724d81fe59-2"></a>512m
+<a name="rest_code_dba1ad276f6d456cb61744724d81fe59-3"></a>--launcher.defaultAction
+<a name="rest_code_dba1ad276f6d456cb61744724d81fe59-4"></a>openFile
+<a name="rest_code_dba1ad276f6d456cb61744724d81fe59-5"></a>-vmargs
+<a name="rest_code_dba1ad276f6d456cb61744724d81fe59-6"></a>-Xms128m
+<a name="rest_code_dba1ad276f6d456cb61744724d81fe59-7"></a>-Xmx2048m
 </pre>
 <p>These settings are for the 4gb ram box, try to find the ones which suit you best. MaxPermSize
 stands for the maximum amount of the memory to be used by the Java
@@ -311,17 +311,17 @@ installation of various software. However using Netbeans from the
 default repo could cause you a headache when developing Rails 3 apps.
 These just won't run. Let us start with installing the newest version of
 the IDE</p>
-<pre class="code console"><a name="rest_code_b43d5b5980f84206a0d7a4abba54d983-1"></a><span class="go">sudo apt-get install netbeans</span>
-<a name="rest_code_b43d5b5980f84206a0d7a4abba54d983-2"></a><span class="gp">#</span><span class="k">then</span> go to the Tools-&gt;Plugins-&gt;Available and install all regarding Ruby
+<pre class="code console"><a name="rest_code_51addb35ab7c41d9991c19871d0958a1-1"></a><span class="go">sudo apt-get install netbeans</span>
+<a name="rest_code_51addb35ab7c41d9991c19871d0958a1-2"></a><span class="gp">#</span><span class="k">then</span> go to the Tools-&gt;Plugins-&gt;Available and install all regarding Ruby
 </pre>
 <p>Now go ahead and try running some Rails app.</p>
-<pre class="code text"><a name="rest_code_562e2fd061404772a88769a66f108c76-1"></a>/var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/dependencies.rb:239:in `require': /var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/cache/mem_cache_store.rb:32: invalid multibyte escape: /[x00-x20%x7F-xFF]/ (SyntaxError)
+<pre class="code text"><a name="rest_code_a33ccda08f7f4e85942c479b0a5141af-1"></a>/var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/dependencies.rb:239:in `require': /var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/cache/mem_cache_store.rb:32: invalid multibyte escape: /[x00-x20%x7F-xFF]/ (SyntaxError)
 </pre>
 <p>you say ? Here's a quick fix</p>
-<pre class="code text"><a name="rest_code_b322bd83dad746af9201781ac7a917bd-1"></a>#edit /usr/share/netbeans/6.9/etc/netbeans.conf
-<a name="rest_code_b322bd83dad746af9201781ac7a917bd-2"></a>#=&gt; append -J-Druby.no.kcode=true to the the netbeans_default_options and volia
-<a name="rest_code_b322bd83dad746af9201781ac7a917bd-3"></a># the whole line im my case goes like that:
-<a name="rest_code_b322bd83dad746af9201781ac7a917bd-4"></a>netbeans_default_options="-J-client -J-Xss2m -J-Xms32m -J-XX:PermSize=32m -J-XX:MaxPermSize=200m -J-Dapple.laf.useScreenMenuBar=true -J-Dsun.java2d.noddraw=true -J-Dsun.java2d.pmoffscreen=false -J-Druby.no.kcode=true"
+<pre class="code text"><a name="rest_code_db88ab26046148fea934d2e7a66ff249-1"></a>#edit /usr/share/netbeans/6.9/etc/netbeans.conf
+<a name="rest_code_db88ab26046148fea934d2e7a66ff249-2"></a>#=&gt; append -J-Druby.no.kcode=true to the the netbeans_default_options and volia
+<a name="rest_code_db88ab26046148fea934d2e7a66ff249-3"></a># the whole line im my case goes like that:
+<a name="rest_code_db88ab26046148fea934d2e7a66ff249-4"></a>netbeans_default_options="-J-client -J-Xss2m -J-Xms32m -J-XX:PermSize=32m -J-XX:MaxPermSize=200m -J-Dapple.laf.useScreenMenuBar=true -J-Dsun.java2d.noddraw=true -J-Dsun.java2d.pmoffscreen=false -J-Druby.no.kcode=true"
 </pre>
 <p>Long term solution ? Wait for Netbeans 7.0 as the devs promised it to be fixed there</p>
 </div>

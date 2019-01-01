@@ -82,14 +82,14 @@ recognize Bitcoin's Wallet as a file format. Bitcoin wiki
 <a class="reference external" href="https://en.bitcoin.it/wiki/Wallet">states</a> that wallet.dat is just a
 good old BerkeleyDB. Just let me check that with the famous file
 command:</p>
-<pre class="code console"><a name="rest_code_62f085e076a84652b36220a3f3ce45de-1"></a><span class="gp">[cyryl@uglybook ~]$</span> file .bitcoin/wallet.dat
-<a name="rest_code_62f085e076a84652b36220a3f3ce45de-2"></a><span class="go">.bitcoin/wallet.dat: Berkeley DB (Btree, version 9, native byte-order)</span>
+<pre class="code console"><a name="rest_code_a52b97ad5e1f47d3b8f3e29e79d7989d-1"></a><span class="gp">[cyryl@uglybook ~]$</span> file .bitcoin/wallet.dat
+<a name="rest_code_a52b97ad5e1f47d3b8f3e29e79d7989d-2"></a><span class="go">.bitcoin/wallet.dat: Berkeley DB (Btree, version 9, native byte-order)</span>
 </pre>
 <p>That is right. Photorec however, has its own file-type
 detection magic, for the reason unknown to me. Let's see whether it
 works on the wallet.</p>
-<pre class="code console"><a name="rest_code_b2c21b82c0714a6da79a43bdf7c8fee7-1"></a><span class="gp">[cyryl@uglybook ~]$</span> fidentify .bitcoin/wallet.dat
-<a name="rest_code_b2c21b82c0714a6da79a43bdf7c8fee7-2"></a><span class="go">.bitcoin/wallet.dat: unknown</span>
+<pre class="code console"><a name="rest_code_7a3f6c11d0204c3d8a1e6e957790252b-1"></a><span class="gp">[cyryl@uglybook ~]$</span> fidentify .bitcoin/wallet.dat
+<a name="rest_code_7a3f6c11d0204c3d8a1e6e957790252b-2"></a><span class="go">.bitcoin/wallet.dat: unknown</span>
 </pre>
 <p>Uhoh. Do not abandon hope for not all is lost ! Photorec <a class="reference external" href="http://www.cgsecurity.org/wiki/Add_your_own_extension_to_PhotoRec">provides a
 way</a>
@@ -100,19 +100,19 @@ under <strong>/usr/share/misc/magic</strong> We need file extensions, offset and
 magic number for Photorec to work. Well, extension is <strong>.dat</strong>, magics
 and offsets are stored in the file mentioned above. Translate offsets
 from decimal-based to hexs and take care of endianess <em>et volia</em></p>
-<pre class="code console"><a name="rest_code_706ef4ffd22043339a50e12831d3da0c-1"></a><span class="gp">[cyryl@uglybook ~]#</span> cat .photorec.sig
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-2"></a><span class="go">dat 0x0 0x00061561</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-3"></a><span class="go">dat 0x0 0x61150600</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-4"></a><span class="go">dat 0x0 0x00053162</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-5"></a><span class="go">dat 0x0 0x62310500</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-6"></a><span class="go">dat 0xc 0x00061561</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-7"></a><span class="go">dat 0xc 0x61150600</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-8"></a><span class="go">dat 0xc 0x00053162</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-9"></a><span class="go">dat 0xc 0x62310500</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-10"></a><span class="go">dat 0xc 0x00042253</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-11"></a><span class="go">dat 0xc 0x53220400</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-12"></a><span class="go">dat 0xc 0x00040988</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-13"></a><span class="go">dat 0xc 0x88090400</span>
+<pre class="code console"><a name="rest_code_6d29768e8a36421daecca0de22662c25-1"></a><span class="gp">[cyryl@uglybook ~]#</span> cat .photorec.sig
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-2"></a><span class="go">dat 0x0 0x00061561</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-3"></a><span class="go">dat 0x0 0x61150600</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-4"></a><span class="go">dat 0x0 0x00053162</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-5"></a><span class="go">dat 0x0 0x62310500</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-6"></a><span class="go">dat 0xc 0x00061561</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-7"></a><span class="go">dat 0xc 0x61150600</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-8"></a><span class="go">dat 0xc 0x00053162</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-9"></a><span class="go">dat 0xc 0x62310500</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-10"></a><span class="go">dat 0xc 0x00042253</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-11"></a><span class="go">dat 0xc 0x53220400</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-12"></a><span class="go">dat 0xc 0x00040988</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-13"></a><span class="go">dat 0xc 0x88090400</span>
 </pre>
 <p>That is it. Happy wallet recovery.</p>
 </div>

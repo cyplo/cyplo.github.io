@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about raspberrypi)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/raspberrypi.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:13 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>WiFi on RaspberryPi</title><link>https://blog.cyplo.net/posts/2014/02/24/wifi-raspberrypi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Easiest way I've found to configure wifi on RaspberryPi, not really
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Adventurous Computing (Posts about raspberrypi)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/raspberrypi.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:25:29 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>WiFi on RaspberryPi</title><link>https://blog.cyplo.net/posts/2014/02/24/wifi-raspberrypi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Easiest way I've found to configure wifi on RaspberryPi, not really
 being mentioned when you search for such. Not using separate
 wpa_supplicant configuration at all.&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;root@frontend:~#&lt;/span&gt; cat /etc/network/interfaces
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;auto lo&lt;/span&gt;
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface lo inet loopback&lt;/span&gt;
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-4"&gt;&lt;/a&gt;
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface eth0 inet dhcp&lt;/span&gt;
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-6"&gt;&lt;/a&gt;
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;allow-hotplug wlan0&lt;/span&gt;
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface wlan0 inet dhcp&lt;/span&gt;
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;wpa-ssid  NETWORK_NAME&lt;/span&gt;
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;wpa-psk NETWORK_KEY&lt;/span&gt;
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-11"&gt;&lt;/a&gt;
-&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface default inet dhcp&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;root@frontend:~#&lt;/span&gt; cat /etc/network/interfaces
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;auto lo&lt;/span&gt;
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface lo inet loopback&lt;/span&gt;
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface eth0 inet dhcp&lt;/span&gt;
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;allow-hotplug wlan0&lt;/span&gt;
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface wlan0 inet dhcp&lt;/span&gt;
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;wpa-ssid  NETWORK_NAME&lt;/span&gt;
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;wpa-psk NETWORK_KEY&lt;/span&gt;
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-11"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7176fb3262a04347b020f2efef38ddcb-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface default inet dhcp&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</description><category>debian</category><category>raspberry</category><category>raspberrypi</category><category>raspbian</category><category>wifi</category><guid>https://blog.cyplo.net/posts/2014/02/24/wifi-raspberrypi.html</guid><pubDate>Mon, 24 Feb 2014 20:45:32 GMT</pubDate></item><item><title>Sunpowered server setup</title><link>https://blog.cyplo.net/posts/2014/02/16/sunpowered-server-setup.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Remember my &lt;a class="reference external" href="https://blog.cyplo.net/2013/03/31/building-nas/"&gt;NAS&lt;/a&gt;
 &lt;a class="reference external" href="https://blog.cyplo.net/2013/05/26/building-nas-software/"&gt;stuff&lt;/a&gt; ? It
 turned out great ! Very reliable storage, I had a disk failure once and
@@ -104,35 +104,35 @@ system power usage at least&lt;/li&gt;
 &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0923.jpg"&gt;&lt;img alt="image8" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0923-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0925.jpg"&gt;&lt;img alt="image9" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0925-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0927.jpg"&gt;&lt;img alt="image10" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0927-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0930.jpg"&gt;&lt;img alt="image11" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0930-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0932.jpg"&gt;&lt;img alt="image12" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0932-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0933.jpg"&gt;&lt;img alt="image13" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0933-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0934.jpg"&gt;&lt;img alt="image14" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0934-150x150.jpg"&gt;&lt;/a&gt;
 &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0935.jpg"&gt;&lt;img alt="image15" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0935-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0937.jpg"&gt;&lt;img alt="image16" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0937-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0940.jpg"&gt;&lt;img alt="image17" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0940-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0941.jpg"&gt;&lt;img alt="image18" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0941-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0942.jpg"&gt;&lt;img alt="image19" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0942-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_09381.jpg"&gt;&lt;img alt="image20" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_09381-150x150.jpg"&gt;&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>photovoltaic</category><category>pi</category><category>pv</category><category>raspberry pi</category><category>raspberrypi</category><category>server</category><category>solar</category><category>sun</category><category>sunpowered</category><category>wrt54gl</category><guid>https://blog.cyplo.net/posts/2014/02/16/sunpowered-server-setup.html</guid><pubDate>Sun, 16 Feb 2014 21:13:46 GMT</pubDate></item><item><title>Compiling tarsnap on RaspberryPi</title><link>https://blog.cyplo.net/posts/2014/02/01/compiling-tarsnap-raspberrypi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Just a quickie for tarsnap 1.0.35. Featuring my new favourite, the
 download software called aria2.&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;aptitude install aria2 libssl-dev zlib1g-dev e2fslibs-dev&lt;/span&gt;
-&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;aria2c https://www.tarsnap.com/download/tarsnap-autoconf-1.0.35.tgz&lt;/span&gt;
-&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;aria2c https://www.tarsnap.com/download/tarsnap-sigs-1.0.35.asc&lt;/span&gt;
-&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;gpg --recv-key 2F102ABB&lt;/span&gt;
-&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;gpg --decrypt tarsnap-sigs-1.0.35.asc&lt;/span&gt;
-&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;sha256sum tarsnap-autoconf-1.0.35.tgz # should get the value from sig file, 6c9f67....9a&lt;/span&gt;
-&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;tar xf tarsnap-autoconf-1.0.35.tgz&lt;/span&gt;
-&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd tarsnap-autoconf-1.0.35/&lt;/span&gt;
-&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;./configure&lt;/span&gt;
-&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;time nice ionice make -j2&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_7eefbfb694d3402293836098524d3de9-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;aptitude install aria2 libssl-dev zlib1g-dev e2fslibs-dev&lt;/span&gt;
+&lt;a name="rest_code_7eefbfb694d3402293836098524d3de9-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;aria2c https://www.tarsnap.com/download/tarsnap-autoconf-1.0.35.tgz&lt;/span&gt;
+&lt;a name="rest_code_7eefbfb694d3402293836098524d3de9-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;aria2c https://www.tarsnap.com/download/tarsnap-sigs-1.0.35.asc&lt;/span&gt;
+&lt;a name="rest_code_7eefbfb694d3402293836098524d3de9-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;gpg --recv-key 2F102ABB&lt;/span&gt;
+&lt;a name="rest_code_7eefbfb694d3402293836098524d3de9-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;gpg --decrypt tarsnap-sigs-1.0.35.asc&lt;/span&gt;
+&lt;a name="rest_code_7eefbfb694d3402293836098524d3de9-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;sha256sum tarsnap-autoconf-1.0.35.tgz # should get the value from sig file, 6c9f67....9a&lt;/span&gt;
+&lt;a name="rest_code_7eefbfb694d3402293836098524d3de9-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;tar xf tarsnap-autoconf-1.0.35.tgz&lt;/span&gt;
+&lt;a name="rest_code_7eefbfb694d3402293836098524d3de9-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd tarsnap-autoconf-1.0.35/&lt;/span&gt;
+&lt;a name="rest_code_7eefbfb694d3402293836098524d3de9-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;./configure&lt;/span&gt;
+&lt;a name="rest_code_7eefbfb694d3402293836098524d3de9-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;time nice ionice make -j2&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;How do I know that -j2 really gives some advantage on raspi ? Well, here
 are the timings:&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_b984b50834f84ab485293509900341a0-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;fresh, j1
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    14m7.129s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m30.790s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m21.640s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-5"&gt;&lt;/a&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-6"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j2
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    11m33.868s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m36.690s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m19.880s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-10"&gt;&lt;/a&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-11"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j1 again, caches warmed up
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    12m38.598s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m30.960s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m20.470s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-15"&gt;&lt;/a&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-16"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j2 again
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-17"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    10m14.975s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-18"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m34.980s&lt;/span&gt;
-&lt;a name="rest_code_b984b50834f84ab485293509900341a0-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m20.710s&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;fresh, j1
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    14m7.129s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m30.790s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m21.640s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-5"&gt;&lt;/a&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-6"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j2
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    11m33.868s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m36.690s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m19.880s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-10"&gt;&lt;/a&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-11"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j1 again, caches warmed up
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    12m38.598s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m30.960s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m20.470s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-15"&gt;&lt;/a&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-16"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j2 again
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-17"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    10m14.975s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-18"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m34.980s&lt;/span&gt;
+&lt;a name="rest_code_fbba8a49a2cb46ee9d47e74ffe26294e-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m20.710s&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</description><category>raspberrypi</category><category>tarsnap</category><guid>https://blog.cyplo.net/posts/2014/02/01/compiling-tarsnap-raspberrypi.html</guid><pubDate>Sat, 01 Feb 2014 21:59:27 GMT</pubDate></item></channel></rss>

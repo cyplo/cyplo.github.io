@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about server)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/cat_server.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Automating running Debian in VirtualBox</title><link>https://blog.cyplo.net/posts/2013/07/16/automating-running-debian-in-virtualbox.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I'm experimenting with service separation by having each service run in
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Adventurous Computing (Posts about server)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/cat_server.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:25:30 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Automating running Debian in VirtualBox</title><link>https://blog.cyplo.net/posts/2013/07/16/automating-running-debian-in-virtualbox.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I'm experimenting with service separation by having each service run in
 its own operating system, all of the sharing hardware though. Why ?
 Separation seems to be the only secure approach to running any software.
 Check &lt;a class="reference external" href="http://theinvisiblethings.blogspot.com/"&gt;Joanna's&lt;/a&gt; blog out. I
@@ -9,65 +9,65 @@ with install. Then I tried spawning some clones of that, but having it
 done manually takes quite some time  and is error prone. Did somebody
 say automation ? Yes ! First, clone a VM, regenerating MAC addresses and
 making sure the resource caps are good:&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat prepare_vm
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/bash&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; vm_name vm_number"&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-8"&gt;&lt;/a&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RAM_AMOUNT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"128"&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;DISK_SIZE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"2000"&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-12"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NUMBER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-13"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RDP_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="m"&gt;3389&lt;/span&gt;&lt;span class="k"&gt;))&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;EXECUTION_CAP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"50"&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-15"&gt;&lt;/a&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-16"&gt;&lt;/a&gt;VBoxManage clonevm fresh.cyplo.net --name &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --mode machine --register
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-17"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrde on
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"setting RDP listening port to &lt;/span&gt;&lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-19"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --memory &lt;span class="nv"&gt;$RAM_AMOUNT&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-20"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrdeport &lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-21"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --nic1 bridged --bridgeadapter1 eth0
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-22"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pae on
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-23"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --cpuexecutioncap &lt;span class="nv"&gt;$EXECUTION_CAP&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-24"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hpet on
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-25"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hwvirtex on
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-26"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pagefusion on
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-27"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --dvd none
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-28"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --autostart-enabled on
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-29"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress1 auto
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-30"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress2 auto
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-31"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"vm set up, listing all VMs:"&lt;/span&gt;
-&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-32"&gt;&lt;/a&gt;VBoxManage list vms
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat prepare_vm
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; vm_name vm_number"&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RAM_AMOUNT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"128"&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;DISK_SIZE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"2000"&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-12"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NUMBER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-13"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RDP_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="m"&gt;3389&lt;/span&gt;&lt;span class="k"&gt;))&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;EXECUTION_CAP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"50"&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-15"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-16"&gt;&lt;/a&gt;VBoxManage clonevm fresh.cyplo.net --name &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --mode machine --register
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-17"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrde on
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"setting RDP listening port to &lt;/span&gt;&lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-19"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --memory &lt;span class="nv"&gt;$RAM_AMOUNT&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-20"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrdeport &lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-21"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --nic1 bridged --bridgeadapter1 eth0
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-22"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pae on
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-23"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --cpuexecutioncap &lt;span class="nv"&gt;$EXECUTION_CAP&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-24"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hpet on
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-25"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hwvirtex on
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-26"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pagefusion on
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-27"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --dvd none
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-28"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --autostart-enabled on
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-29"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress1 auto
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-30"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress2 auto
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-31"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"vm set up, listing all VMs:"&lt;/span&gt;
+&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-32"&gt;&lt;/a&gt;VBoxManage list vms
 &lt;/pre&gt;&lt;p&gt;Then run the VM and change it into Debian
 service host with new name and some software:&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat kickstart_debian
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#/bin/bash&lt;/span&gt;
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; new_hostname new_domainname"&lt;/span&gt;
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-8"&gt;&lt;/a&gt;
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_HOSTNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_DOMAINNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_FQDN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;$NEW_DOMAINNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-12"&gt;&lt;/a&gt;aptitude update
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-13"&gt;&lt;/a&gt;aptitude dist-upgrade -y
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-14"&gt;&lt;/a&gt;aptitude install vim atop sudo -y
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-15"&gt;&lt;/a&gt;hostname
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-16"&gt;&lt;/a&gt;ifconfig
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/mailname
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-19"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/hostname
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-20"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/dc_other_hostnames\='.*'/dc_other_hostnames='&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;'/g"&lt;/span&gt; /etc/exim4/update-exim4.conf.conf
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-21"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/127\.0\.1\.1.*/127.0.1.1 &lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;/g"&lt;/span&gt; /etc/hosts
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-22"&gt;&lt;/a&gt;
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-23"&gt;&lt;/a&gt;rm /etc/ssh/ssh_host_*
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-24"&gt;&lt;/a&gt;dpkg-reconfigure openssh-server
-&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-25"&gt;&lt;/a&gt;reboot
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat kickstart_debian
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; new_hostname new_domainname"&lt;/span&gt;
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_HOSTNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_DOMAINNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_FQDN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;$NEW_DOMAINNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-12"&gt;&lt;/a&gt;aptitude update
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-13"&gt;&lt;/a&gt;aptitude dist-upgrade -y
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-14"&gt;&lt;/a&gt;aptitude install vim atop sudo -y
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-15"&gt;&lt;/a&gt;hostname
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-16"&gt;&lt;/a&gt;ifconfig
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/mailname
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-19"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/hostname
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-20"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/dc_other_hostnames\='.*'/dc_other_hostnames='&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;'/g"&lt;/span&gt; /etc/exim4/update-exim4.conf.conf
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-21"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/127\.0\.1\.1.*/127.0.1.1 &lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;/g"&lt;/span&gt; /etc/hosts
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-22"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-23"&gt;&lt;/a&gt;rm /etc/ssh/ssh_host_*
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-24"&gt;&lt;/a&gt;dpkg-reconfigure openssh-server
+&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-25"&gt;&lt;/a&gt;reboot
 &lt;/pre&gt;&lt;p&gt;The script above needs to be run on guest, I'm using scp with known ssh keys to upload it and
 then run via ssh. This step is to be automated in the future. Points to
 improve:&lt;/p&gt;
@@ -85,20 +85,20 @@ server build check its
 &lt;p&gt;I think my NAS box build is no longer in much flux, so I thought it'd be
 nice to describe it. I had some disks laying around, I had them
 installed and started playing with the software setup.&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_fe22866c275545db84f051dfcdefb70e-1"&gt;&lt;/a&gt;Disk /dev/sda:  60.0 GB,  60022480896 bytes
-&lt;a name="rest_code_fe22866c275545db84f051dfcdefb70e-2"&gt;&lt;/a&gt;Disk /dev/sdb: 320.1 GB, 320072933376 bytes
-&lt;a name="rest_code_fe22866c275545db84f051dfcdefb70e-3"&gt;&lt;/a&gt;Disk /dev/sdc: 160.0 GB, 160041885696 bytes
-&lt;a name="rest_code_fe22866c275545db84f051dfcdefb70e-4"&gt;&lt;/a&gt;Disk /dev/sdd: 250.1 GB, 250059350016 bytes
-&lt;a name="rest_code_fe22866c275545db84f051dfcdefb70e-5"&gt;&lt;/a&gt;Disk /dev/sde: 500.1 GB, 500107862016 bytes
+&lt;pre class="code text"&gt;&lt;a name="rest_code_f972d5ad30e94a6584a07772f0a11b56-1"&gt;&lt;/a&gt;Disk /dev/sda:  60.0 GB,  60022480896 bytes
+&lt;a name="rest_code_f972d5ad30e94a6584a07772f0a11b56-2"&gt;&lt;/a&gt;Disk /dev/sdb: 320.1 GB, 320072933376 bytes
+&lt;a name="rest_code_f972d5ad30e94a6584a07772f0a11b56-3"&gt;&lt;/a&gt;Disk /dev/sdc: 160.0 GB, 160041885696 bytes
+&lt;a name="rest_code_f972d5ad30e94a6584a07772f0a11b56-4"&gt;&lt;/a&gt;Disk /dev/sdd: 250.1 GB, 250059350016 bytes
+&lt;a name="rest_code_f972d5ad30e94a6584a07772f0a11b56-5"&gt;&lt;/a&gt;Disk /dev/sde: 500.1 GB, 500107862016 bytes
 &lt;/pre&gt;&lt;p&gt;First one is an SSD drive, I used it for OS
 installation.  I went for &lt;a class="reference external" href="http://crunchbang.org/"&gt;Crunchbang&lt;/a&gt; as I
 was already familiar with it, however now I'm thinking of just getting
 newest Debian there, as it's finally released. Nothing fancy about the
 OS, a regular install really.&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_6496e8db00c74276b61932ad13b2cdae-1"&gt;&lt;/a&gt;storage# df -h
-&lt;a name="rest_code_6496e8db00c74276b61932ad13b2cdae-2"&gt;&lt;/a&gt;Filesystem                   Size  Used Avail Use% Mounted on
-&lt;a name="rest_code_6496e8db00c74276b61932ad13b2cdae-3"&gt;&lt;/a&gt;rootfs                        53G  2.4G   48G   5% /
-&lt;a name="rest_code_6496e8db00c74276b61932ad13b2cdae-4"&gt;&lt;/a&gt;/dev/sda1                    461M   31M  407M   7% /boot
+&lt;pre class="code text"&gt;&lt;a name="rest_code_60812804365d4e5d93240144ec9f2d85-1"&gt;&lt;/a&gt;storage# df -h
+&lt;a name="rest_code_60812804365d4e5d93240144ec9f2d85-2"&gt;&lt;/a&gt;Filesystem                   Size  Used Avail Use% Mounted on
+&lt;a name="rest_code_60812804365d4e5d93240144ec9f2d85-3"&gt;&lt;/a&gt;rootfs                        53G  2.4G   48G   5% /
+&lt;a name="rest_code_60812804365d4e5d93240144ec9f2d85-4"&gt;&lt;/a&gt;/dev/sda1                    461M   31M  407M   7% /boot
 &lt;/pre&gt;&lt;p&gt;As you can see / filesystem takes little amount
 of space, hence the next thing I plan on doing is actually move / to
 USB3.0 pendrive and then free the SATA drive from it's current duties.
@@ -106,11 +106,11 @@ I'm reluctant to do so right now, as moving swap to pendrive might
 result in significant wear. I'm thinking of getting more RAM and then
 getting rid of the swap at all. These stats were acquired after reboot,
 there are some loads under which I saw swapping occur.&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-1"&gt;&lt;/a&gt;storage# free -m
-&lt;a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-2"&gt;&lt;/a&gt;             total       used       free     shared    buffers
-&lt;a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-3"&gt;&lt;/a&gt;Mem:          1636        282       1354          0         53
-&lt;a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-4"&gt;&lt;/a&gt;-/+ buffers/cache:        166       1470
-&lt;a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-5"&gt;&lt;/a&gt;Swap:         1903          0       1903
+&lt;pre class="code text"&gt;&lt;a name="rest_code_d9943fe684ae4528871c6138add01619-1"&gt;&lt;/a&gt;storage# free -m
+&lt;a name="rest_code_d9943fe684ae4528871c6138add01619-2"&gt;&lt;/a&gt;             total       used       free     shared    buffers
+&lt;a name="rest_code_d9943fe684ae4528871c6138add01619-3"&gt;&lt;/a&gt;Mem:          1636        282       1354          0         53
+&lt;a name="rest_code_d9943fe684ae4528871c6138add01619-4"&gt;&lt;/a&gt;-/+ buffers/cache:        166       1470
+&lt;a name="rest_code_d9943fe684ae4528871c6138add01619-5"&gt;&lt;/a&gt;Swap:         1903          0       1903
 &lt;/pre&gt;&lt;/div&gt;
 &lt;div class="section" id="software-configuration"&gt;
 &lt;h2&gt;Software + configuration&lt;/h2&gt;
@@ -122,39 +122,39 @@ be found. RAID5, although having internal copies for resiliency, was
 visible as one drive only and happily deleted the data when asked to.
 What I really needed was a backup solution, not a NAS. My final answer
 to that:&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-1"&gt;&lt;/a&gt;storage# df -h
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-2"&gt;&lt;/a&gt;Filesystem                   Size  Used Avail Use% Mounted on
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-3"&gt;&lt;/a&gt;rootfs                        53G  2.4G   48G   5% /
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-4"&gt;&lt;/a&gt;/dev/md0                     294G   36G  243G  13% /mnt/array_back
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-5"&gt;&lt;/a&gt;/dev/sde1                    459G   35G  401G   8% /mnt/array_front
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-6"&gt;&lt;/a&gt;
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-7"&gt;&lt;/a&gt;storage# cat /etc/fstab
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-8"&gt;&lt;/a&gt;#
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-9"&gt;&lt;/a&gt;/dev/mapper/vg_storage-root                /               ext4    errors=remount-ro 0       1
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-10"&gt;&lt;/a&gt;UUID=b9d32208-edc0-4981-ab74-5da1e7348a1a  /boot           ext4    defaults          0       2
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-11"&gt;&lt;/a&gt;/dev/mapper/vg_storage-swap                none            swap    sw                0       0
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-12"&gt;&lt;/a&gt;
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-13"&gt;&lt;/a&gt;/dev/md0                                  /mnt/array_back  ext4    defaults          0       2
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-14"&gt;&lt;/a&gt;/dev/sde1                                 /mnt/array_front ext4    defaults          0       2
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-15"&gt;&lt;/a&gt;
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-16"&gt;&lt;/a&gt;storage# mdadm --detail /dev/md0
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-17"&gt;&lt;/a&gt;/dev/md0:
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-18"&gt;&lt;/a&gt;        Version : 1.2
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-19"&gt;&lt;/a&gt;  Creation Time : Sun Apr 21 22:47:38 2013
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-20"&gt;&lt;/a&gt;     Raid Level : raid5
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-21"&gt;&lt;/a&gt;     Array Size : 312318976 (297.85 GiB 319.81 GB)
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-22"&gt;&lt;/a&gt;  Used Dev Size : 156159488 (148.93 GiB 159.91 GB)
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-23"&gt;&lt;/a&gt;
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-24"&gt;&lt;/a&gt;    Number   Major   Minor   RaidDevice State
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-25"&gt;&lt;/a&gt;       0       8       17        0      active sync   /dev/sdb1
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-26"&gt;&lt;/a&gt;       1       8       33        1      active sync   /dev/sdc1
-&lt;a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-27"&gt;&lt;/a&gt;       3       8       49        2      active sync   /dev/sdd1
+&lt;pre class="code text"&gt;&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-1"&gt;&lt;/a&gt;storage# df -h
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-2"&gt;&lt;/a&gt;Filesystem                   Size  Used Avail Use% Mounted on
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-3"&gt;&lt;/a&gt;rootfs                        53G  2.4G   48G   5% /
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-4"&gt;&lt;/a&gt;/dev/md0                     294G   36G  243G  13% /mnt/array_back
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-5"&gt;&lt;/a&gt;/dev/sde1                    459G   35G  401G   8% /mnt/array_front
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-7"&gt;&lt;/a&gt;storage# cat /etc/fstab
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-8"&gt;&lt;/a&gt;#
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-9"&gt;&lt;/a&gt;/dev/mapper/vg_storage-root                /               ext4    errors=remount-ro 0       1
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-10"&gt;&lt;/a&gt;UUID=b9d32208-edc0-4981-ab74-5da1e7348a1a  /boot           ext4    defaults          0       2
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-11"&gt;&lt;/a&gt;/dev/mapper/vg_storage-swap                none            swap    sw                0       0
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-12"&gt;&lt;/a&gt;
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-13"&gt;&lt;/a&gt;/dev/md0                                  /mnt/array_back  ext4    defaults          0       2
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-14"&gt;&lt;/a&gt;/dev/sde1                                 /mnt/array_front ext4    defaults          0       2
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-15"&gt;&lt;/a&gt;
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-16"&gt;&lt;/a&gt;storage# mdadm --detail /dev/md0
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-17"&gt;&lt;/a&gt;/dev/md0:
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-18"&gt;&lt;/a&gt;        Version : 1.2
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-19"&gt;&lt;/a&gt;  Creation Time : Sun Apr 21 22:47:38 2013
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-20"&gt;&lt;/a&gt;     Raid Level : raid5
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-21"&gt;&lt;/a&gt;     Array Size : 312318976 (297.85 GiB 319.81 GB)
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-22"&gt;&lt;/a&gt;  Used Dev Size : 156159488 (148.93 GiB 159.91 GB)
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-23"&gt;&lt;/a&gt;
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-24"&gt;&lt;/a&gt;    Number   Major   Minor   RaidDevice State
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-25"&gt;&lt;/a&gt;       0       8       17        0      active sync   /dev/sdb1
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-26"&gt;&lt;/a&gt;       1       8       33        1      active sync   /dev/sdc1
+&lt;a name="rest_code_785b9ff519884db2acb68f4f51c8a4b5-27"&gt;&lt;/a&gt;       3       8       49        2      active sync   /dev/sdd1
 &lt;/pre&gt;&lt;p&gt;One disk [sde] serves as a front for all user operations. After a while, all changes
 except for deletions are being flushed onto [array_back] which is a
 RAID5 matrix.&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_6fe335a50da14cde9ec86a5770916a30-1"&gt;&lt;/a&gt;storage# cat /etc/cron.daily/90_sync_front_to_back
-&lt;a name="rest_code_6fe335a50da14cde9ec86a5770916a30-2"&gt;&lt;/a&gt;#!/bin/bash
-&lt;a name="rest_code_6fe335a50da14cde9ec86a5770916a30-3"&gt;&lt;/a&gt;rsync -avr /mnt/array_front/ /mnt/array_back/back
+&lt;pre class="code text"&gt;&lt;a name="rest_code_08b3614ad0264a6f83c7b69b4cb0a7c3-1"&gt;&lt;/a&gt;storage# cat /etc/cron.daily/90_sync_front_to_back
+&lt;a name="rest_code_08b3614ad0264a6f83c7b69b4cb0a7c3-2"&gt;&lt;/a&gt;#!/bin/bash
+&lt;a name="rest_code_08b3614ad0264a6f83c7b69b4cb0a7c3-3"&gt;&lt;/a&gt;rsync -avr /mnt/array_front/ /mnt/array_back/back
 &lt;/pre&gt;&lt;/div&gt;
 &lt;div class="section" id="secret-sauce"&gt;
 &lt;h2&gt;Secret sauce&lt;/h2&gt;

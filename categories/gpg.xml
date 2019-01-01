@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about gpg)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/gpg.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Poor man's secrets storage</title><link>https://blog.cyplo.net/posts/2014/09/26/poor-mans-secrets-storage.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I'm a bit cautious when it comes to storing my passwords and other
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Adventurous Computing (Posts about gpg)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/gpg.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:25:28 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Poor man's secrets storage</title><link>https://blog.cyplo.net/posts/2014/09/26/poor-mans-secrets-storage.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I'm a bit cautious when it comes to storing my passwords and other
 secrets. I do not use any web or desktop applications to do this for me.
 How do I remember those passphrases then ? I have a central file server,
 accessible via a tunnel. I store there a gpg-encrypted file containing a
@@ -11,73 +11,73 @@ solution. &lt;a class="reference external" href="https://access.redhat.com/artic
 rescue ! There are still some assumptions made here about permissions,
 directories layout and some stuff not failing, but I'm sure you'll be
 able to figure this out and tweak to your needs.&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-2"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-3"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TUNNEL_CREDS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"user@tunnelhost"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-4"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TUNNEL_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;123&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-5"&gt;&lt;/a&gt;&lt;span class="nv"&gt;STORAGE_CREDS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"storage_user@localhost"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-6"&gt;&lt;/a&gt;&lt;span class="nv"&gt;STORAGE_ADDRESS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"storagehost.example.org"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-7"&gt;&lt;/a&gt;&lt;span class="nv"&gt;SOCKET&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/tmp/black_socket"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-8"&gt;&lt;/a&gt;&lt;span class="nv"&gt;REMOTE_VAULT_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/somepath/.vault.tar.gpg"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TMP_VAULT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/tmp/.vault.tar.gpg"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TMP_VAULT_TAR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/tmp/.vault.tar"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TMP_VAULT_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/tmp/.vault"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-12"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-13"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TMP_LOCAL_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;10022&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;LOCAL_VAULT_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.vault"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-15"&gt;&lt;/a&gt;&lt;span class="nv"&gt;LOCAL_VAULT_BACKUP_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;.bak"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-16"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;pushd&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-18"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-19"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"removing old vault backup at &lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_BACKUP_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-20"&gt;&lt;/a&gt;rm -rI &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_BACKUP_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-21"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-22"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-23"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-24"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"backing up local vault..."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-25"&gt;&lt;/a&gt;cp -r &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_BACKUP_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-26"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-27"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"establishing tunnel ..."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-28"&gt;&lt;/a&gt;ssh -L &lt;span class="nv"&gt;$TMP_LOCAL_PORT&lt;/span&gt;:&lt;span class="nv"&gt;$STORAGE_ADDRESS&lt;/span&gt;:22 &lt;span class="nv"&gt;$TUNNEL_CREDS&lt;/span&gt; -p &lt;span class="nv"&gt;$TUNNEL_PORT&lt;/span&gt; -N -f -M -S &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$SOCKET&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-29"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-30"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"tunnel ready, copying remote version of the vault..."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-31"&gt;&lt;/a&gt;rsync --progress -avz -e &lt;span class="s2"&gt;"ssh -p &lt;/span&gt;&lt;span class="nv"&gt;$TMP_LOCAL_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$STORAGE_CREDS&lt;/span&gt;&lt;span class="s2"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;$REMOTE_VAULT_PATH&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-32"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-33"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"decrypting new vault..."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-34"&gt;&lt;/a&gt;gpg -d &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-35"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-36"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"unpacking new vault..."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-37"&gt;&lt;/a&gt;mkdir -p &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-38"&gt;&lt;/a&gt;tar xf &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; -C &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-39"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-40"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"pulling from remote vault..."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-41"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-42"&gt;&lt;/a&gt;git pull &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-43"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-44"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"pulling to remote vault..."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-45"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-46"&gt;&lt;/a&gt;git pull &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-47"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-48"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"cleaning up a bit..."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-49"&gt;&lt;/a&gt;rm -fr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-50"&gt;&lt;/a&gt;rm -fr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-51"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-52"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"packing refreshed remote vault..."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-53"&gt;&lt;/a&gt;tar pcf &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; -C &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; .
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-54"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-55"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"encrypting refreshed remote vault..."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-56"&gt;&lt;/a&gt;gpg -c &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-57"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-58"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"sending out updated vault"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-59"&gt;&lt;/a&gt;rsync --progress -avz &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; -e &lt;span class="s2"&gt;"ssh -p &lt;/span&gt;&lt;span class="nv"&gt;$TMP_LOCAL_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$STORAGE_CREDS&lt;/span&gt;&lt;span class="s2"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;$REMOTE_VAULT_PATH&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-60"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-61"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"cleaning up.. "&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-62"&gt;&lt;/a&gt;rm -fr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-63"&gt;&lt;/a&gt;rm -fr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-64"&gt;&lt;/a&gt;rm -fr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-65"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-66"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"closing tunnel.."&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-67"&gt;&lt;/a&gt;ssh -S &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$SOCKET&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; -O &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="nv"&gt;$TUNNEL_CREDS&lt;/span&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-68"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d036d722fc1a4b6d823c5b3a173b9e22-69"&gt;&lt;/a&gt;&lt;span class="nb"&gt;popd&lt;/span&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-3"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TUNNEL_CREDS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"user@tunnelhost"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-4"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TUNNEL_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;123&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-5"&gt;&lt;/a&gt;&lt;span class="nv"&gt;STORAGE_CREDS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"storage_user@localhost"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-6"&gt;&lt;/a&gt;&lt;span class="nv"&gt;STORAGE_ADDRESS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"storagehost.example.org"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-7"&gt;&lt;/a&gt;&lt;span class="nv"&gt;SOCKET&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/tmp/black_socket"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-8"&gt;&lt;/a&gt;&lt;span class="nv"&gt;REMOTE_VAULT_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/somepath/.vault.tar.gpg"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TMP_VAULT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/tmp/.vault.tar.gpg"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TMP_VAULT_TAR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/tmp/.vault.tar"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TMP_VAULT_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/tmp/.vault"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-12"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-13"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TMP_LOCAL_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;10022&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;LOCAL_VAULT_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.vault"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-15"&gt;&lt;/a&gt;&lt;span class="nv"&gt;LOCAL_VAULT_BACKUP_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;.bak"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-16"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;pushd&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-18"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-19"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"removing old vault backup at &lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_BACKUP_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-20"&gt;&lt;/a&gt;rm -rI &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_BACKUP_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-21"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-22"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-23"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-24"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"backing up local vault..."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-25"&gt;&lt;/a&gt;cp -r &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_BACKUP_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-26"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-27"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"establishing tunnel ..."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-28"&gt;&lt;/a&gt;ssh -L &lt;span class="nv"&gt;$TMP_LOCAL_PORT&lt;/span&gt;:&lt;span class="nv"&gt;$STORAGE_ADDRESS&lt;/span&gt;:22 &lt;span class="nv"&gt;$TUNNEL_CREDS&lt;/span&gt; -p &lt;span class="nv"&gt;$TUNNEL_PORT&lt;/span&gt; -N -f -M -S &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$SOCKET&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-29"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-30"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"tunnel ready, copying remote version of the vault..."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-31"&gt;&lt;/a&gt;rsync --progress -avz -e &lt;span class="s2"&gt;"ssh -p &lt;/span&gt;&lt;span class="nv"&gt;$TMP_LOCAL_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$STORAGE_CREDS&lt;/span&gt;&lt;span class="s2"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;$REMOTE_VAULT_PATH&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-32"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-33"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"decrypting new vault..."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-34"&gt;&lt;/a&gt;gpg -d &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-35"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-36"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"unpacking new vault..."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-37"&gt;&lt;/a&gt;mkdir -p &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-38"&gt;&lt;/a&gt;tar xf &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; -C &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-39"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-40"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"pulling from remote vault..."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-41"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-42"&gt;&lt;/a&gt;git pull &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-43"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-44"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"pulling to remote vault..."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-45"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-46"&gt;&lt;/a&gt;git pull &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$LOCAL_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-47"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-48"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"cleaning up a bit..."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-49"&gt;&lt;/a&gt;rm -fr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-50"&gt;&lt;/a&gt;rm -fr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-51"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-52"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"packing refreshed remote vault..."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-53"&gt;&lt;/a&gt;tar pcf &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; -C &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; .
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-54"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-55"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"encrypting refreshed remote vault..."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-56"&gt;&lt;/a&gt;gpg -c &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-57"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-58"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"sending out updated vault"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-59"&gt;&lt;/a&gt;rsync --progress -avz &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; -e &lt;span class="s2"&gt;"ssh -p &lt;/span&gt;&lt;span class="nv"&gt;$TMP_LOCAL_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$STORAGE_CREDS&lt;/span&gt;&lt;span class="s2"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;$REMOTE_VAULT_PATH&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-60"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-61"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"cleaning up.. "&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-62"&gt;&lt;/a&gt;rm -fr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_DIR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-63"&gt;&lt;/a&gt;rm -fr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT_TAR&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-64"&gt;&lt;/a&gt;rm -fr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$TMP_VAULT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-65"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-66"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"closing tunnel.."&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-67"&gt;&lt;/a&gt;ssh -S &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$SOCKET&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; -O &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="nv"&gt;$TUNNEL_CREDS&lt;/span&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-68"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3f54e596734c40a6bb9b2c06619d8f27-69"&gt;&lt;/a&gt;&lt;span class="nb"&gt;popd&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</description><category>bash</category><category>git</category><category>gpg</category><category>password</category><category>rsync</category><category>secret</category><category>ssh</category><category>storage</category><guid>https://blog.cyplo.net/posts/2014/09/26/poor-mans-secrets-storage.html</guid><pubDate>Fri, 26 Sep 2014 10:33:31 GMT</pubDate></item></channel></rss>

@@ -145,66 +145,66 @@ some of your implicit, intuitive knowledge into explicit one.</p>
                 <div>
 <p>Install "Microsoft ASP.NET Web API Self Host" and all of its
 dependencies via NuGet.</p>
-<pre class="code csharp"><a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-1"></a><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-2"></a><span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-3"></a><span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-4"></a><span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-5"></a><span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-6"></a><span class="k">using</span> <span class="nn">System.Threading.Tasks</span><span class="p">;</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-7"></a><span class="k">using</span> <span class="nn">System.Web.Http</span><span class="p">;</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-8"></a><span class="k">using</span> <span class="nn">System.Web.Http.SelfHost</span><span class="p">;</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-9"></a>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-10"></a><span class="k">namespace</span> <span class="nn">resttest</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-11"></a><span class="p">{</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-12"></a>    <span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleData</span> <span class="p">{</span> <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-13"></a>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-14"></a>    <span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleController</span> <span class="p">:</span> <span class="n">ApiController</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-15"></a>    <span class="p">{</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-16"></a>        <span class="c1">// /api/job</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-17"></a>        <span class="k">public</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">ExampleData</span><span class="p">&gt;</span> <span class="n">Get</span><span class="p">()</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-18"></a>        <span class="p">{</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-19"></a>            <span class="k">return</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ExampleData</span><span class="p">&gt;()</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-20"></a>            <span class="p">{</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-21"></a>                <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">(){</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">2</span> <span class="p">},</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-22"></a>                <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">(){</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">4</span> <span class="p">}</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-23"></a>            <span class="p">};</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-24"></a>        <span class="p">}</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-25"></a>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-26"></a>        <span class="c1">// /api/job/3</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-27"></a>        <span class="k">public</span> <span class="n">ExampleData</span> <span class="nf">Get</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-28"></a>        <span class="p">{</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-29"></a>            <span class="k">return</span> <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">()</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">3</span> <span class="p">};</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-30"></a>        <span class="p">}</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-31"></a>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-32"></a>    <span class="p">}</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-33"></a>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-34"></a>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-35"></a>    <span class="k">class</span> <span class="nc">Program</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-36"></a>    <span class="p">{</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-37"></a>        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-38"></a>        <span class="p">{</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-39"></a>            <span class="kt">var</span> <span class="n">configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpSelfHostConfiguration</span><span class="p">(</span><span class="s">"http://localhost:1337"</span><span class="p">);</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-40"></a>            <span class="c1">//Setup the routes</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-41"></a>            <span class="n">configuration</span><span class="p">.</span><span class="n">Routes</span><span class="p">.</span><span class="n">MapHttpRoute</span><span class="p">(</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-42"></a>                <span class="n">name</span><span class="p">:</span> <span class="s">"DefaultApiRoute"</span><span class="p">,</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-43"></a>                <span class="n">routeTemplate</span><span class="p">:</span> <span class="s">"api/{controller}/{id}"</span><span class="p">,</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-44"></a>                <span class="n">defaults</span><span class="p">:</span> <span class="k">new</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-45"></a>                    <span class="p">{</span> <span class="n">controller</span> <span class="p">=</span> <span class="s">"ExampleController"</span><span class="p">,</span> <span class="n">id</span> <span class="p">=</span> <span class="n">RouteParameter</span><span class="p">.</span><span class="n">Optional</span> <span class="p">}</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-46"></a>                <span class="p">);</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-47"></a>            <span class="kt">var</span> <span class="n">server</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpSelfHostServer</span><span class="p">(</span><span class="n">configuration</span><span class="p">);</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-48"></a>            <span class="n">server</span><span class="p">.</span><span class="n">OpenAsync</span><span class="p">().</span><span class="n">Wait</span><span class="p">();</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-49"></a>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-50"></a>            <span class="n">Console</span><span class="p">.</span><span class="n">Out</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">"Press ESC to quit"</span><span class="p">);</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-51"></a>            <span class="k">do</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-52"></a>            <span class="p">{</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-53"></a>                <span class="k">while</span> <span class="p">(!</span><span class="n">Console</span><span class="p">.</span><span class="n">KeyAvailable</span><span class="p">)</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-54"></a>                <span class="p">{</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-55"></a>                    <span class="n">Thread</span><span class="p">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">256</span><span class="p">);</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-56"></a>                <span class="p">}</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-57"></a>            <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">(</span><span class="k">true</span><span class="p">).</span><span class="n">Key</span> <span class="p">!=</span> <span class="n">ConsoleKey</span><span class="p">.</span><span class="n">Escape</span><span class="p">);</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-58"></a>        <span class="p">}</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-59"></a>    <span class="p">}</span>
-<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-60"></a><span class="p">}</span>
+<pre class="code csharp"><a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-1"></a><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-2"></a><span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-3"></a><span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-4"></a><span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-5"></a><span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-6"></a><span class="k">using</span> <span class="nn">System.Threading.Tasks</span><span class="p">;</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-7"></a><span class="k">using</span> <span class="nn">System.Web.Http</span><span class="p">;</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-8"></a><span class="k">using</span> <span class="nn">System.Web.Http.SelfHost</span><span class="p">;</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-9"></a>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-10"></a><span class="k">namespace</span> <span class="nn">resttest</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-11"></a><span class="p">{</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-12"></a>    <span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleData</span> <span class="p">{</span> <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-13"></a>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-14"></a>    <span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleController</span> <span class="p">:</span> <span class="n">ApiController</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-15"></a>    <span class="p">{</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-16"></a>        <span class="c1">// /api/job</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-17"></a>        <span class="k">public</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">ExampleData</span><span class="p">&gt;</span> <span class="n">Get</span><span class="p">()</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-18"></a>        <span class="p">{</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-19"></a>            <span class="k">return</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ExampleData</span><span class="p">&gt;()</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-20"></a>            <span class="p">{</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-21"></a>                <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">(){</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">2</span> <span class="p">},</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-22"></a>                <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">(){</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">4</span> <span class="p">}</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-23"></a>            <span class="p">};</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-24"></a>        <span class="p">}</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-25"></a>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-26"></a>        <span class="c1">// /api/job/3</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-27"></a>        <span class="k">public</span> <span class="n">ExampleData</span> <span class="nf">Get</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-28"></a>        <span class="p">{</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-29"></a>            <span class="k">return</span> <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">()</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">3</span> <span class="p">};</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-30"></a>        <span class="p">}</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-31"></a>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-32"></a>    <span class="p">}</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-33"></a>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-34"></a>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-35"></a>    <span class="k">class</span> <span class="nc">Program</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-36"></a>    <span class="p">{</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-37"></a>        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-38"></a>        <span class="p">{</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-39"></a>            <span class="kt">var</span> <span class="n">configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpSelfHostConfiguration</span><span class="p">(</span><span class="s">"http://localhost:1337"</span><span class="p">);</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-40"></a>            <span class="c1">//Setup the routes</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-41"></a>            <span class="n">configuration</span><span class="p">.</span><span class="n">Routes</span><span class="p">.</span><span class="n">MapHttpRoute</span><span class="p">(</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-42"></a>                <span class="n">name</span><span class="p">:</span> <span class="s">"DefaultApiRoute"</span><span class="p">,</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-43"></a>                <span class="n">routeTemplate</span><span class="p">:</span> <span class="s">"api/{controller}/{id}"</span><span class="p">,</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-44"></a>                <span class="n">defaults</span><span class="p">:</span> <span class="k">new</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-45"></a>                    <span class="p">{</span> <span class="n">controller</span> <span class="p">=</span> <span class="s">"ExampleController"</span><span class="p">,</span> <span class="n">id</span> <span class="p">=</span> <span class="n">RouteParameter</span><span class="p">.</span><span class="n">Optional</span> <span class="p">}</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-46"></a>                <span class="p">);</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-47"></a>            <span class="kt">var</span> <span class="n">server</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpSelfHostServer</span><span class="p">(</span><span class="n">configuration</span><span class="p">);</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-48"></a>            <span class="n">server</span><span class="p">.</span><span class="n">OpenAsync</span><span class="p">().</span><span class="n">Wait</span><span class="p">();</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-49"></a>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-50"></a>            <span class="n">Console</span><span class="p">.</span><span class="n">Out</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">"Press ESC to quit"</span><span class="p">);</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-51"></a>            <span class="k">do</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-52"></a>            <span class="p">{</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-53"></a>                <span class="k">while</span> <span class="p">(!</span><span class="n">Console</span><span class="p">.</span><span class="n">KeyAvailable</span><span class="p">)</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-54"></a>                <span class="p">{</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-55"></a>                    <span class="n">Thread</span><span class="p">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">256</span><span class="p">);</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-56"></a>                <span class="p">}</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-57"></a>            <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">(</span><span class="k">true</span><span class="p">).</span><span class="n">Key</span> <span class="p">!=</span> <span class="n">ConsoleKey</span><span class="p">.</span><span class="n">Escape</span><span class="p">);</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-58"></a>        <span class="p">}</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-59"></a>    <span class="p">}</span>
+<a name="rest_code_8f2736ddbc164c1d820ba877e79f8b9f-60"></a><span class="p">}</span>
 </pre>
 <p>We can launch it and query it using any http-enabled client:</p>
 <p><tt class="docutils literal">$ curl <span class="pre">http://localhost:1337/api/Example</span> <span class="pre">[{"Id":2},{"Id":4}]</span></tt></p>
@@ -289,12 +289,12 @@ kernel, <a class="reference external" href="http://crunchbanglinux.org/forums/to
 for Intel Atom and with BCM43224 support. This is a 64bit kernel.
 Download <a href="posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html#id1"><span class="problematic" id="id2">`crunchbanglinux-kernel-3.4.4-intel\_atom.tar.bz2 &lt;&gt;`__</span></a>
 and:</p>
-<pre class="code console"><a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-1"></a><span class="go">dpkg --remove firmware-linux</span>
-<a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-2"></a><span class="go">dpkg --remove firmware-linux-nonfree</span>
-<a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-3"></a><span class="go">tar jxf crunchbanglinux-kernel-3.4.4-intel_atom.tar.bz2</span>
-<a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-4"></a><span class="go">cd linux-3.4.4-intel_atom/</span>
-<a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-5"></a><span class="go">dpkg -i *.deb</span>
-<a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-6"></a><span class="go">reboot</span>
+<pre class="code console"><a name="rest_code_2db5403a79304a01a1aa45071119425d-1"></a><span class="go">dpkg --remove firmware-linux</span>
+<a name="rest_code_2db5403a79304a01a1aa45071119425d-2"></a><span class="go">dpkg --remove firmware-linux-nonfree</span>
+<a name="rest_code_2db5403a79304a01a1aa45071119425d-3"></a><span class="go">tar jxf crunchbanglinux-kernel-3.4.4-intel_atom.tar.bz2</span>
+<a name="rest_code_2db5403a79304a01a1aa45071119425d-4"></a><span class="go">cd linux-3.4.4-intel_atom/</span>
+<a name="rest_code_2db5403a79304a01a1aa45071119425d-5"></a><span class="go">dpkg -i *.deb</span>
+<a name="rest_code_2db5403a79304a01a1aa45071119425d-6"></a><span class="go">reboot</span>
 </pre>
 <p>Should work for Debian Squeeze also but not tested on that system. Write me if you'd
 like it compiled any other way, e.g. for another processor.</p>
@@ -347,14 +347,14 @@ recognize Bitcoin's Wallet as a file format. Bitcoin wiki
 <a class="reference external" href="https://en.bitcoin.it/wiki/Wallet">states</a> that wallet.dat is just a
 good old BerkeleyDB. Just let me check that with the famous file
 command:</p>
-<pre class="code console"><a name="rest_code_62f085e076a84652b36220a3f3ce45de-1"></a><span class="gp">[cyryl@uglybook ~]$</span> file .bitcoin/wallet.dat
-<a name="rest_code_62f085e076a84652b36220a3f3ce45de-2"></a><span class="go">.bitcoin/wallet.dat: Berkeley DB (Btree, version 9, native byte-order)</span>
+<pre class="code console"><a name="rest_code_a52b97ad5e1f47d3b8f3e29e79d7989d-1"></a><span class="gp">[cyryl@uglybook ~]$</span> file .bitcoin/wallet.dat
+<a name="rest_code_a52b97ad5e1f47d3b8f3e29e79d7989d-2"></a><span class="go">.bitcoin/wallet.dat: Berkeley DB (Btree, version 9, native byte-order)</span>
 </pre>
 <p>That is right. Photorec however, has its own file-type
 detection magic, for the reason unknown to me. Let's see whether it
 works on the wallet.</p>
-<pre class="code console"><a name="rest_code_b2c21b82c0714a6da79a43bdf7c8fee7-1"></a><span class="gp">[cyryl@uglybook ~]$</span> fidentify .bitcoin/wallet.dat
-<a name="rest_code_b2c21b82c0714a6da79a43bdf7c8fee7-2"></a><span class="go">.bitcoin/wallet.dat: unknown</span>
+<pre class="code console"><a name="rest_code_7a3f6c11d0204c3d8a1e6e957790252b-1"></a><span class="gp">[cyryl@uglybook ~]$</span> fidentify .bitcoin/wallet.dat
+<a name="rest_code_7a3f6c11d0204c3d8a1e6e957790252b-2"></a><span class="go">.bitcoin/wallet.dat: unknown</span>
 </pre>
 <p>Uhoh. Do not abandon hope for not all is lost ! Photorec <a class="reference external" href="http://www.cgsecurity.org/wiki/Add_your_own_extension_to_PhotoRec">provides a
 way</a>
@@ -365,19 +365,19 @@ under <strong>/usr/share/misc/magic</strong> We need file extensions, offset and
 magic number for Photorec to work. Well, extension is <strong>.dat</strong>, magics
 and offsets are stored in the file mentioned above. Translate offsets
 from decimal-based to hexs and take care of endianess <em>et volia</em></p>
-<pre class="code console"><a name="rest_code_706ef4ffd22043339a50e12831d3da0c-1"></a><span class="gp">[cyryl@uglybook ~]#</span> cat .photorec.sig
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-2"></a><span class="go">dat 0x0 0x00061561</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-3"></a><span class="go">dat 0x0 0x61150600</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-4"></a><span class="go">dat 0x0 0x00053162</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-5"></a><span class="go">dat 0x0 0x62310500</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-6"></a><span class="go">dat 0xc 0x00061561</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-7"></a><span class="go">dat 0xc 0x61150600</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-8"></a><span class="go">dat 0xc 0x00053162</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-9"></a><span class="go">dat 0xc 0x62310500</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-10"></a><span class="go">dat 0xc 0x00042253</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-11"></a><span class="go">dat 0xc 0x53220400</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-12"></a><span class="go">dat 0xc 0x00040988</span>
-<a name="rest_code_706ef4ffd22043339a50e12831d3da0c-13"></a><span class="go">dat 0xc 0x88090400</span>
+<pre class="code console"><a name="rest_code_6d29768e8a36421daecca0de22662c25-1"></a><span class="gp">[cyryl@uglybook ~]#</span> cat .photorec.sig
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-2"></a><span class="go">dat 0x0 0x00061561</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-3"></a><span class="go">dat 0x0 0x61150600</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-4"></a><span class="go">dat 0x0 0x00053162</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-5"></a><span class="go">dat 0x0 0x62310500</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-6"></a><span class="go">dat 0xc 0x00061561</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-7"></a><span class="go">dat 0xc 0x61150600</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-8"></a><span class="go">dat 0xc 0x00053162</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-9"></a><span class="go">dat 0xc 0x62310500</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-10"></a><span class="go">dat 0xc 0x00042253</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-11"></a><span class="go">dat 0xc 0x53220400</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-12"></a><span class="go">dat 0xc 0x00040988</span>
+<a name="rest_code_6d29768e8a36421daecca0de22662c25-13"></a><span class="go">dat 0xc 0x88090400</span>
 </pre>
 <p>That is it. Happy wallet recovery.</p>
 </div>
@@ -452,23 +452,23 @@ bandwidth quota applied. I wanted the Tor traffic to be easily
 recognizable from outside as different from the 'normal' traffic coming
 from my server. Second requirement was to make Tor not use my whole
 traffic quota up. Here's my config, with some notes</p>
-<pre class="code text"><a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-1"></a>cyryl@serv:~$ cat /etc/tor/torrc
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-2"></a>SocksPort 0 # what port to open for local application connections
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-3"></a>SocksListenAddress 127.0.0.1 # accept connections only from localhost
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-4"></a>RunAsDaemon 1
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-5"></a>
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-6"></a>DataDirectory /var/lib/tor
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-7"></a>
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-8"></a>ORPort 9001 #switches Tor to server mode
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-9"></a>ORListenAddress tor.cyplo.net
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-10"></a>OutboundBindAddress 91.213.195.28 #what IP address use to direct the outbound traffic
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-11"></a>Nickname cyplonet
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-12"></a>Address tor.cyplo.net
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-13"></a>ExitPolicy reject *:* # no exits allowed
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-14"></a>AccountingStart day 09:00
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-15"></a>AccountingMax 2 GB
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-16"></a>
-<a name="rest_code_9f2cebcdc11b41df9e29f3fbed7f6edb-17"></a>MyFamily cyplonethome, cyplonet
+<pre class="code text"><a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-1"></a>cyryl@serv:~$ cat /etc/tor/torrc
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-2"></a>SocksPort 0 # what port to open for local application connections
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-3"></a>SocksListenAddress 127.0.0.1 # accept connections only from localhost
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-4"></a>RunAsDaemon 1
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-5"></a>
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-6"></a>DataDirectory /var/lib/tor
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-7"></a>
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-8"></a>ORPort 9001 #switches Tor to server mode
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-9"></a>ORListenAddress tor.cyplo.net
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-10"></a>OutboundBindAddress 91.213.195.28 #what IP address use to direct the outbound traffic
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-11"></a>Nickname cyplonet
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-12"></a>Address tor.cyplo.net
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-13"></a>ExitPolicy reject *:* # no exits allowed
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-14"></a>AccountingStart day 09:00
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-15"></a>AccountingMax 2 GB
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-16"></a>
+<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-17"></a>MyFamily cyplonethome, cyplonet
 </pre>
 </div>
             </div>
