@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Building NAS - software | Adventurous Computing</title>
+<link href="../../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2013/05/26/building-nas-software.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="Building NAS - software">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2013/05/26/building-nas-software.html">
+<meta property="og:description" content="Operating system
+I think my NAS box build is no longer in much flux, so I thought it'd be
+nice to describe it. I had some disks laying around, I had them
+installed and started playing with the softwar">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2013-05-26T21:32:07Z">
+<meta property="article:tag" content="crunchbang">
+<meta property="article:tag" content="debian">
+<meta property="article:tag" content="nas">
+<meta property="article:tag" content="owncloud">
+<meta property="article:tag" content="raid">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">Building NAS - software</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2013-05-26T21:32:07+00:00">2013-05-26 21:32</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../../categories/crunchbang.html" rel="tag">crunchbang</a></li>
+           <li><a class="tag p-category" href="../../../../categories/debian.html" rel="tag">debian</a></li>
+           <li><a class="tag p-category" href="../../../../categories/nas.html" rel="tag">nas</a></li>
+           <li><a class="tag p-category" href="../../../../categories/owncloud.html" rel="tag">owncloud</a></li>
+           <li><a class="tag p-category" href="../../../../categories/raid.html" rel="tag">raid</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<div class="section" id="operating-system">
+<h2>Operating system</h2>
+<p>I think my NAS box build is no longer in much flux, so I thought it'd be
+nice to describe it. I had some disks laying around, I had them
+installed and started playing with the software setup.</p>
+<pre class="code text"><a name="rest_code_fe22866c275545db84f051dfcdefb70e-1"></a>Disk /dev/sda:  60.0 GB,  60022480896 bytes
+<a name="rest_code_fe22866c275545db84f051dfcdefb70e-2"></a>Disk /dev/sdb: 320.1 GB, 320072933376 bytes
+<a name="rest_code_fe22866c275545db84f051dfcdefb70e-3"></a>Disk /dev/sdc: 160.0 GB, 160041885696 bytes
+<a name="rest_code_fe22866c275545db84f051dfcdefb70e-4"></a>Disk /dev/sdd: 250.1 GB, 250059350016 bytes
+<a name="rest_code_fe22866c275545db84f051dfcdefb70e-5"></a>Disk /dev/sde: 500.1 GB, 500107862016 bytes
+</pre>
+<p>First one is an SSD drive, I used it for OS
+installation.  I went for <a class="reference external" href="http://crunchbang.org/">Crunchbang</a> as I
+was already familiar with it, however now I'm thinking of just getting
+newest Debian there, as it's finally released. Nothing fancy about the
+OS, a regular install really.</p>
+<pre class="code text"><a name="rest_code_6496e8db00c74276b61932ad13b2cdae-1"></a>storage# df -h
+<a name="rest_code_6496e8db00c74276b61932ad13b2cdae-2"></a>Filesystem                   Size  Used Avail Use% Mounted on
+<a name="rest_code_6496e8db00c74276b61932ad13b2cdae-3"></a>rootfs                        53G  2.4G   48G   5% /
+<a name="rest_code_6496e8db00c74276b61932ad13b2cdae-4"></a>/dev/sda1                    461M   31M  407M   7% /boot
+</pre>
+<p>As you can see / filesystem takes little amount
+of space, hence the next thing I plan on doing is actually move / to
+USB3.0 pendrive and then free the SATA drive from it's current duties.
+I'm reluctant to do so right now, as moving swap to pendrive might
+result in significant wear. I'm thinking of getting more RAM and then
+getting rid of the swap at all. These stats were acquired after reboot,
+there are some loads under which I saw swapping occur.</p>
+<pre class="code text"><a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-1"></a>storage# free -m
+<a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-2"></a>             total       used       free     shared    buffers
+<a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-3"></a>Mem:          1636        282       1354          0         53
+<a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-4"></a>-/+ buffers/cache:        166       1470
+<a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-5"></a>Swap:         1903          0       1903
+</pre>
+</div>
+<div class="section" id="software-configuration">
+<h2>Software + configuration</h2>
+<p>NAS means SAMBA, right ? That's what I though. RAID5 + SAMBA for Win
+clients and NFS for others. After a while I got accustomed to this setup
+and started playing with my photo collection as it was laying on NAS.
+The problem ? I deleted one photo and wanted it back. It was nowhere to
+be found. RAID5, although having internal copies for resiliency, was
+visible as one drive only and happily deleted the data when asked to.
+What I really needed was a backup solution, not a NAS. My final answer
+to that:</p>
+<pre class="code text"><a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-1"></a>storage# df -h
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-2"></a>Filesystem                   Size  Used Avail Use% Mounted on
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-3"></a>rootfs                        53G  2.4G   48G   5% /
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-4"></a>/dev/md0                     294G   36G  243G  13% /mnt/array_back
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-5"></a>/dev/sde1                    459G   35G  401G   8% /mnt/array_front
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-6"></a>
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-7"></a>storage# cat /etc/fstab
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-8"></a>#
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-9"></a>/dev/mapper/vg_storage-root                /               ext4    errors=remount-ro 0       1
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-10"></a>UUID=b9d32208-edc0-4981-ab74-5da1e7348a1a  /boot           ext4    defaults          0       2
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-11"></a>/dev/mapper/vg_storage-swap                none            swap    sw                0       0
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-12"></a>
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-13"></a>/dev/md0                                  /mnt/array_back  ext4    defaults          0       2
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-14"></a>/dev/sde1                                 /mnt/array_front ext4    defaults          0       2
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-15"></a>
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-16"></a>storage# mdadm --detail /dev/md0
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-17"></a>/dev/md0:
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-18"></a>        Version : 1.2
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-19"></a>  Creation Time : Sun Apr 21 22:47:38 2013
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-20"></a>     Raid Level : raid5
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-21"></a>     Array Size : 312318976 (297.85 GiB 319.81 GB)
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-22"></a>  Used Dev Size : 156159488 (148.93 GiB 159.91 GB)
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-23"></a>
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-24"></a>    Number   Major   Minor   RaidDevice State
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-25"></a>       0       8       17        0      active sync   /dev/sdb1
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-26"></a>       1       8       33        1      active sync   /dev/sdc1
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-27"></a>       3       8       49        2      active sync   /dev/sdd1
+</pre>
+<p>One disk [sde] serves as a front for all user operations. After a while, all changes
+except for deletions are being flushed onto [array_back] which is a
+RAID5 matrix.</p>
+<pre class="code text"><a name="rest_code_6fe335a50da14cde9ec86a5770916a30-1"></a>storage# cat /etc/cron.daily/90_sync_front_to_back
+<a name="rest_code_6fe335a50da14cde9ec86a5770916a30-2"></a>#!/bin/bash
+<a name="rest_code_6fe335a50da14cde9ec86a5770916a30-3"></a>rsync -avr /mnt/array_front/ /mnt/array_back/back
+</pre>
+</div>
+<div class="section" id="secret-sauce">
+<h2>Secret sauce</h2>
+<p><a class="reference external" href="http://owncloud.org/">ownCloud</a>. [array_front] is not directly
+exposed via SAMBA or NFS, it's governed by ownCloud instance, and then
+only ownCloud sync client on the computer or phone gets to mess with the
+data. By having such setup I get 3 copies of each file. One on device,
+one on the front array and one on the back array. What is also cool
+about ownCloud is that it also handles contacts and calendar storage for
+me. One more step towards getting all my data off google ! Points for
+improvement:</p>
+<ul class="simple">
+<li>[array_front] is not an array now. It's just a disk. Make it an
+proper disk array.</li>
+<li>encrypt the data from array_back and send it to S3 and then let it
+graduate to Glacier</li>
+</ul>
+</div>
+</div>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../../03/31/building-nas.html" rel="prev" title="Building NAS - hardware">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../../06/13/how-to-remove-multiarch-in-debian-7.html" rel="next" title="How to remove multiarch in debian 7">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2013/05/26/building-nas-software.html",
+        disqus_title="Building NAS - software",
+        disqus_identifier="cache/posts/2013/05/26/building-nas-software.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

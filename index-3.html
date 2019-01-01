@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Boldly go where no programmer has gone before.">
+<meta name="viewport" content="width=device-width">
+<title>Adventurous Computing (old posts, page 3) | Adventurous Computing</title>
+<link href="assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/index-3.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="assets/css/mermaid.forest.css">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/07/16/automating-running-debian-in-virtualbox.html">Automating running Debian in VirtualBox</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-07-16T14:22:47+00:00">2013-07-16 14:22</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/07/16/automating-running-debian-in-virtualbox.html#disqus_thread" data-disqus-identifier="cache/posts/2013/07/16/automating-running-debian-in-virtualbox.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/automation.html" rel="tag">automation</a></li>
+           <li><a class="tag p-category" href="categories/debian.html" rel="tag">debian</a></li>
+           <li><a class="tag p-category" href="categories/separation.html" rel="tag">separation</a></li>
+           <li><a class="tag p-category" href="categories/server.html" rel="tag">server</a></li>
+           <li><a class="tag p-category" href="categories/virtualbox.html" rel="tag">virtualbox</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>I'm experimenting with service separation by having each service run in
+its own operating system, all of the sharing hardware though. Why ?
+Separation seems to be the only secure approach to running any software.
+Check <a class="reference external" href="http://theinvisiblethings.blogspot.com/">Joanna's</a> blog out. I
+went with VirtualBox on Debian 7 host, with, well, Debian 7 guests.
+First I've prepared template VM by creating a new VM and just proceeding
+with install. Then I tried spawning some clones of that, but having it
+done manually takes quite some time  and is error prone. Did somebody
+say automation ? Yes ! First, clone a VM, regenerating MAC addresses and
+making sure the resource caps are good:</p>
+<pre class="code bash"><a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-1"></a>vmrunner@storage:~$ cat prepare_vm
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-2"></a><span class="c1">#!/bin/bash</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-3"></a><span class="nb">set</span> -e
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-4"></a><span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -ne <span class="m">2</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-5"></a> <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> vm_name vm_number"</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-6"></a> <span class="nb">exit</span> <span class="m">0</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-7"></a><span class="k">fi</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-8"></a>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-9"></a><span class="nv">VM_NAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-10"></a><span class="nv">RAM_AMOUNT</span><span class="o">=</span><span class="s2">"128"</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-11"></a><span class="nv">DISK_SIZE</span><span class="o">=</span><span class="s2">"2000"</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-12"></a><span class="nv">VM_NUMBER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-13"></a><span class="nv">RDP_PORT</span><span class="o">=</span><span class="k">$((</span><span class="nv">$2</span><span class="o">+</span><span class="m">3389</span><span class="k">))</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-14"></a><span class="nv">EXECUTION_CAP</span><span class="o">=</span><span class="s2">"50"</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-15"></a>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-16"></a>VBoxManage clonevm fresh.cyplo.net --name <span class="nv">$VM_NAME</span> --mode machine --register
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-17"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --vrde on
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-18"></a><span class="nb">echo</span> <span class="s2">"setting RDP listening port to </span><span class="nv">$RDP_PORT</span><span class="s2">"</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-19"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --memory <span class="nv">$RAM_AMOUNT</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-20"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --vrdeport <span class="nv">$RDP_PORT</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-21"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --nic1 bridged --bridgeadapter1 eth0
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-22"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --pae on
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-23"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --cpuexecutioncap <span class="nv">$EXECUTION_CAP</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-24"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --hpet on
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-25"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --hwvirtex on
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-26"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --pagefusion on
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-27"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --dvd none
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-28"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --autostart-enabled on
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-29"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --macaddress1 auto
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-30"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --macaddress2 auto
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-31"></a><span class="nb">echo</span> <span class="s2">"vm set up, listing all VMs:"</span>
+<a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-32"></a>VBoxManage list vms
+</pre>
+<p>Then run the VM and change it into Debian
+service host with new name and some software:</p>
+<pre class="code bash"><a name="rest_code_6ea2aa20d1e14309b47511c058855828-1"></a>vmrunner@storage:~$ cat kickstart_debian
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-2"></a><span class="c1">#/bin/bash</span>
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-3"></a><span class="nb">set</span> -e
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-4"></a><span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -ne <span class="m">2</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-5"></a> <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> new_hostname new_domainname"</span>
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-6"></a> <span class="nb">exit</span> <span class="m">0</span>
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-7"></a><span class="k">fi</span>
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-8"></a>
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-9"></a><span class="nv">NEW_HOSTNAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-10"></a><span class="nv">NEW_DOMAINNAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span>
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-11"></a><span class="nv">NEW_FQDN</span><span class="o">=</span><span class="s2">"</span><span class="nv">$NEW_HOSTNAME</span><span class="s2">.</span><span class="nv">$NEW_DOMAINNAME</span><span class="s2">"</span>
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-12"></a>aptitude update
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-13"></a>aptitude dist-upgrade -y
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-14"></a>aptitude install vim atop sudo -y
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-15"></a>hostname
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-16"></a>ifconfig
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-17"></a><span class="nb">set</span> -v
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-18"></a><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$NEW_FQDN</span><span class="s2">"</span> &gt; /etc/mailname
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-19"></a><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$NEW_HOSTNAME</span><span class="s2">"</span> &gt; /etc/hostname
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-20"></a>sed -i <span class="s2">"s/dc_other_hostnames\='.*'/dc_other_hostnames='</span><span class="nv">$NEW_FQDN</span><span class="s2">'/g"</span> /etc/exim4/update-exim4.conf.conf
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-21"></a>sed -i <span class="s2">"s/127\.0\.1\.1.*/127.0.1.1 </span><span class="nv">$NEW_FQDN</span><span class="s2"> </span><span class="nv">$NEW_HOSTNAME</span><span class="s2">/g"</span> /etc/hosts
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-22"></a>
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-23"></a>rm /etc/ssh/ssh_host_*
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-24"></a>dpkg-reconfigure openssh-server
+<a name="rest_code_6ea2aa20d1e14309b47511c058855828-25"></a>reboot
+</pre>
+<p>The script above needs to be run on guest, I'm using scp with known ssh keys to upload it and
+then run via ssh. This step is to be automated in the future. Points to
+improve:</p>
+<ul class="simple">
+<li>updating all the guests at once [Chef?]</li>
+<li>monitoring all guests at once [Nagios?]</li>
+</ul>
+<p>Summarizing, I'm now running a Tor node, file server, caldav, carddav
+and some other services on my home server. All of them in separate VMs.
+And it's running quite well with 2GB of RAM. For more info on my home
+server build check its
+<a class="reference external" href="https://blog.cyplo.net/2013/03/31/building-nas/">hardware</a> and basic
+<a class="reference external" href="https://blog.cyplo.net/2013/05/26/building-nas-software/">software</a>.</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/06/13/how-to-remove-multiarch-in-debian-7.html">How to remove multiarch in debian 7</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-06-13T09:04:37+00:00">2013-06-13 09:04</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/06/13/how-to-remove-multiarch-in-debian-7.html#disqus_thread" data-disqus-identifier="cache/posts/2013/06/13/how-to-remove-multiarch-in-debian-7.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/debian.html" rel="tag">debian</a></li>
+           <li><a class="tag p-category" href="categories/linux.html" rel="tag">linux</a></li>
+           <li><a class="tag p-category" href="categories/multiarch.html" rel="tag">multiarch</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>Just a quick one, for me to remember and for you to enjoy.</p>
+<pre class="code console"><a name="rest_code_3fedc74a91914aff96d304c4edf0f9f9-1"></a><span class="go">dpkg -l | grep :i386 | cut -s -d ' ' -f3 | xargs apt-get remove -y</span>
+<a name="rest_code_3fedc74a91914aff96d304c4edf0f9f9-2"></a><span class="go">dpkg --remove-architecture i386</span>
+<a name="rest_code_3fedc74a91914aff96d304c4edf0f9f9-3"></a><span class="go">apt-get update</span>
+</pre>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/05/26/building-nas-software.html">Building NAS - software</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-05-26T21:32:07+00:00">2013-05-26 21:32</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/05/26/building-nas-software.html#disqus_thread" data-disqus-identifier="cache/posts/2013/05/26/building-nas-software.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/crunchbang.html" rel="tag">crunchbang</a></li>
+           <li><a class="tag p-category" href="categories/debian.html" rel="tag">debian</a></li>
+           <li><a class="tag p-category" href="categories/nas.html" rel="tag">nas</a></li>
+           <li><a class="tag p-category" href="categories/owncloud.html" rel="tag">owncloud</a></li>
+           <li><a class="tag p-category" href="categories/raid.html" rel="tag">raid</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<div class="section" id="operating-system">
+<h2>Operating system</h2>
+<p>I think my NAS box build is no longer in much flux, so I thought it'd be
+nice to describe it. I had some disks laying around, I had them
+installed and started playing with the software setup.</p>
+<pre class="code text"><a name="rest_code_fe22866c275545db84f051dfcdefb70e-1"></a>Disk /dev/sda:  60.0 GB,  60022480896 bytes
+<a name="rest_code_fe22866c275545db84f051dfcdefb70e-2"></a>Disk /dev/sdb: 320.1 GB, 320072933376 bytes
+<a name="rest_code_fe22866c275545db84f051dfcdefb70e-3"></a>Disk /dev/sdc: 160.0 GB, 160041885696 bytes
+<a name="rest_code_fe22866c275545db84f051dfcdefb70e-4"></a>Disk /dev/sdd: 250.1 GB, 250059350016 bytes
+<a name="rest_code_fe22866c275545db84f051dfcdefb70e-5"></a>Disk /dev/sde: 500.1 GB, 500107862016 bytes
+</pre>
+<p>First one is an SSD drive, I used it for OS
+installation.  I went for <a class="reference external" href="http://crunchbang.org/">Crunchbang</a> as I
+was already familiar with it, however now I'm thinking of just getting
+newest Debian there, as it's finally released. Nothing fancy about the
+OS, a regular install really.</p>
+<pre class="code text"><a name="rest_code_6496e8db00c74276b61932ad13b2cdae-1"></a>storage# df -h
+<a name="rest_code_6496e8db00c74276b61932ad13b2cdae-2"></a>Filesystem                   Size  Used Avail Use% Mounted on
+<a name="rest_code_6496e8db00c74276b61932ad13b2cdae-3"></a>rootfs                        53G  2.4G   48G   5% /
+<a name="rest_code_6496e8db00c74276b61932ad13b2cdae-4"></a>/dev/sda1                    461M   31M  407M   7% /boot
+</pre>
+<p>As you can see / filesystem takes little amount
+of space, hence the next thing I plan on doing is actually move / to
+USB3.0 pendrive and then free the SATA drive from it's current duties.
+I'm reluctant to do so right now, as moving swap to pendrive might
+result in significant wear. I'm thinking of getting more RAM and then
+getting rid of the swap at all. These stats were acquired after reboot,
+there are some loads under which I saw swapping occur.</p>
+<pre class="code text"><a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-1"></a>storage# free -m
+<a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-2"></a>             total       used       free     shared    buffers
+<a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-3"></a>Mem:          1636        282       1354          0         53
+<a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-4"></a>-/+ buffers/cache:        166       1470
+<a name="rest_code_e6769a76f269406d862b4e31cbb77e1c-5"></a>Swap:         1903          0       1903
+</pre>
+</div>
+<div class="section" id="software-configuration">
+<h2>Software + configuration</h2>
+<p>NAS means SAMBA, right ? That's what I though. RAID5 + SAMBA for Win
+clients and NFS for others. After a while I got accustomed to this setup
+and started playing with my photo collection as it was laying on NAS.
+The problem ? I deleted one photo and wanted it back. It was nowhere to
+be found. RAID5, although having internal copies for resiliency, was
+visible as one drive only and happily deleted the data when asked to.
+What I really needed was a backup solution, not a NAS. My final answer
+to that:</p>
+<pre class="code text"><a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-1"></a>storage# df -h
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-2"></a>Filesystem                   Size  Used Avail Use% Mounted on
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-3"></a>rootfs                        53G  2.4G   48G   5% /
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-4"></a>/dev/md0                     294G   36G  243G  13% /mnt/array_back
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-5"></a>/dev/sde1                    459G   35G  401G   8% /mnt/array_front
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-6"></a>
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-7"></a>storage# cat /etc/fstab
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-8"></a>#
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-9"></a>/dev/mapper/vg_storage-root                /               ext4    errors=remount-ro 0       1
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-10"></a>UUID=b9d32208-edc0-4981-ab74-5da1e7348a1a  /boot           ext4    defaults          0       2
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-11"></a>/dev/mapper/vg_storage-swap                none            swap    sw                0       0
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-12"></a>
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-13"></a>/dev/md0                                  /mnt/array_back  ext4    defaults          0       2
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-14"></a>/dev/sde1                                 /mnt/array_front ext4    defaults          0       2
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-15"></a>
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-16"></a>storage# mdadm --detail /dev/md0
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-17"></a>/dev/md0:
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-18"></a>        Version : 1.2
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-19"></a>  Creation Time : Sun Apr 21 22:47:38 2013
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-20"></a>     Raid Level : raid5
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-21"></a>     Array Size : 312318976 (297.85 GiB 319.81 GB)
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-22"></a>  Used Dev Size : 156159488 (148.93 GiB 159.91 GB)
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-23"></a>
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-24"></a>    Number   Major   Minor   RaidDevice State
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-25"></a>       0       8       17        0      active sync   /dev/sdb1
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-26"></a>       1       8       33        1      active sync   /dev/sdc1
+<a name="rest_code_6b37e4d1165e40e9ab756c3d65b67c14-27"></a>       3       8       49        2      active sync   /dev/sdd1
+</pre>
+<p>One disk [sde] serves as a front for all user operations. After a while, all changes
+except for deletions are being flushed onto [array_back] which is a
+RAID5 matrix.</p>
+<pre class="code text"><a name="rest_code_6fe335a50da14cde9ec86a5770916a30-1"></a>storage# cat /etc/cron.daily/90_sync_front_to_back
+<a name="rest_code_6fe335a50da14cde9ec86a5770916a30-2"></a>#!/bin/bash
+<a name="rest_code_6fe335a50da14cde9ec86a5770916a30-3"></a>rsync -avr /mnt/array_front/ /mnt/array_back/back
+</pre>
+</div>
+<div class="section" id="secret-sauce">
+<h2>Secret sauce</h2>
+<p><a class="reference external" href="http://owncloud.org/">ownCloud</a>. [array_front] is not directly
+exposed via SAMBA or NFS, it's governed by ownCloud instance, and then
+only ownCloud sync client on the computer or phone gets to mess with the
+data. By having such setup I get 3 copies of each file. One on device,
+one on the front array and one on the back array. What is also cool
+about ownCloud is that it also handles contacts and calendar storage for
+me. One more step towards getting all my data off google ! Points for
+improvement:</p>
+<ul class="simple">
+<li>[array_front] is not an array now. It's just a disk. Make it an
+proper disk array.</li>
+<li>encrypt the data from array_back and send it to S3 and then let it
+graduate to Glacier</li>
+</ul>
+</div>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/03/31/building-nas.html">Building NAS - hardware</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-03-31T20:27:52+00:00">2013-03-31 20:27</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/03/31/building-nas.html#disqus_thread" data-disqus-identifier="cache/posts/2013/03/31/building-nas.html">Comments</a>
+
+
+                </div>
+            
+
+            </div>
+            <div class="body">
+                <div>
+<p>For a long time I've wandered the voids of the intertubes in search for
+the parts for my NAS/backup/home server solution.</p>
+<p>Online backup solutions are fine to some extent, however, someone else
+than you then is going through that cat picture collections of yours and
+other private stuff. Also the cloud tends to not be the cheapest option
+possible.</p>
+<div class="section" id="case">
+<h2>Case</h2>
+<p><a class="reference external" href="wp-content/uploads/2013/03/Node304_nocover-top-view_lores.jpg"><img alt="Node304_nocover-top-view_lores" class="alignleft size-medium wp-image-1230" src="wp-content/uploads/2013/03/Node304_nocover-top-view_lores-300x300.jpg" style="width: 300px; height: 300px;"></a></p>
+<p>The need for moar virtual disk space calls for moar physical disk space.
+To build any reasonable RAID solution you need 4-5 disks at least, plus
+maybe one for system disk. That is a minimum of 6 disk slots in the
+computer case. As I have quite some variety of disks laying around I'd
+like this case to have an option for using either 3.5" or 2.5" disks.
+Ah, and the whole thing should not take big amounts of space. Hence
+<a class="reference external" href="http://www.fractal-design.com/?view=product&amp;prod=94">"Node 304" by Fractal Design</a>.</p>
+<p>Although I intend my NAS to be fanless in the future, I couldn't resist
+to leave the  original fans connected. These are beautiful, supersilent,
+hydraulic bearing fans, all included in the Node's package.</p>
+<p>There are really only two things that you need to be wary of: metal
+where the screwholes are is very soft and it is easy to damage - and
+that if you have a PSU without detachable cables you're going to have
+bad time fitting these inside.</p>
+<p>By the way, other small but nice thing is a user manual for this case.
+Nice paper, nice clean print and friendly attitude. Attention to details
+!</p>
+</div>
+<div class="section" id="motherboard-lkpq2whhjmbzusau-500">
+<h2>Motherboard <a class="reference external" href="wp-content/uploads/2013/03/lkpq2whHjMbzUSAU_500.jpg"><img alt="lkpq2whHjMbzUSAU_500" class="size-medium wp-image-1246 alignright" src="wp-content/uploads/2013/03/lkpq2whHjMbzUSAU_500-300x300.jpg" style="width: 300px; height: 300px;"></a>
+</h2>
+<p>What board supports at least 6 SATA disks, has low power consuption and
+fits into miniITX format ? Easily obtainable in central Europe ? And not
+super expensive ?</p>
+<p>It took almost 3 months for me to find it, I present to you <a class="reference external" href="http://www.asus.com/Motherboards/P8H77I/">Asus
+P8H77-I</a>. All the usual
+stuff, most of it I don't need, frankly and not so low on power, but hey
+- 6 SATA in miniITX.</p>
+<p>One caveat - it needs 2 power cables connected to function. The
+usual 24-pin EATX and also 4-pin ATX 12V also called P4. What if your
+PSU has only those fancy new EPS8 and EPS6 as mine do ? Fear not,
+connect half of the EPS8 into P4 port and everything shall be okay.</p>
+</div>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/03/23/assembling-reprappro-mendel-days-7-8.html">Assembling RepRapPro Mendel – days 7 &amp; 8</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-03-23T16:14:38+00:00">2013-03-23 16:14</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/03/23/assembling-reprappro-mendel-days-7-8.html#disqus_thread" data-disqus-identifier="cache/posts/2013/03/23/assembling-reprappro-mendel-days-7-8.html">Comments</a>
+
+
+                </div>
+            
+
+            </div>
+            <div class="body">
+                <div>
+<p>Hot header installation, lots of wiring, tests and... it's alive !</p>
+<p><a class="reference external" href="wp-content/uploads/2013/03/IMG_0446.jpg"><img alt="image0" src="wp-content/uploads/2013/03/IMG_0446-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0447.jpg"><img alt="image1" src="wp-content/uploads/2013/03/IMG_0447-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0448.jpg"><img alt="image2" src="wp-content/uploads/2013/03/IMG_0448-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0449.jpg"><img alt="image3" src="wp-content/uploads/2013/03/IMG_0449-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0450.jpg"><img alt="image4" src="wp-content/uploads/2013/03/IMG_0450-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0451.jpg"><img alt="image5" src="wp-content/uploads/2013/03/IMG_0451-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0452.jpg"><img alt="image6" src="wp-content/uploads/2013/03/IMG_0452-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0453.jpg"><img alt="image7" src="wp-content/uploads/2013/03/IMG_0453-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0454.jpg"><img alt="image8" src="wp-content/uploads/2013/03/IMG_0454-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0455.jpg"><img alt="image9" src="wp-content/uploads/2013/03/IMG_0455-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0456.jpg"><img alt="image10" src="wp-content/uploads/2013/03/IMG_0456-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0457.jpg"><img alt="image11" src="wp-content/uploads/2013/03/IMG_0457-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0459.jpg"><img alt="image12" src="wp-content/uploads/2013/03/IMG_0459-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0461.jpg"><img alt="image13" src="wp-content/uploads/2013/03/IMG_0461-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0462.jpg"><img alt="image14" src="wp-content/uploads/2013/03/IMG_0462-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0463.jpg"><img alt="image15" src="wp-content/uploads/2013/03/IMG_0463-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0464.jpg"><img alt="image16" src="wp-content/uploads/2013/03/IMG_0464-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0466.jpg"><img alt="image17" src="wp-content/uploads/2013/03/IMG_0466-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0468.jpg"><img alt="image18" src="wp-content/uploads/2013/03/IMG_0468-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0469.jpg"><img alt="image19" src="wp-content/uploads/2013/03/IMG_0469-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0470.jpg"><img alt="image20" src="wp-content/uploads/2013/03/IMG_0470-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0472.jpg"><img alt="image21" src="wp-content/uploads/2013/03/IMG_0472-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0473.jpg"><img alt="image22" src="wp-content/uploads/2013/03/IMG_0473-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0474.jpg"><img alt="image23" src="wp-content/uploads/2013/03/IMG_0474-150x150.jpg"></a></p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/03/23/reprappro-mendel-4-5-6.html">Assembling RepRapPro Mendel – days 4,5 and 6</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-03-23T14:02:19+00:00">2013-03-23 14:02</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/03/23/reprappro-mendel-4-5-6.html#disqus_thread" data-disqus-identifier="cache/posts/2013/03/23/reprappro-mendel-4-5-6.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/3d.html" rel="tag">3d</a></li>
+           <li><a class="tag p-category" href="categories/reprap.html" rel="tag">reprap</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>Featuring hotbed and plastic extruder !</p>
+<p><a class="reference external" href="wp-content/uploads/2013/03/IMG_0408.jpg"><img alt="image0" src="wp-content/uploads/2013/03/IMG_0408-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0409.jpg"><img alt="image1" src="wp-content/uploads/2013/03/IMG_0409-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0410.jpg"><img alt="image2" src="wp-content/uploads/2013/03/IMG_0410-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0411.jpg"><img alt="image3" src="wp-content/uploads/2013/03/IMG_0411-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0413.jpg"><img alt="image4" src="wp-content/uploads/2013/03/IMG_0413-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0414.jpg"><img alt="image5" src="wp-content/uploads/2013/03/IMG_0414-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0415.jpg"><img alt="image6" src="wp-content/uploads/2013/03/IMG_0415-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0416.jpg"><img alt="image7" src="wp-content/uploads/2013/03/IMG_0416-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0419.jpg"><img alt="image8" src="wp-content/uploads/2013/03/IMG_0419-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0420.jpg"><img alt="image9" src="wp-content/uploads/2013/03/IMG_0420-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0421.jpg"><img alt="image10" src="wp-content/uploads/2013/03/IMG_0421-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0423.jpg"><img alt="image11" src="wp-content/uploads/2013/03/IMG_0423-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0425.1.jpg"><img alt="image12" src="wp-content/uploads/2013/03/IMG_0425.1-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0425.2.jpg"><img alt="image13" src="wp-content/uploads/2013/03/IMG_0425.2-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0425.3.jpg"><img alt="image14" src="wp-content/uploads/2013/03/IMG_0425.3-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0427.jpg"><img alt="image15" src="wp-content/uploads/2013/03/IMG_0427-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0429.jpg"><img alt="image16" src="wp-content/uploads/2013/03/IMG_0429-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0430.jpg"><img alt="image17" src="wp-content/uploads/2013/03/IMG_0430-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0431.jpg"><img alt="image18" src="wp-content/uploads/2013/03/IMG_0431-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0432.jpg"><img alt="image19" src="wp-content/uploads/2013/03/IMG_0432-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0433.jpg"><img alt="image20" src="wp-content/uploads/2013/03/IMG_0433-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0434.jpg"><img alt="image21" src="wp-content/uploads/2013/03/IMG_0434-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0435.jpg"><img alt="image22" src="wp-content/uploads/2013/03/IMG_0435-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0436.jpg"><img alt="image23" src="wp-content/uploads/2013/03/IMG_0436-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0437.jpg"><img alt="image24" src="wp-content/uploads/2013/03/IMG_0437-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0438.jpg"><img alt="image25" src="wp-content/uploads/2013/03/IMG_0438-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0439.jpg"><img alt="image26" src="wp-content/uploads/2013/03/IMG_0439-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0440.jpg"><img alt="image27" src="wp-content/uploads/2013/03/IMG_0440-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0442.jpg"><img alt="image28" src="wp-content/uploads/2013/03/IMG_0442-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0443.jpg"><img alt="image29" src="wp-content/uploads/2013/03/IMG_0443-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0444.jpg"><img alt="image30" src="wp-content/uploads/2013/03/IMG_0444-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0445.jpg"><img alt="image31" src="wp-content/uploads/2013/03/IMG_0445-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0406.jpg"><img alt="image32" src="wp-content/uploads/2013/03/IMG_0406-150x150.jpg"></a></p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/03/23/reprappro-mendel-2.html">Assembling RepRapPro Mendel – day 2</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-03-23T12:04:43+00:00">2013-03-23 12:04</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/03/23/reprappro-mendel-2.html#disqus_thread" data-disqus-identifier="cache/posts/2013/03/23/reprappro-mendel-2.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/3d.html" rel="tag">3d</a></li>
+           <li><a class="tag p-category" href="categories/mendel.html" rel="tag">mendel</a></li>
+           <li><a class="tag p-category" href="categories/printer.html" rel="tag">printer</a></li>
+           <li><a class="tag p-category" href="categories/reprap.html" rel="tag">reprap</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>Second day of building. Fun fact: you can see the daylight come and go ;)</p>
+<p><a class="reference external" href="wp-content/uploads/2013/03/IMG_0377.jpg"><img alt="image0" src="wp-content/uploads/2013/03/IMG_0377-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0378.jpg"><img alt="image1" src="wp-content/uploads/2013/03/IMG_0378-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0379.jpg"><img alt="image2" src="wp-content/uploads/2013/03/IMG_0379-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0380.jpg"><img alt="image3" src="wp-content/uploads/2013/03/IMG_0380-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0381.jpg"><img alt="image4" src="wp-content/uploads/2013/03/IMG_0381-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0382.jpg"><img alt="image5" src="wp-content/uploads/2013/03/IMG_0382-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0383.jpg"><img alt="image6" src="wp-content/uploads/2013/03/IMG_0383-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0385.jpg"><img alt="image7" src="wp-content/uploads/2013/03/IMG_0385-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0386.jpg"><img alt="image8" src="wp-content/uploads/2013/03/IMG_0386-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0387.jpg"><img alt="image9" src="wp-content/uploads/2013/03/IMG_0387-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0388.jpg"><img alt="image10" src="wp-content/uploads/2013/03/IMG_0388-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0392.jpg"><img alt="image11" src="wp-content/uploads/2013/03/IMG_0392-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0393.jpg"><img alt="image12" src="wp-content/uploads/2013/03/IMG_0393-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0394.jpg"><img alt="image13" src="wp-content/uploads/2013/03/IMG_0394-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0395.jpg"><img alt="image14" src="wp-content/uploads/2013/03/IMG_0395-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0396.jpg"><img alt="image15" src="wp-content/uploads/2013/03/IMG_0396-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0397.jpg"><img alt="image16" src="wp-content/uploads/2013/03/IMG_0397-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0398.jpg"><img alt="image17" src="wp-content/uploads/2013/03/IMG_0398-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0400.jpg"><img alt="image18" src="wp-content/uploads/2013/03/IMG_0400-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0401.jpg"><img alt="image19" src="wp-content/uploads/2013/03/IMG_0401-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0402.jpg"><img alt="image20" src="wp-content/uploads/2013/03/IMG_0402-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0403.jpg"><img alt="image21" src="wp-content/uploads/2013/03/IMG_0403-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0404.jpg"><img alt="image22" src="wp-content/uploads/2013/03/IMG_0404-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0405.jpg"><img alt="image23" src="wp-content/uploads/2013/03/IMG_0405-150x150.jpg"></a></p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/03/23/reprappro-mendel-1.html">Assembling RepRapPro Mendel - day 1</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-03-23T11:36:49+00:00">2013-03-23 11:36</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/03/23/reprappro-mendel-1.html#disqus_thread" data-disqus-identifier="cache/posts/2013/03/23/reprappro-mendel-1.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/3d.html" rel="tag">3d</a></li>
+           <li><a class="tag p-category" href="categories/build.html" rel="tag">build</a></li>
+           <li><a class="tag p-category" href="categories/mendel.html" rel="tag">mendel</a></li>
+           <li><a class="tag p-category" href="categories/reprap.html" rel="tag">reprap</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>It was December, 3D printing fever struck me. Here is the first day of
+me building ReprapPro Mendel printer.</p>
+<p><a class="reference external" href="wp-content/uploads/2013/03/IMG_0362.jpg"><img alt="image0" src="wp-content/uploads/2013/03/IMG_0362-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0363.jpg"><img alt="image1" src="wp-content/uploads/2013/03/IMG_0363-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0364.jpg"><img alt="image2" src="wp-content/uploads/2013/03/IMG_0364-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0365.jpg"><img alt="image3" src="wp-content/uploads/2013/03/IMG_0365-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0366.jpg"><img alt="image4" src="wp-content/uploads/2013/03/IMG_0366-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0368.jpg"><img alt="image5" src="wp-content/uploads/2013/03/IMG_0368-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0369.jpg"><img alt="image6" src="wp-content/uploads/2013/03/IMG_0369-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0370.jpg"><img alt="image7" src="wp-content/uploads/2013/03/IMG_0370-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2013/03/IMG_0371.jpg"><img alt="image8" src="wp-content/uploads/2013/03/IMG_0371-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0372.jpg"><img alt="image9" src="wp-content/uploads/2013/03/IMG_0372-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0373.jpg"><img alt="image10" src="wp-content/uploads/2013/03/IMG_0373-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0376.jpg"><img alt="image11" src="wp-content/uploads/2013/03/IMG_0376-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0375.jpg"><img alt="image12" src="wp-content/uploads/2013/03/IMG_0375-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2013/03/IMG_0374.jpg"><img alt="image13" src="wp-content/uploads/2013/03/IMG_0374-150x150.jpg"></a></p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/03/06/erlang-tech-night.html">Erlang Tech night</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-03-06T18:41:34+00:00">2013-03-06 18:41</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/03/06/erlang-tech-night.html#disqus_thread" data-disqus-identifier="cache/posts/2013/03/06/erlang-tech-night.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/erlang.html" rel="tag">erlang</a></li>
+           <li><a class="tag p-category" href="categories/talk.html" rel="tag">talk</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <p>I recently gave a two hours presentation on Erlang 101 along with
+<a class="reference external" href="http://fabiankrol.com/">Fabian</a>. Because of the generous support
+from Infusion I was able to speak at Institute of Computer Science at
+University of Wroclaw. The event was a blast, and that is an opinion of
+the people other than me also ;) Thanks for everyone who was there and
+you can find the code and slides on
+<a class="reference external" href="https://github.com/erlang-wroclaw/erlang_tech_night">github</a></p>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/01/15/laptop-would-love-to-buy.html">Laptop I'd love to buy</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-01-15T17:12:50+00:00">2013-01-15 17:12</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/01/15/laptop-would-love-to-buy.html#disqus_thread" data-disqus-identifier="cache/posts/2013/01/15/laptop-would-love-to-buy.html">Comments</a>
+
+
+                </div>
+            
+
+            </div>
+            <div class="body">
+                <div>
+<ul class="simple">
+<li>support for 16GB of RAM</li>
+<li>contact smartcard reader</li>
+<li>~2kg weight</li>
+<li>11-14" matte, non-glossy screen</li>
+<li>good keyboard, with separate [home], [end], [insert], [delete]
+buttons</li>
+<li>screen resolution of &gt;=1440</li>
+<li>HDMI</li>
+<li>at least 2x USB2.0 and 1x USB3.0</li>
+<li>no optical drive</li>
+<li>no thunderbolt</li>
+<li>no firewire</li>
+<li>TPM</li>
+<li>HSDPA modem</li>
+</ul>
+<p>Is there something similar that you recommend for me to buy/build ?</p>
+</div>
+            </div>
+        </div>
+    
+        <nav class="postindexpager"><ul class="pager">
+<li class="previous">
+                <a href="index-4.html" rel="prev">Newer posts</a>
+            </li>
+            <li class="next">
+                <a href="index-2.html" rel="next">Older posts</a>
+            </li>
+        </ul></nav><script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about server)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/server.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:12 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Better crypto initiative</title><link>https://blog.cyplo.net/posts/2014/06/19/better-crypto-initiative.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;It's not common for me to put just one link here as the resource for the
+article. Today, however, is one of these days. The
+&lt;a class="reference external" href="https://bettercrypto.org/"&gt;bettercrypto&lt;/a&gt; gals and guys came up with
+really excellent practical guide to securing your servers. Here it is:
+&lt;a class="reference external" href="https://bettercrypto.org/static/applied-crypto-hardening.pdf"&gt;https://bettercrypto.org/static/applied-crypto-hardening.pdf&lt;/a&gt; A draft for
+now, but already sporting a high concentration of knowledge. BTW - it
+being a draft means that you should read it and contribute to it as
+well.&lt;/p&gt;</description><category>apache</category><category>crypto</category><category>nginx</category><category>openssl</category><category>server</category><category>ssh</category><guid>https://blog.cyplo.net/posts/2014/06/19/better-crypto-initiative.html</guid><pubDate>Thu, 19 Jun 2014 12:38:07 GMT</pubDate></item><item><title>Sunpowered server setup</title><link>https://blog.cyplo.net/posts/2014/02/16/sunpowered-server-setup.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Remember my &lt;a class="reference external" href="https://blog.cyplo.net/2013/03/31/building-nas/"&gt;NAS&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/2013/05/26/building-nas-software/"&gt;stuff&lt;/a&gt; ? It
+turned out great ! Very reliable storage, I had a disk failure once and
+haven't noticed for some time because all the files were just there.
+Hardware enhanced virtualization is another great stuff. I ended up
+migrating  all my of infrastructure there, each service in separate
+virtual machine; email, calendar, contacts, tor node and such. Only
+caveat ? Power consumption. This setup just eats Watts. About 50W
+constant power usage is not something you want to have turned on
+24h/day. One such day I had a realization that this giant ball of plasma
+that is hanging out there might be of some use. One side of my balcony
+is to the south somewhat, gets lots of sunshine no matter whether it's
+morning or evening. Why not exploit that ? That's how my first
+solarpowered server setup was born. Enjoy the photos ! Also please find
+upgrade options and general notes after the break ! There's a &lt;a class="reference external" href="https://blog.cyplo.net/2014/04/21/adding-voltage-current-measurements-sunpowered-pi/"&gt;part
+2&lt;/a&gt;of
+this post you might be interested in as well.&lt;/p&gt;
+&lt;p&gt;Setup itself consists of:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;144W solar panel&lt;/li&gt;
+&lt;li&gt;33Ah 12V battery&lt;/li&gt;
+&lt;li&gt;trusty old WRT54GL&lt;/li&gt;
+&lt;li&gt;Raspberry Pi model B&lt;/li&gt;
+&lt;li&gt;charging controller&lt;/li&gt;
+&lt;li&gt;12V and 5V step up/step down converters. Don't use linear converters,
+especially for the 5V rail. As these will give you the 5V by
+dissipating the difference from 12V directly onto their heatsinks,
+huge power loses.&lt;/li&gt;
+&lt;li&gt;around one hundred M3 hexhead screws with nuts and washers. yup.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The router acts as wireless bridge to my home WiFi network, there are no
+cables running from inside the house to the balcony. Router and raspi
+use about 8W total. It is winter in here now and  this seems to be
+holding nicely, panel being able to charge the battery for the night
+during relatively short day, even if the weather is bad. However, I want
+more computing power there and this setup does not seem to be very
+scalable. Another raspi model B means another 4W constant power usage. I
+estimate the whole thing will start loosing power during the night with
+about 15W constant consumption. Which is okay for stuff like email
+server, but not really for blog or other sites. Hence my first idea for
+improvement: discard router and change for the separate raspis, model A,
+with wireless network cards each. Should be much better. Some general
+notes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Use equipment specifically designed for DC. You want to disconnect
+the solar panel or battery sometimes. To be able to to that without
+that fancy sparks show you need proper DC switch able to handle high
+currents. AC switches as any other equipment dragged from AC land are
+not really a choice. If you use AC mains switch to switch high
+current DC you might end up with nice weld in place of your switch.
+Same for fuses.&lt;/li&gt;
+&lt;li&gt;My ability to cut acrylic to line is nonexistent. Probably maybe use
+better tools ? Or even, since I now know how the box should be cut -
+just order pieces for box 2.0 cut to size already.&lt;/li&gt;
+&lt;li&gt;Same for my ability to make stuff look nice and clean&lt;/li&gt;
+&lt;li&gt;I like the look of bare PCBs inside of transparent box though&lt;/li&gt;
+&lt;li&gt;The box itself seems to be holding up nicely against below zero
+temperatures as well as rain.&lt;/li&gt;
+&lt;li&gt;Air flow is nice, nothing is heating up. Air enters from the bottom,
+heats up a bit and moves up. Goes through the holes on the left, into
+the funnel and exist on the right. Water does not enter as there is
+pretty steep slope there.&lt;/li&gt;
+&lt;li&gt;Watch for SD card corruption. Most often, the cause is having 5V not
+really being 5V. Raspi does not really like lower voltages. One
+preventive measure would be not to use some cheap voltage converters.
+Another is to mount SD card with very conservative options. I use&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;/dev/mmcblk0p2 / ext4 defaults,rw,data=journal,journal_checksum,discard 0 1&lt;/tt&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Make sure your electronic components are rated for -40C to +80C&lt;/li&gt;
+&lt;li&gt;I'm a bit worried of battery being in such proximity to the airco
+unit. We'll see in the summer whether it needs relocation, for now
+the unit is completely powered off.&lt;/li&gt;
+&lt;li&gt;mountain climbing equipment comes in handy when hanging stuff from
+your balcony&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Future improvements:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;most pressing: get the power usage down by changing to model A + wifi
+card&lt;/li&gt;
+&lt;li&gt;add monitoring, something like ADC connected to raspi's GPIO ports,
+gathering voltages all across. I would like to get readings on: solar
+panel voltage, battery voltage, 5V rail actual voltage and the whole
+system power usage at least&lt;/li&gt;
+&lt;li&gt;more safety fuses and bypass diodes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0912.jpg"&gt;&lt;img alt="image0" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0912-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0913.jpg"&gt;&lt;img alt="image1" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0913-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0915.jpg"&gt;&lt;img alt="image2" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0915-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0916.jpg"&gt;&lt;img alt="image3" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0916-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0917.jpg"&gt;&lt;img alt="image4" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0917-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0918.jpg"&gt;&lt;img alt="image5" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0918-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0921.jpg"&gt;&lt;img alt="image6" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0921-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0922.jpg"&gt;&lt;img alt="image7" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0922-150x150.jpg"&gt;&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0923.jpg"&gt;&lt;img alt="image8" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0923-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0925.jpg"&gt;&lt;img alt="image9" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0925-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0927.jpg"&gt;&lt;img alt="image10" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0927-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0930.jpg"&gt;&lt;img alt="image11" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0930-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0932.jpg"&gt;&lt;img alt="image12" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0932-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0933.jpg"&gt;&lt;img alt="image13" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0933-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0934.jpg"&gt;&lt;img alt="image14" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0934-150x150.jpg"&gt;&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0935.jpg"&gt;&lt;img alt="image15" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0935-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0937.jpg"&gt;&lt;img alt="image16" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0937-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0940.jpg"&gt;&lt;img alt="image17" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0940-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0941.jpg"&gt;&lt;img alt="image18" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0941-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0942.jpg"&gt;&lt;img alt="image19" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0942-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_09381.jpg"&gt;&lt;img alt="image20" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_09381-150x150.jpg"&gt;&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>photovoltaic</category><category>pi</category><category>pv</category><category>raspberry pi</category><category>raspberrypi</category><category>server</category><category>solar</category><category>sun</category><category>sunpowered</category><category>wrt54gl</category><guid>https://blog.cyplo.net/posts/2014/02/16/sunpowered-server-setup.html</guid><pubDate>Sun, 16 Feb 2014 21:13:46 GMT</pubDate></item><item><title>Automating running Debian in VirtualBox</title><link>https://blog.cyplo.net/posts/2013/07/16/automating-running-debian-in-virtualbox.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I'm experimenting with service separation by having each service run in
+its own operating system, all of the sharing hardware though. Why ?
+Separation seems to be the only secure approach to running any software.
+Check &lt;a class="reference external" href="http://theinvisiblethings.blogspot.com/"&gt;Joanna's&lt;/a&gt; blog out. I
+went with VirtualBox on Debian 7 host, with, well, Debian 7 guests.
+First I've prepared template VM by creating a new VM and just proceeding
+with install. Then I tried spawning some clones of that, but having it
+done manually takes quite some time  and is error prone. Did somebody
+say automation ? Yes ! First, clone a VM, regenerating MAC addresses and
+making sure the resource caps are good:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat prepare_vm
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; vm_name vm_number"&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RAM_AMOUNT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"128"&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;DISK_SIZE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"2000"&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-12"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NUMBER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-13"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RDP_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="m"&gt;3389&lt;/span&gt;&lt;span class="k"&gt;))&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;EXECUTION_CAP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"50"&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-15"&gt;&lt;/a&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-16"&gt;&lt;/a&gt;VBoxManage clonevm fresh.cyplo.net --name &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --mode machine --register
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-17"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrde on
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"setting RDP listening port to &lt;/span&gt;&lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-19"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --memory &lt;span class="nv"&gt;$RAM_AMOUNT&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-20"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrdeport &lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-21"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --nic1 bridged --bridgeadapter1 eth0
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-22"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pae on
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-23"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --cpuexecutioncap &lt;span class="nv"&gt;$EXECUTION_CAP&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-24"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hpet on
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-25"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hwvirtex on
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-26"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pagefusion on
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-27"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --dvd none
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-28"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --autostart-enabled on
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-29"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress1 auto
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-30"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress2 auto
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-31"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"vm set up, listing all VMs:"&lt;/span&gt;
+&lt;a name="rest_code_8d3e5b730d5b434e8ea325240bb5a496-32"&gt;&lt;/a&gt;VBoxManage list vms
+&lt;/pre&gt;&lt;p&gt;Then run the VM and change it into Debian
+service host with new name and some software:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat kickstart_debian
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; new_hostname new_domainname"&lt;/span&gt;
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_HOSTNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_DOMAINNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_FQDN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;$NEW_DOMAINNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-12"&gt;&lt;/a&gt;aptitude update
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-13"&gt;&lt;/a&gt;aptitude dist-upgrade -y
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-14"&gt;&lt;/a&gt;aptitude install vim atop sudo -y
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-15"&gt;&lt;/a&gt;hostname
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-16"&gt;&lt;/a&gt;ifconfig
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/mailname
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-19"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/hostname
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-20"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/dc_other_hostnames\='.*'/dc_other_hostnames='&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;'/g"&lt;/span&gt; /etc/exim4/update-exim4.conf.conf
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-21"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/127\.0\.1\.1.*/127.0.1.1 &lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;/g"&lt;/span&gt; /etc/hosts
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-22"&gt;&lt;/a&gt;
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-23"&gt;&lt;/a&gt;rm /etc/ssh/ssh_host_*
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-24"&gt;&lt;/a&gt;dpkg-reconfigure openssh-server
+&lt;a name="rest_code_6ea2aa20d1e14309b47511c058855828-25"&gt;&lt;/a&gt;reboot
+&lt;/pre&gt;&lt;p&gt;The script above needs to be run on guest, I'm using scp with known ssh keys to upload it and
+then run via ssh. This step is to be automated in the future. Points to
+improve:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;updating all the guests at once [Chef?]&lt;/li&gt;
+&lt;li&gt;monitoring all guests at once [Nagios?]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Summarizing, I'm now running a Tor node, file server, caldav, carddav
+and some other services on my home server. All of them in separate VMs.
+And it's running quite well with 2GB of RAM. For more info on my home
+server build check its
+&lt;a class="reference external" href="https://blog.cyplo.net/2013/03/31/building-nas/"&gt;hardware&lt;/a&gt; and basic
+&lt;a class="reference external" href="https://blog.cyplo.net/2013/05/26/building-nas-software/"&gt;software&lt;/a&gt;.&lt;/p&gt;&lt;/div&gt;</description><category>automation</category><category>debian</category><category>separation</category><category>server</category><category>virtualbox</category><guid>https://blog.cyplo.net/posts/2013/07/16/automating-running-debian-in-virtualbox.html</guid><pubDate>Tue, 16 Jul 2013 14:22:47 GMT</pubDate></item><item><title>How to build minimalistic REST server in .Net</title><link>https://blog.cyplo.net/posts/2012/11/01/minimalistic-rest-server-in-dotnet.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Install "Microsoft ASP.NET Web API Self Host" and all of its
+dependencies via NuGet.&lt;/p&gt;
+&lt;pre class="code csharp"&gt;&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-2"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Collections.Generic&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-3"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Linq&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Text&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-5"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Threading&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-6"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Threading.Tasks&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Web.Http&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-8"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Web.Http.SelfHost&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-10"&gt;&lt;/a&gt;&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="nn"&gt;resttest&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-11"&gt;&lt;/a&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-12"&gt;&lt;/a&gt;    &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ExampleData&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;set&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-13"&gt;&lt;/a&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-14"&gt;&lt;/a&gt;    &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ExampleController&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ApiController&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-15"&gt;&lt;/a&gt;    &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-16"&gt;&lt;/a&gt;        &lt;span class="c1"&gt;// /api/job&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-17"&gt;&lt;/a&gt;        &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;IEnumerable&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-18"&gt;&lt;/a&gt;        &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-19"&gt;&lt;/a&gt;            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;List&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;()&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-20"&gt;&lt;/a&gt;            &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-21"&gt;&lt;/a&gt;                &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-22"&gt;&lt;/a&gt;                &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-23"&gt;&lt;/a&gt;            &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-24"&gt;&lt;/a&gt;        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-25"&gt;&lt;/a&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-26"&gt;&lt;/a&gt;        &lt;span class="c1"&gt;// /api/job/3&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-27"&gt;&lt;/a&gt;        &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;ExampleData&lt;/span&gt; &lt;span class="nf"&gt;Get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-28"&gt;&lt;/a&gt;        &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-29"&gt;&lt;/a&gt;            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-30"&gt;&lt;/a&gt;        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-31"&gt;&lt;/a&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-32"&gt;&lt;/a&gt;    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-33"&gt;&lt;/a&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-34"&gt;&lt;/a&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-35"&gt;&lt;/a&gt;    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Program&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-36"&gt;&lt;/a&gt;    &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-37"&gt;&lt;/a&gt;        &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;Main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-38"&gt;&lt;/a&gt;        &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-39"&gt;&lt;/a&gt;            &lt;span class="kt"&gt;var&lt;/span&gt; &lt;span class="n"&gt;configuration&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;HttpSelfHostConfiguration&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"http://localhost:1337"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-40"&gt;&lt;/a&gt;            &lt;span class="c1"&gt;//Setup the routes&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-41"&gt;&lt;/a&gt;            &lt;span class="n"&gt;configuration&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Routes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MapHttpRoute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-42"&gt;&lt;/a&gt;                &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;"DefaultApiRoute"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-43"&gt;&lt;/a&gt;                &lt;span class="n"&gt;routeTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;"api/{controller}/{id}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-44"&gt;&lt;/a&gt;                &lt;span class="n"&gt;defaults&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-45"&gt;&lt;/a&gt;                    &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;controller&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"ExampleController"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;RouteParameter&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Optional&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-46"&gt;&lt;/a&gt;                &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-47"&gt;&lt;/a&gt;            &lt;span class="kt"&gt;var&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;HttpSelfHostServer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;configuration&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-48"&gt;&lt;/a&gt;            &lt;span class="n"&gt;server&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OpenAsync&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;Wait&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-49"&gt;&lt;/a&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-50"&gt;&lt;/a&gt;            &lt;span class="n"&gt;Console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Out&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;WriteLine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Press ESC to quit"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-51"&gt;&lt;/a&gt;            &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-52"&gt;&lt;/a&gt;            &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-53"&gt;&lt;/a&gt;                &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(!&lt;/span&gt;&lt;span class="n"&gt;Console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;KeyAvailable&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-54"&gt;&lt;/a&gt;                &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-55"&gt;&lt;/a&gt;                    &lt;span class="n"&gt;Thread&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;256&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-56"&gt;&lt;/a&gt;                &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-57"&gt;&lt;/a&gt;            &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ReadKey&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;true&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;Key&lt;/span&gt; &lt;span class="p"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;ConsoleKey&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Escape&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-58"&gt;&lt;/a&gt;        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-59"&gt;&lt;/a&gt;    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-60"&gt;&lt;/a&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;We can launch it and query it using any http-enabled client:&lt;/p&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;$ curl &lt;span class="pre"&gt;http://localhost:1337/api/Example&lt;/span&gt; &lt;span class="pre"&gt;[{"Id":2},{"Id":4}]&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;C'est volia&lt;/p&gt;&lt;/div&gt;</description><category>.net</category><category>asp.net</category><category>c#</category><category>json</category><category>mvc</category><category>rest</category><category>server</category><guid>https://blog.cyplo.net/posts/2012/11/01/minimalistic-rest-server-in-dotnet.html</guid><pubDate>Thu, 01 Nov 2012 13:22:39 GMT</pubDate></item><item><title>Installing MacOSX Server 10.6 on VirtualBox</title><link>https://blog.cyplo.net/posts/2011/05/07/installing-macosx-server-on-virtualbox.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;It all started with my work assignment of installing MacOSX Server 10.6
+on the XServe rack. Of course nothing went really well. The universe
+keeps on picking up the most faulty scenarios for me, I think it's just
+less boring. Briefly speaking, after debugging some hardware problem
+with the CPU temperature meter I managed to install the base OSX server
+system there. Hardware boy inside me is not amused with Apple's ideas
+there. After that I needed to set up VMs with 10.6 64bit and 10.4 32bit
+on top of that. Why so if already having 10.6 as the base system ?
+Simply I wanted to avoid constant reinstallation of the base system, as
+the machines are meant to be used for development and testing. Also the
+XServe hardware was needed instead of classic blade system to meet Apple
+license requirements. Having the internet read twice I decided to give
+VirtualBox a try. My way of thinking was that I am already familliar
+with that piece of software and know it as a easy to use one. In
+addition to being pretty idiot-proof it also enables more enterprisely
+features like operating from the commandline only. So what's the deal ?
+Bring up VirtualBox GUI, click on new virtual machine creation button,
+choose MacOSXServer, insert the iso file made from the installation dvd
+and volia ? Not even remotely close. It appears that Apple has embedded
+some kind of valid processors db into the system and checks the
+processors present against it on every boot. Fine. But I am running this
+thing on the Apple hardware. The only configuration I managed to install
+and launch was single-core. Both 32 and 64bit guests seem to be working
+fine. But what's the point of having many cores there if only one can be
+used per a VM ? As with many other interesting problems I took it home.
+Some time after that I found brilliant blog pair by
+&lt;a class="reference external" href="http://prasys.info/"&gt;prasys&lt;/a&gt; and
+&lt;a class="reference external" href="http://blog.nawcom.com/"&gt;nawcom&lt;/a&gt;. It seems that the latter one
+produces what's called &lt;a class="reference external" href="http://blog.nawcom.com/?p=446"&gt;ModCD&lt;/a&gt; which
+allows booting with the processor checks disabled. Recipe for amd64:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;create new MacOSX vm in VirtualBox&lt;/li&gt;
+&lt;li&gt;change it to non-EFI type&lt;/li&gt;
+&lt;li&gt;boot ModCD&lt;/li&gt;
+&lt;li&gt;swap iso image for the one with the MacOS install&lt;/li&gt;
+&lt;li&gt;press f5&lt;/li&gt;
+&lt;li&gt;type -force64&lt;/li&gt;
+&lt;li&gt;press enter&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For me the installer crashed on the last step before reboot, but then it
+rebooted successfully and continued on with the installation. Don't
+forget to donate to nawcom if you can.&lt;/p&gt;&lt;/div&gt;</description><category>apple</category><category>mac</category><category>macos</category><category>macosx</category><category>processor</category><category>server</category><category>virtualbox</category><category>xserve</category><guid>https://blog.cyplo.net/posts/2011/05/07/installing-macosx-server-on-virtualbox.html</guid><pubDate>Sat, 07 May 2011 14:23:30 GMT</pubDate></item><item><title>VPS Adventures part two</title><link>https://blog.cyplo.net/posts/2010/11/01/vps-adventures-part-two.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;After some not so pleasurable experiences with the previous VPS hosting
+provider I started my search for some other one. This time not only
+google was involved but also &lt;a class="reference external" href="http://vark.com/"&gt;aardvark&lt;/a&gt; and some of
+the "top XX best hosting providers" sites. Two results kept showing up.
+&lt;a class="reference external" href="http://www.server4you.com/"&gt;server4you&lt;/a&gt; and
+&lt;a class="reference external" href="https://www.tilaa.nl/"&gt;tilaa&lt;/a&gt;. Which one to choose then ? I wanted
+to give both of them a chance.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.server4you.com/"&gt;server4you&lt;/a&gt;. I really tried to buy a VPS
+there and I failed. Lots of forms to fill and no instant money
+transfer available. I entered my credit card details only to receive the
+email after a day or so stating that they were unable to process my
+payment.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://www.tilaa.nl/"&gt;tilaa&lt;/a&gt;. What caught my attention there was
+that clean website of them. I like such a design style, as you can also
+see it here. Not so cheap, I must admit, but definitely easy to buy.
+Payment transfered and after about a minute I had a full access to the
+VPS. That's how I like things to work. I am using tilaa's the most
+simple VPS plan since then and I am pretty happy with it. Here gathered
+are some things I like or don't about its services.&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;friendly, responsive staff&lt;/li&gt;
+&lt;li&gt;2x RAM amount of swap space - seems great compared to no swap on
+other VPSes&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.linux-kvm.org/page/Main_Page"&gt;KVM&lt;/a&gt;+&lt;a class="reference external" href="http://en.wikipedia.org/wiki/QEMU"&gt;qemu&lt;/a&gt;
+based, you get full control of your system&lt;/li&gt;
+&lt;li&gt;good overall system responsiveness - I experienced occasional lags
+when using &lt;a class="reference external" href="http://wiki.openvz.org/Main_Page"&gt;OpenVZ&lt;/a&gt;
+virtualization before, there's no such thing here&lt;/li&gt;
+&lt;li&gt;they work fast - the day the new Ubuntu 10.10 was released, they had
+the VPS image ready !&lt;/li&gt;
+&lt;li&gt;their motto "We try to be good open source citizens" just convinces
+me&lt;/li&gt;
+&lt;li&gt;the only disadvantage is the price, it's 8.95 euro net montly, it's
+also easy to miss that info on the site&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As I already have a safe place to tinker with my system the real work on
+the server configuration begins. Stay tuned for the next episode.&lt;/p&gt;&lt;/div&gt;</description><category>server</category><category>tilaa</category><category>ubuntu</category><category>virtualization</category><category>vps</category><guid>https://blog.cyplo.net/posts/2010/11/01/vps-adventures-part-two.html</guid><pubDate>Mon, 01 Nov 2010 14:23:18 GMT</pubDate></item><item><title>VPS adventures part one</title><link>https://blog.cyplo.net/posts/2010/10/24/vps-adventures-part-one.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;As every guy in the software industry I need ways to promote my humble
+self. A decent web page and online resume plus a blog maybe are a must
+these days. The question remains where to put them.&lt;/p&gt;
+&lt;p&gt;Previously I had my site published within one of the polish hosting
+companies for free, as my friend was involved in its operations. Thanks
+&lt;a class="reference external" href="http://www.kajetanwandowicz.com/"&gt;Kajetan&lt;/a&gt; for 5 years of support !
+And maybe it'd stay that way if not of that desire of mine to tinker and
+have control of every aspect of the technology power. Some platform with
+ability to boot the system I want up would be appreciated.&lt;/p&gt;
+&lt;p&gt;Real servers are good when you have a place to put them. And want to pay
+electricity bills, provide UPS, KVM, BGP and other three-letter
+abbreviations. And oh, I simply don't like the fan noise
+anymore. &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Virtual_private_server"&gt;VPS&lt;/a&gt;
+then it is.&lt;/p&gt;
+&lt;p&gt;Since I recently made contact with Ubuntu Server edition and liked it
+for its simplicity, I started searching for a cheap VPS which supports
+the newest Ubuntu. Two googles later I found
+&lt;a class="reference external" href="http://www.dmehosting.com/"&gt;dmehosting.com&lt;/a&gt;. 6$ for 25Gigs of space
+and 256MB RAM seemed ok, so I bougth the VPS1 plan. Payment went without
+problems, they support PayPal. With 6$ less on my account I was waiting
+for them to give me the IP + login &amp;amp; password. I didn't expect that I
+would take the whole day long.&lt;/p&gt;
+&lt;p&gt;My first contact with the machine was that of apt-get update, which
+failed. Because of lack of network connectivity. I was logged by ssh to
+that machine, so definitely some sort of connectivity had to be in
+place. I dug into and found not working DNS servers, so I made VPS
+connect to the other ones and everything started working. I jumped into
+their 'live' tech support line just to hear that it was really bad of me
+to change the resolv.conf and I just shouldn't do that. In the meanwhile
+their DNSes went back so I in fact did revert the resolv.conf after all.&lt;/p&gt;
+&lt;p&gt;It's &lt;a class="reference external" href="http://wiki.openvz.org/Main_Page"&gt;OpenVZ&lt;/a&gt;-based hosting, so
+policy of "no-no's" is pretty much embedded in the very system. No
+kernel reinstallation. No swap space. No system clock write access. No
+clicking too fast in the administration panel. Never heard of such
+virtualization platform property. Back to google then my search for VPS
+is. Stay tuned for the next part.&lt;/p&gt;&lt;/div&gt;</description><category>dmehosting</category><category>server</category><category>ubuntu</category><category>virtualization</category><category>vps</category><guid>https://blog.cyplo.net/posts/2010/10/24/vps-adventures-part-one.html</guid><pubDate>Sun, 24 Oct 2010 23:40:32 GMT</pubDate></item></channel></rss>

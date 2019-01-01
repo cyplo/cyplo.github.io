@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about init)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/init.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:12 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Containerized zombie spawner</title><link>https://blog.cyplo.net/posts/2015/08/12/containerized-zombie-spawner.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;Recently I was playing with a fully Dockerized setup of Jenkins at work
+and found a curious issue there. Whenever Jenkins was polling the git
+server the side effect was that it created a zombie ssh process. The
+issue is actually
+&lt;a class="reference external" href="https://github.com/jenkinsci/docker/issues/54"&gt;remediated&lt;/a&gt; by the
+Jenkins team now by &lt;a class="reference external" href="https://github.com/jenkinsci/docker/commit/d5aea67dcae9d62fe4ca6ad961ffe66f65d9a591"&gt;explicitly
+using&lt;/a&gt;
+a tiny init system called ...
+&lt;a class="reference external" href="https://github.com/krallin/tini"&gt;tini,&lt;/a&gt; started as the main
+container's process instead of just starting Jenkins there. This tiny
+tini thing can properly adopt and reap the children. I was all like -
+wow, what a great blog entry is coming at me. I was planning to describe
+how zombies come to existence on Linux and why Docker should, in my
+opinion, provide an adopter-reaper by default and other very interesting
+things ! But then I found a really excellent article by the
+&lt;a class="reference external" href="http://www.phusion.nl/"&gt;Phusion&lt;/a&gt; team
+&lt;a class="reference external" href="https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/"&gt;here&lt;/a&gt;
+explaining all that and more. It is very good. You should read it. That
+is it. The end. Happy reaping !&lt;/p&gt;</description><category>docker</category><category>init</category><category>jenkins</category><category>pid 1</category><category>reaper</category><category>zombie</category><guid>https://blog.cyplo.net/posts/2015/08/12/containerized-zombie-spawner.html</guid><pubDate>Wed, 12 Aug 2015 21:21:13 GMT</pubDate></item></channel></rss>

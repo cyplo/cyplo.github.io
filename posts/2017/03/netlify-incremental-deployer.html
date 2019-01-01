@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Upload your site to Netlify using their incremental deployment API | Adventurous Computing</title>
+<link href="../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2017/03/netlify-incremental-deployer.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="Upload your site to Netlify using their incremental deployment API">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2017/03/netlify-incremental-deployer.html">
+<meta property="og:description" content="I've recently switched to a setup where I do all my builds for this blog on Travis. While doing so I needed to migrate away from using Netlify's internal build infrastructure. This resulted in a quick">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-03-20T19:25:25Z">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="deployment">
+<meta property="article:tag" content="netlify">
+<meta property="article:tag" content="python">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">Upload your site to Netlify using their incremental deployment API</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2017-03-20T19:25:25+00:00">2017-03-20 19:25</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../categories/blog.html" rel="tag">blog</a></li>
+           <li><a class="tag p-category" href="../../../categories/deployment.html" rel="tag">deployment</a></li>
+           <li><a class="tag p-category" href="../../../categories/netlify.html" rel="tag">netlify</a></li>
+           <li><a class="tag p-category" href="../../../categories/python.html" rel="tag">python</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <p>I've recently switched to a setup where I do all my builds for this blog on <a class="reference external" href="https://travis-ci.org/cyplo/blog">Travis</a>. While doing so I needed to migrate away from using Netlify's internal build infrastructure. This resulted in a quick <a class="reference external" href="https://github.com/cyplo/netlify_deployer">python script</a> that allows you to upload arbitrary directory tree to Netlify and does so using their <a class="reference external" href="https://www.netlify.com/docs/api/#deploying-to-netlify">incremental deployment API</a>. All that means that while this site is quite big in size the deployments go rather quickly ! There are some <a class="reference external" href="https://github.com/cyplo/netlify_deployer/issues">known issues</a> but apart from them the script should just work for any custom Netlify deployment you would like to have. I use it on this very site, to have a preview of any PR before merging it as well as for deploying the main site after the PR is merged. I hope you will find it useful and please do not hesitate if you want to post an issue or a PR !</p>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../02/one-off-docker-runjessie.html" rel="prev" title="Running host programs in isolation inside one-off Docker containers">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../07/adding-graphs-to-posts-in-nikola.html" rel="next" title="Adding graphs to posts in Nikola">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2017/03/netlify-incremental-deployer.html",
+        disqus_title="Upload your site to Netlify using their incremental deployment API",
+        disqus_identifier="cache/posts/2017/03/netlify-incremental-deployer.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>My CNC machining workflow | Adventurous Computing</title>
+<link href="../../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2015/05/28/cnc-workflow.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="My CNC machining workflow">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2015/05/28/cnc-workflow.html">
+<meta property="og:description" content="Hello ! Today we'll talk about driving CNC machines, toolpaths and
+Debian, so stay tuned ! I have a separate old PC for driving the CNC
+machine via parallel port. This is, as they say, the Only Proper">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2015-05-28T19:01:33Z">
+<meta property="article:tag" content="cnc">
+<meta property="article:tag" content="debian">
+<meta property="article:tag" content="grbl">
+<meta property="article:tag" content="heeks">
+<meta property="article:tag" content="heekscad">
+<meta property="article:tag" content="heekscnc">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="linuxcnc">
+<meta property="article:tag" content="machining">
+<meta property="article:tag" content="wheezy">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">My CNC machining workflow</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2015-05-28T19:01:33+00:00">2015-05-28 19:01</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../../categories/cnc.html" rel="tag">cnc</a></li>
+           <li><a class="tag p-category" href="../../../../categories/debian.html" rel="tag">debian</a></li>
+           <li><a class="tag p-category" href="../../../../categories/grbl.html" rel="tag">grbl</a></li>
+           <li><a class="tag p-category" href="../../../../categories/heeks.html" rel="tag">heeks</a></li>
+           <li><a class="tag p-category" href="../../../../categories/heekscad.html" rel="tag">heekscad</a></li>
+           <li><a class="tag p-category" href="../../../../categories/heekscnc.html" rel="tag">heekscnc</a></li>
+           <li><a class="tag p-category" href="../../../../categories/linux.html" rel="tag">linux</a></li>
+           <li><a class="tag p-category" href="../../../../categories/linuxcnc.html" rel="tag">linuxcnc</a></li>
+           <li><a class="tag p-category" href="../../../../categories/machining.html" rel="tag">machining</a></li>
+           <li><a class="tag p-category" href="../../../../categories/wheezy.html" rel="tag">wheezy</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<p>Hello ! Today we'll talk about driving CNC machines, toolpaths and
+Debian, so stay tuned ! I have a separate old PC for driving the CNC
+machine via parallel port. This is, as they say, the Only Proper Way and
+It Was Always Like That. I'm thinking about changing this to
+usb+<a class="reference external" href="https://github.com/grbl/grbl">grbl</a> in the future then ;) Up
+till now, my workflow went as follows;</p>
+<ul class="simple">
+<li>Do the research and drawing/parts modeling in FreeCad, on my main workstation</li>
+<li>Export to e.g. DXF</li>
+<li>Import in HeeksCad</li>
+<li>Design machining operations, export gcode</li>
+<li>Copy gcode to a network drive</li>
+<li>Switch the monitor and keyboard to the one of the old PC</li>
+<li>Open gcode in LinuxCNC and go</li>
+</ul>
+<p>What happens if it's not perfect at first try though ?! Most commonly the issue  is with the
+toolpath, like I want to change feeds or speeds or depth of cut, rarely
+it is with the part itself, fortunately. It may have something to do
+with the fact that I'm mostly working with other people's parts for now
+;) Anyway, to do any correction I need to switch back to the main
+workstation, correct in Heeks, re-export to the network drive and switch
+back, reimport. Not very annoying but not very convenient either. But
+wait. What if...I install Heeks on the old PC ?! It's running
+<a class="reference external" href="http://linuxcnc.org/">LinuxCNC</a> realtime distro, which is based on
+Debian wheezy. Heeks packages are available prepackaged for Ubuntu only.
+With the help of the
+<a class="reference external" href="https://code.google.com/p/heekscad/wiki/BuildDebianPackages">documentation</a>
+and the comments there and in other corners of the internet I was able
+to get this little script done:</p>
+<pre class="code bash"><a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-2"></a><span class="nb">set</span> -e
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-3"></a><span class="nb">set</span> -v
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-4"></a>
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-5"></a>sudo apt-get update
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-6"></a>sudo apt-get -y install liboce-visualization-dev libwxgtk2.8-dev libgtkglext1-dev python-dev build-essential bzr git libboost-dev libboost-python-dev subversion debhelper cmake liboce-ocaf2 liboce-ocaf-dev oce-draw
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-7"></a>mkdir heeks_build
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-8"></a><span class="nb">cd</span> heeks_build
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-9"></a>svn checkout http://libarea.googlecode.com/svn/trunk/ libarea
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-10"></a><span class="nb">cd</span> libarea
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-11"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-12"></a><span class="nb">cd</span> ..
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-13"></a>sudo dpkg -i libarea*.deb python-area*.deb
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-14"></a>svn checkout http://heekscad.googlecode.com/svn/trunk/ heekscad
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-15"></a><span class="nb">cd</span> heekscad
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-16"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-17"></a><span class="nb">cd</span> ..
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-18"></a>sudo dpkg -i *heeks*.deb
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-19"></a>svn checkout http://heekscnc.googlecode.com/svn/trunk/ heekscnc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-20"></a><span class="nb">cd</span> heekscnc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-21"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-22"></a><span class="nb">cd</span> ..
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-23"></a>git clone https://github.com/aewallin/opencamlib.git
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-24"></a><span class="nb">cd</span> opencamlib
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-25"></a>bzr branch lp:~neomilium/opencamlib/packaging debian
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-26"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-27"></a><span class="nb">cd</span> ..
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-28"></a>sudo dpkg -i python-ocl*.deb
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-29"></a>sudo dpkg -i heekscnc*.deb
+</pre>
+<p>Run this on your LinuxCNC machine and that's it. It will download and
+build all the dependencies and Heeks CAD and CAM packages. This way, my
+current workflow goes more like this:</p>
+<ul class="simple">
+<li>Do the research and drawing/parts modeling in FreeCad, on my main workstation</li>
+<li>Export to e.g. DXF to a network drive</li>
+<li>Switch the monitor and keyboard to the one of the old PC</li>
+<li>Import in HeeksCad</li>
+<li>Design machining operations, export gcode</li>
+<li>Open gcode in LinuxCNC and go</li>
+<li>Repeat last 2 steps if necessary - no machine switching</li>
+</ul>
+</div>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../02/grafana-influx.html" rel="prev" title="Update on the sunpowered server">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../../08/12/containerized-zombie-spawner.html" rel="next" title="Containerized zombie spawner">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2015/05/28/cnc-workflow.html",
+        disqus_title="My CNC machining workflow",
+        disqus_identifier="cache/posts/2015/05/28/cnc-workflow.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

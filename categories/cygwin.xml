@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about cygwin)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/cygwin.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Compiling git 2.0 on cygwin</title><link>https://blog.cyplo.net/posts/2014/07/05/compiling-git-2-0-cygwin.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I had some troubles compiling git 2.0 under cygwin. I present you with a
+very dirty hack to do so. Proper patch will probably follow. Did I
+mention that the hack is dirty and will make your hands burn if you're
+gonna type it in ?&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;git clone https://github.com/git/git.git&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd git&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;git checkout v2.0.1&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;autoconf&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;./configure&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-6"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; so far so good...
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;make&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-9"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; oops
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-10"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; ....
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-11"&gt;&lt;/a&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;SUBDIR perl&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;make[2]: /home/cplotnicki/dev/git/perl/0: Command not found&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;perl.mak:375: recipe for target 'blib/lib/.exists' failed&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-15"&gt;&lt;/a&gt;&lt;span class="go"&gt;make[2]: *** [blib/lib/.exists] Error 127&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-16"&gt;&lt;/a&gt;&lt;span class="go"&gt;Makefile:16: recipe for target 'all' failed&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-17"&gt;&lt;/a&gt;&lt;span class="go"&gt;make[1]: *** [all] Error 2&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-18"&gt;&lt;/a&gt;&lt;span class="go"&gt;Makefile:1653: recipe for target 'all' failed&lt;/span&gt;
+&lt;a name="rest_code_b59973315eab4812bd4d45cd6ef49062-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;make: *** [all] Error 2&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Want perl as '0' ? Well, why not. Here you are:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; link perl as &lt;span class="m"&gt;0&lt;/span&gt; to some directory that is in your path
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;ln -s /usr/bin/perl ~/tools/0&lt;/span&gt;
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-3"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; also link here, obviously.
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-4"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; &lt;span class="s1"&gt;'perl'&lt;/span&gt; is a direct subdir &lt;span class="k"&gt;for&lt;/span&gt; your git checkout
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;ln -s /usr/bin/perl perl/0&lt;/span&gt;
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;make # should now compile&lt;/span&gt;
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-9"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; cygwin&lt;span class="err"&gt;'&lt;/span&gt;s permission scheme is very peculiar
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-10"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; here, have a dirty hack &lt;span class="k"&gt;for&lt;/span&gt; your default install
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-11"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; where there is no su or sudo
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;chmod a+rwX -R /usr/local/share/man/man3&lt;/span&gt;
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;chmod a+rwX -R /usr/local/lib/perl5/site_perl&lt;/span&gt;
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-14"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-15"&gt;&lt;/a&gt;&lt;span class="go"&gt;make install&lt;/span&gt;
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-16"&gt;&lt;/a&gt;&lt;span class="go"&gt;git --version&lt;/span&gt;
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-17"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; should display &lt;span class="m"&gt;2&lt;/span&gt;.0.1.
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-18"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; update man pages&lt;span class="err"&gt;'&lt;/span&gt; cache manually
+&lt;a name="rest_code_c8fe2aed14c14be9aef697cd5fd33874-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;/etc/postinstall/man-db.sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>cygwin</category><guid>https://blog.cyplo.net/posts/2014/07/05/compiling-git-2-0-cygwin.html</guid><pubDate>Sat, 05 Jul 2014 10:06:59 GMT</pubDate></item><item><title>New dotfiles repository</title><link>https://blog.cyplo.net/posts/2013/10/26/new-dotfiles-repository.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;Hi ! Just letting you know that I've been working for some time on
+structuring my dotfiles and finally published them to
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles"&gt;github&lt;/a&gt;. These contain e.g. my
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles/blob/master/.vimrc"&gt;vimrc&lt;/a&gt; and
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles/tree/master/.local/share/fonts"&gt;font&lt;/a&gt;
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles/tree/master/.config/fontconfig/conf.d"&gt;configs&lt;/a&gt;.
+I've even &lt;a class="reference external" href="https://github.com/cyplo/vim-colors-solarized"&gt;patched&lt;/a&gt;
+the famous &lt;a class="reference external" href="http://ethanschoonover.com/solarized"&gt;solarized&lt;/a&gt; theme
+for vim to allow better
+&lt;a class="reference external" href="https://github.com/airblade/vim-gitgutter"&gt;gitgutter&lt;/a&gt; symbols
+display. Enjoy !&lt;/p&gt;</description><category>cygwin</category><category>dotfiles</category><category>fontconfig</category><category>linux</category><category>mac</category><category>vim</category><category>vimrc</category><guid>https://blog.cyplo.net/posts/2013/10/26/new-dotfiles-repository.html</guid><pubDate>Sat, 26 Oct 2013 10:35:52 GMT</pubDate></item></channel></rss>

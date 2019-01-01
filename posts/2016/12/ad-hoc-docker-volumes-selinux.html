@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Using ad hoc Docker volumes on SELinux systems | Adventurous Computing</title>
+<link href="../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2016/12/ad-hoc-docker-volumes-selinux.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="Using ad hoc Docker volumes on SELinux systems">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2016/12/ad-hoc-docker-volumes-selinux.html">
+<meta property="og:description" content="I've recently tried running some quick Docker commands using host's directory as a volume:
+docker run -i -t -v `pwd`:/mnt debian:jessie bash -c &quot;ls -hal /mnt&quot;
+ls: cannot open directory /mnt: Permissio">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-12-30T18:28:50Z">
+<meta property="article:tag" content="container">
+<meta property="article:tag" content="data">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="permissions">
+<meta property="article:tag" content="selinux">
+<meta property="article:tag" content="volume">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">Using ad hoc Docker volumes on SELinux systems</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2016-12-30T18:28:50+00:00">2016-12-30 18:28</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../categories/container.html" rel="tag">container</a></li>
+           <li><a class="tag p-category" href="../../../categories/data.html" rel="tag">data</a></li>
+           <li><a class="tag p-category" href="../../../categories/docker.html" rel="tag">docker</a></li>
+           <li><a class="tag p-category" href="../../../categories/permissions.html" rel="tag">permissions</a></li>
+           <li><a class="tag p-category" href="../../../categories/selinux.html" rel="tag">selinux</a></li>
+           <li><a class="tag p-category" href="../../../categories/volume.html" rel="tag">volume</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<p>I've recently tried running some quick Docker commands using host's directory as a volume:</p>
+<pre class="code console"><a name="rest_code_64a63fdb4c02497cb58cf03fc10dcb25-1"></a><span class="go">docker run -i -t -v `pwd`:/mnt debian:jessie bash -c "ls -hal /mnt"</span>
+<a name="rest_code_64a63fdb4c02497cb58cf03fc10dcb25-2"></a><span class="go">ls: cannot open directory /mnt: Permission denied</span>
+</pre>
+<p>I use Fedora as my main OS, which, it turns out, has some pretty nice SELinux settings. These deny access from inside the container to the outside.
+Said Fedora consists mostly of almost-newest-but-stable everything though, which makes Docker to be in a fairly recent version.
+A version that understands how to change a SELinux context for the directory we're mounting, by itself !
+You need at least Docker v1.7 for this.</p>
+<pre class="code console"><a name="rest_code_fa2093e35fa84df98b717ba7cf51cc36-1"></a><span class="go">docker run -i -t -v `pwd`:/mnt:Z debian:jessie bash -c "ls -hal /mnt"</span>
+<a name="rest_code_fa2093e35fa84df98b717ba7cf51cc36-2"></a><span class="go">total 8.0K</span>
+<a name="rest_code_fa2093e35fa84df98b717ba7cf51cc36-3"></a><span class="go">drwxrwxr-x.  2 1000 1000 4.0K Dec 30 18:34 .</span>
+<a name="rest_code_fa2093e35fa84df98b717ba7cf51cc36-4"></a><span class="go">drwxr-xr-x. 21 root root  242 Dec 30 19:07 ..</span>
+</pre>
+<p>Please notice the capital <cite>Z</cite> as a mount parameter.
+And that is it. Mostly. Some cleanup remains, as docker leaves the host's directory with a changed SELinux context.
+To restore it you need to</p>
+<pre class="code console"><a name="rest_code_60bf0948cf6d4ad383ac2de172df0ebb-1"></a><span class="go">restorecon -R `pwd`</span>
+</pre>
+<p>Or use any other path you'd like instead of <cite>`pwd`</cite> in the examples above.
+Happy dockerizing !</p>
+</div>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../09/rustfest-organization-was-the-best.html" rel="prev" title="RustFest - organization was the best. Also rhymes.">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../../2017/02/one-off-docker-runjessie.html" rel="next" title="Running host programs in isolation inside one-off Docker containers">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2016/12/ad-hoc-docker-volumes-selinux.html",
+        disqus_title="Using ad hoc Docker volumes on SELinux systems",
+        disqus_identifier="cache/posts/2016/12/using-ad-hoc-docker-volumes-on-selinux-enabled-systems.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

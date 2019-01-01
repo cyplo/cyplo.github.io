@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Fixing timeouts running Android integration tests | Adventurous Computing</title>
+<link href="../../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2015/10/25/android-integration-test-timeouts.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="Fixing timeouts running Android integration tests">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2015/10/25/android-integration-test-timeouts.html">
+<meta property="og:description" content="The main problem with Android CI I had recently is that, after switching
+to Lollipop, the integration tests wouldn't run. Invoking
+androidConnectedTest gradle target always resulted in crashing with
+S">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2015-10-25T09:55:54Z">
+<meta property="article:tag" content="adb">
+<meta property="article:tag" content="android">
+<meta property="article:tag" content="androidConnectedTest">
+<meta property="article:tag" content="ci">
+<meta property="article:tag" content="ddm">
+<meta property="article:tag" content="ddmpreference">
+<meta property="article:tag" content="integration tests">
+<meta property="article:tag" content="shellcommandunresponsive">
+<meta property="article:tag" content="testing">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">Fixing timeouts running Android integration tests</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2015-10-25T09:55:54+00:00">2015-10-25 09:55</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../../categories/adb.html" rel="tag">adb</a></li>
+           <li><a class="tag p-category" href="../../../../categories/android.html" rel="tag">android</a></li>
+           <li><a class="tag p-category" href="../../../../categories/androidconnectedtest.html" rel="tag">androidConnectedTest</a></li>
+           <li><a class="tag p-category" href="../../../../categories/ci.html" rel="tag">ci</a></li>
+           <li><a class="tag p-category" href="../../../../categories/ddm.html" rel="tag">ddm</a></li>
+           <li><a class="tag p-category" href="../../../../categories/ddmpreference.html" rel="tag">ddmpreference</a></li>
+           <li><a class="tag p-category" href="../../../../categories/integration-tests.html" rel="tag">integration tests</a></li>
+           <li><a class="tag p-category" href="../../../../categories/shellcommandunresponsive.html" rel="tag">shellcommandunresponsive</a></li>
+           <li><a class="tag p-category" href="../../../../categories/testing.html" rel="tag">testing</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<p>The main problem with Android CI I had recently is that, after switching
+to Lollipop, the integration tests wouldn't run. Invoking
+<strong>androidConnectedTest</strong> gradle target always resulted in crashing with
+<strong>ShellCommandUnresponsiveException</strong>. Internet says that in such a case
+ou just need to set <strong>ADB_INSTALL_TIMEOUT</strong>. Set and then nothing.
+Sourcediving it is then !</p>
+<p>A long while after that I got to this file:
+<a class="reference external" href="https://android.googlesource.com/platform/tools/base/+/master/ddmlib/src/main/java/com/android/ddmlib/Device.java">Device.java</a> [Linking
+to master, here's the commit
+hash:1cb1a4c2976b99ae53d28d7f01d975232c85f990, as I don't seem to be
+able to find how to link to that hash directly] What do we see there ?
+That indeed <strong>ADB_INSTALL_TIMEOUT</strong> is being used:</p>
+<pre class="code java"><a name="rest_code_07b28fc404d546c18c38f13367b565a2-1"></a><span class="kd">static</span> <span class="o">{</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-2"></a>    <span class="n">String</span> <span class="n">installTimeout</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">"ADB_INSTALL_TIMEOUT"</span><span class="o">);</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-3"></a>    <span class="kt">long</span> <span class="n">time</span> <span class="o">=</span> <span class="mi">4</span><span class="o">;</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-4"></a>    <span class="k">if</span> <span class="o">(</span><span class="n">installTimeout</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-5"></a>        <span class="k">try</span> <span class="o">{</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-6"></a>            <span class="n">time</span> <span class="o">=</span> <span class="n">Long</span><span class="o">.</span><span class="na">parseLong</span><span class="o">(</span><span class="n">installTimeout</span><span class="o">);</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-7"></a>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">NumberFormatException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-8"></a>            <span class="c1">// use default value</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-9"></a>        <span class="o">}</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-10"></a>    <span class="o">}</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-11"></a>    <span class="n">INSTALL_TIMEOUT_MINUTES</span> <span class="o">=</span> <span class="n">time</span><span class="o">;</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-12"></a><span class="o">}</span>
+</pre>
+<p>So far so good,
+ADB_INSTALL_TIMEOUT system variable seems to be respected when
+invoking package installation tools. Are the above the only methods that
+can install a package though ? Going further on that hunch we see that
+in addition to installing single packages there is a possibility of
+having a multi-package installation session.</p>
+<pre class="code java"><a name="rest_code_22936f6c66624e19a6c2e051e2286bce-1"></a><span class="kd">public</span> <span class="kt">void</span> <span class="nf">installPackages</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">apkFilePaths</span><span class="o">,</span> <span class="kt">int</span> <span class="n">timeOutInMs</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">reinstall</span><span class="o">,</span> <span class="n">String</span><span class="o">...</span> <span class="n">extraArgs</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InstallException</span> <span class="o">{</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-2"></a><span class="k">assert</span><span class="o">(!</span><span class="n">apkFilePaths</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">());</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-3"></a><span class="k">if</span> <span class="o">(</span><span class="n">getApiLevel</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="o">)</span> <span class="o">{</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-4"></a>        <span class="n">Log</span><span class="o">.</span><span class="na">w</span><span class="o">(</span><span class="s">"Internal error : installPackages invoked with device &lt; 21 for %s"</span><span class="o">,</span><span class="n">Joiner</span><span class="o">.</span><span class="na">on</span><span class="o">(</span><span class="s">","</span><span class="o">).</span><span class="na">join</span><span class="o">(</span><span class="n">apkFilePaths</span><span class="o">));</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-5"></a>        <span class="k">if</span> <span class="o">(</span><span class="n">apkFilePaths</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-6"></a>                <span class="n">installPackage</span><span class="o">(</span><span class="n">apkFilePaths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span> <span class="n">reinstall</span><span class="o">,</span> <span class="n">extraArgs</span><span class="o">);</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-7"></a>                <span class="k">return</span><span class="o">;</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-8"></a>        <span class="o">}</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-9"></a>        <span class="n">Log</span><span class="o">.</span><span class="na">e</span><span class="o">(</span><span class="s">"Internal error : installPackages invoked with device &lt; 21 for multiple APK : %s"</span><span class="o">,</span> <span class="n">Joiner</span><span class="o">.</span><span class="na">on</span><span class="o">(</span><span class="s">","</span><span class="o">).</span><span class="na">join</span><span class="o">(</span><span class="n">apkFilePaths</span><span class="o">));</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-10"></a>        <span class="k">throw</span> <span class="k">new</span> <span class="n">InstallException</span><span class="o">(</span><span class="s">"Internal error : installPackages invoked with device &lt; 21 for multiple APK : "</span> <span class="o">+</span> <span class="n">Joiner</span><span class="o">.</span><span class="na">on</span><span class="o">(</span><span class="s">","</span><span class="o">).</span><span class="na">join</span><span class="o">(</span><span class="n">apkFilePaths</span><span class="o">));</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-11"></a><span class="o">}</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-12"></a><span class="o">[...]</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-13"></a><span class="n">String</span> <span class="n">sessionId</span> <span class="o">=</span> <span class="n">createMultiInstallSession</span><span class="o">(</span><span class="n">apkFilePaths</span><span class="o">,</span> <span class="n">extraArgsList</span><span class="o">,</span> <span class="n">reinstall</span><span class="o">);</span>
+</pre>
+<p>Aha ! No-Lollipop check here, with a
+fallback to the old method - we may be onto something ! Some lines pass
+and we can see an invocation of <strong>createMultiInstallSession</strong>. What's
+there ?</p>
+<pre class="code java"><a name="rest_code_146fcc7d1d0b409a840baca8c46d47b1-1"></a><span class="kd">private</span> <span class="n">String</span> <span class="nf">createMultiInstallSession</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">apkFileNames</span><span class="o">,</span> <span class="nd">@NonNull</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">extraArgs</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">reinstall</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">TimeoutException</span><span class="o">,</span> <span class="n">AdbCommandRejectedException</span><span class="o">,</span> <span class="n">ShellCommandUnresponsiveException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+<a name="rest_code_146fcc7d1d0b409a840baca8c46d47b1-2"></a><span class="o">[...]</span>
+<a name="rest_code_146fcc7d1d0b409a840baca8c46d47b1-3"></a><span class="n">String</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"pm install-create %1$s -S %2$d"</span><span class="o">,</span> <span class="n">parameters</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span> <span class="n">totalFileSize</span><span class="o">);</span>
+<a name="rest_code_146fcc7d1d0b409a840baca8c46d47b1-4"></a><span class="n">executeShellCommand</span><span class="o">(</span><span class="n">cmd</span><span class="o">,</span> <span class="n">receiver</span><span class="o">,</span> <span class="n">DdmPreferences</span><span class="o">.</span><span class="na">getTimeOut</span><span class="o">());</span>
+<a name="rest_code_146fcc7d1d0b409a840baca8c46d47b1-5"></a><span class="o">[...]</span>
+</pre>
+<p>A different invocation of
+<strong>executeShellCommand</strong>, now using <strong>DdmPreferences.getTimeOut()</strong> as a
+timeout value source. Summarizing - this only happens if you install
+multiple applications for your androidConnectedTest and you are using
+android device to test on that has api version that is equal or greater
+to 21. That is all cool that we had this little Computer Science
+Investigation, but how to fix that - i.e. how to have proper timeouts
+for your installations ? Ideally from somewhere you configure and/or
+invoke your builds. It turns out that gradle supports invoking just
+enough Java for us to use there. In your <strong>gradle.build</strong> as the very
+first lines:</p>
+<pre class="code groovy"><a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-1"></a><span class="n">println</span> <span class="s2">"setting global timeout for apk installation to 10 minutes"</span>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-2"></a><span class="n">com</span><span class="o">.</span><span class="na">android</span><span class="o">.</span><span class="na">ddmlib</span><span class="o">.</span><span class="na">DdmPreferences</span><span class="o">.</span><span class="na">setTimeOut</span><span class="o">(</span><span class="mi">600000</span><span class="o">)</span>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-3"></a>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-4"></a><span class="n">android</span> <span class="o">{</span>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-5"></a>        <span class="n">compileSdkVersion</span> <span class="n">compileSdk</span>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-6"></a>        <span class="n">buildToolsVersion</span> <span class="n">buildTools</span>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-7"></a><span class="o">[...]</span>
+</pre>
+<p>That's it. Invoke your android tests with
+<strong>ADB_INSTALL_TIMEOUT</strong> env variable set <strong>AND</strong> have the
+<strong>DddPreference</strong> set in your gradle.build as in the example above and
+you should be golden. Happy droiding !</p>
+</div>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../17/tools-indicator-holder.html" rel="prev" title="Tools: precision test indicator holder">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../../11/17/lets-encrypt-certificate.html" rel="next" title="Sporting Let's Encrypt certificate">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2015/10/25/android-integration-test-timeouts.html",
+        disqus_title="Fixing timeouts running Android integration tests",
+        disqus_identifier="cache/posts/2015/10/25/android-integration-test-timeouts.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

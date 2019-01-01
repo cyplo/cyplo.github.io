@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>How to build minimalistic REST server in .Net | Adventurous Computing</title>
+<link href="../../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2012/11/01/minimalistic-rest-server-in-dotnet.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="How to build minimalistic REST server in .Net">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2012/11/01/minimalistic-rest-server-in-dotnet.html">
+<meta property="og:description" content='Install "Microsoft ASP.NET Web API Self Host" and all of its
+dependencies via NuGet.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using'>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2012-11-01T13:22:39Z">
+<meta property="article:tag" content=".net">
+<meta property="article:tag" content="asp.net">
+<meta property="article:tag" content="c#">
+<meta property="article:tag" content="json">
+<meta property="article:tag" content="mvc">
+<meta property="article:tag" content="rest">
+<meta property="article:tag" content="server">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">How to build minimalistic REST server in .Net</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2012-11-01T13:22:39+00:00">2012-11-01 13:22</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../../categories/net.html" rel="tag">.net</a></li>
+           <li><a class="tag p-category" href="../../../../categories/aspnet.html" rel="tag">asp.net</a></li>
+           <li><a class="tag p-category" href="../../../../categories/c.html" rel="tag">c#</a></li>
+           <li><a class="tag p-category" href="../../../../categories/json.html" rel="tag">json</a></li>
+           <li><a class="tag p-category" href="../../../../categories/mvc.html" rel="tag">mvc</a></li>
+           <li><a class="tag p-category" href="../../../../categories/rest.html" rel="tag">rest</a></li>
+           <li><a class="tag p-category" href="../../../../categories/server.html" rel="tag">server</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<p>Install "Microsoft ASP.NET Web API Self Host" and all of its
+dependencies via NuGet.</p>
+<pre class="code csharp"><a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-1"></a><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-2"></a><span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-3"></a><span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-4"></a><span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-5"></a><span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-6"></a><span class="k">using</span> <span class="nn">System.Threading.Tasks</span><span class="p">;</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-7"></a><span class="k">using</span> <span class="nn">System.Web.Http</span><span class="p">;</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-8"></a><span class="k">using</span> <span class="nn">System.Web.Http.SelfHost</span><span class="p">;</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-9"></a>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-10"></a><span class="k">namespace</span> <span class="nn">resttest</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-11"></a><span class="p">{</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-12"></a>    <span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleData</span> <span class="p">{</span> <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-13"></a>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-14"></a>    <span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleController</span> <span class="p">:</span> <span class="n">ApiController</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-15"></a>    <span class="p">{</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-16"></a>        <span class="c1">// /api/job</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-17"></a>        <span class="k">public</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">ExampleData</span><span class="p">&gt;</span> <span class="n">Get</span><span class="p">()</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-18"></a>        <span class="p">{</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-19"></a>            <span class="k">return</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ExampleData</span><span class="p">&gt;()</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-20"></a>            <span class="p">{</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-21"></a>                <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">(){</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">2</span> <span class="p">},</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-22"></a>                <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">(){</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">4</span> <span class="p">}</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-23"></a>            <span class="p">};</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-24"></a>        <span class="p">}</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-25"></a>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-26"></a>        <span class="c1">// /api/job/3</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-27"></a>        <span class="k">public</span> <span class="n">ExampleData</span> <span class="nf">Get</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-28"></a>        <span class="p">{</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-29"></a>            <span class="k">return</span> <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">()</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">3</span> <span class="p">};</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-30"></a>        <span class="p">}</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-31"></a>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-32"></a>    <span class="p">}</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-33"></a>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-34"></a>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-35"></a>    <span class="k">class</span> <span class="nc">Program</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-36"></a>    <span class="p">{</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-37"></a>        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-38"></a>        <span class="p">{</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-39"></a>            <span class="kt">var</span> <span class="n">configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpSelfHostConfiguration</span><span class="p">(</span><span class="s">"http://localhost:1337"</span><span class="p">);</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-40"></a>            <span class="c1">//Setup the routes</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-41"></a>            <span class="n">configuration</span><span class="p">.</span><span class="n">Routes</span><span class="p">.</span><span class="n">MapHttpRoute</span><span class="p">(</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-42"></a>                <span class="n">name</span><span class="p">:</span> <span class="s">"DefaultApiRoute"</span><span class="p">,</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-43"></a>                <span class="n">routeTemplate</span><span class="p">:</span> <span class="s">"api/{controller}/{id}"</span><span class="p">,</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-44"></a>                <span class="n">defaults</span><span class="p">:</span> <span class="k">new</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-45"></a>                    <span class="p">{</span> <span class="n">controller</span> <span class="p">=</span> <span class="s">"ExampleController"</span><span class="p">,</span> <span class="n">id</span> <span class="p">=</span> <span class="n">RouteParameter</span><span class="p">.</span><span class="n">Optional</span> <span class="p">}</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-46"></a>                <span class="p">);</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-47"></a>            <span class="kt">var</span> <span class="n">server</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpSelfHostServer</span><span class="p">(</span><span class="n">configuration</span><span class="p">);</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-48"></a>            <span class="n">server</span><span class="p">.</span><span class="n">OpenAsync</span><span class="p">().</span><span class="n">Wait</span><span class="p">();</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-49"></a>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-50"></a>            <span class="n">Console</span><span class="p">.</span><span class="n">Out</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">"Press ESC to quit"</span><span class="p">);</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-51"></a>            <span class="k">do</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-52"></a>            <span class="p">{</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-53"></a>                <span class="k">while</span> <span class="p">(!</span><span class="n">Console</span><span class="p">.</span><span class="n">KeyAvailable</span><span class="p">)</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-54"></a>                <span class="p">{</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-55"></a>                    <span class="n">Thread</span><span class="p">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">256</span><span class="p">);</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-56"></a>                <span class="p">}</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-57"></a>            <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">(</span><span class="k">true</span><span class="p">).</span><span class="n">Key</span> <span class="p">!=</span> <span class="n">ConsoleKey</span><span class="p">.</span><span class="n">Escape</span><span class="p">);</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-58"></a>        <span class="p">}</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-59"></a>    <span class="p">}</span>
+<a name="rest_code_da3eeb587e654c9087f0435e9e5337ad-60"></a><span class="p">}</span>
+</pre>
+<p>We can launch it and query it using any http-enabled client:</p>
+<p><tt class="docutils literal">$ curl <span class="pre">http://localhost:1337/api/Example</span> <span class="pre">[{"Id":2},{"Id":4}]</span></tt></p>
+<p>C'est volia</p>
+</div>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../../08/01/boosting-your-wifi-signal.html" rel="prev" title="Boosting your WiFi signal with cooking utensils">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../../12/22/i-bought-a-book.html" rel="next" title="I bought a book">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2012/11/01/minimalistic-rest-server-in-dotnet.html",
+        disqus_title="How to build minimalistic REST server in .Net",
+        disqus_identifier="cache/posts/2012/11/01/minimalistic-rest-server-in-dotnet.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

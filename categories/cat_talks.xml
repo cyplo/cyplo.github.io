@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about talks)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/cat_talks.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Tor talk</title><link>https://blog.cyplo.net/posts/2014/11/01/tor-talk.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;I gave a talk this Monday, an important one I think. The one from the
+kind of spreading  knowledge on the safe internet usage to people not
+necessarily of the tech background. This was my first one given to a
+such audience and to add to it all, it was given in Polish. The biggest
+challenge ? Finding good equivalent for the English tech terms. I think
+the talks went quite okay and the discussion afterwards was quite
+lively. I said a bit on how the internet works and what's wrong with
+that, to transition later to what problems Tor addresses and which it
+does not. I tried to emphasize that using Tor does not make you
+automatically immune to the dangers of the internet. Big thanks to the
+organizers, &lt;a class="reference external" href="http://praxis.ue.wroc.pl/"&gt;Praxis&lt;/a&gt; student group from
+the Wroclaw University of Economy. You can find my slides' sources
+&lt;a class="reference external" href="https://github.com/cyplo/talks/tree/master/tor_for_beginners"&gt;here&lt;/a&gt;,
+along with speaker notes.&lt;/p&gt;</description><category>praxis</category><category>speaking</category><category>talk</category><category>tor</category><guid>https://blog.cyplo.net/posts/2014/11/01/tor-talk.html</guid><pubDate>Sat, 01 Nov 2014 12:19:49 GMT</pubDate></item><item><title>Freakin debuggers - how do they work ?</title><link>https://blog.cyplo.net/posts/2013/09/18/anatomy-debugger.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;I gave a talk
+&lt;a class="reference external" href="http://www.meetup.com/wrocnet/events/138787702/"&gt;yesterday&lt;/a&gt;. It was
+on
+&lt;a class="reference external" href="https://prezi.com/hzvnsznfkgwj/anatomy-of-the-debugger/"&gt;debuggers&lt;/a&gt;.
+From VM-level debuggers to JTAG, quite a packed, high level overview. In
+fact I gave it
+&lt;a class="reference external" href="http://www.meetup.com/KGD-NET/events/113593522/"&gt;before,&lt;/a&gt; on another
+occasions. And this time was different, hence this post. The thing I am
+particularly proud of is that I was able to entertain the crowd for the
+first half of an hour despite not having any computer launched and
+connected. You know, like, interacting with actual people ! We had some
+difficulties connecting to a beamer so I thought it'd be good to have an
+open discussion first. We've started with "unit tests vs debuggers". Is
+having a rock solid unit tests suite enough for you to never touch a
+debugger ? After some time I've transitioned to my presentation, talked
+a bit about the history of debugging, then what are the features of
+modern debuggers and finally how all of these work. And while we're at
+it I would like to give a shout out to the organizers of these 2 events.
+Thanks !&lt;/p&gt;</description><category>debugger</category><category>gdb</category><category>jtag</category><category>os</category><category>processor</category><guid>https://blog.cyplo.net/posts/2013/09/18/anatomy-debugger.html</guid><pubDate>Wed, 18 Sep 2013 17:26:26 GMT</pubDate></item><item><title>Erlang Tech night</title><link>https://blog.cyplo.net/posts/2013/03/06/erlang-tech-night.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;I recently gave a two hours presentation on Erlang 101 along with
+&lt;a class="reference external" href="http://fabiankrol.com/"&gt;Fabian&lt;/a&gt;. Because of the generous support
+from Infusion I was able to speak at Institute of Computer Science at
+University of Wroclaw. The event was a blast, and that is an opinion of
+the people other than me also ;) Thanks for everyone who was there and
+you can find the code and slides on
+&lt;a class="reference external" href="https://github.com/erlang-wroclaw/erlang_tech_night"&gt;github&lt;/a&gt;&lt;/p&gt;</description><category>erlang</category><category>talk</category><guid>https://blog.cyplo.net/posts/2013/03/06/erlang-tech-night.html</guid><pubDate>Wed, 06 Mar 2013 18:41:34 GMT</pubDate></item></channel></rss>

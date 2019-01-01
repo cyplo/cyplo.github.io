@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about mermaid)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/mermaid.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:13 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Adding graphs to posts in Nikola</title><link>https://blog.cyplo.net/posts/2017/07/adding-graphs-to-posts-in-nikola.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I really like to teach, try to explain things in a simple manner. There is often no better way of making an explanation than visualizing it.
+The problem is that I really can't draw, especially on a computer.
+Wouldn't it be awesome if I could make the computer draw for me ?
+I found out that, unsurprisingly, there is a software for that already. The one I like is called mermaid - it renders a simple text description of a graph or diagram into an html representation. Can look something like this.&lt;/p&gt;
+&lt;div class="mermaid"&gt;
+graph TB
+                subgraph one
+                a1--&amp;gt;a2
+                end
+                subgraph two
+                b1--&amp;gt;b2
+                end
+                subgraph three
+                c1--&amp;gt;c2
+                end
+                c1--&amp;gt;a2
+&lt;/div&gt;&lt;p&gt;This blog is rendered by Nikola hence I would like to show you how I've added mermaid support to my Nikola installation.
+I use &lt;tt class="docutils literal"&gt;USE_BUNDLES = False&lt;/tt&gt; in &lt;tt class="docutils literal"&gt;conf.py&lt;/tt&gt; as for it gives me more control and is more HTTP/2 friendly.
+With that disabled I can include mermaid's style and js files like so (also in &lt;tt class="docutils literal"&gt;conf.py&lt;/tt&gt;):&lt;/p&gt;
+&lt;pre class="code python"&gt;&lt;a name="rest_code_ba79a8285e9f45b699da9e0d540d30c4-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;EXTRA_HEAD_DATA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_ba79a8285e9f45b699da9e0d540d30c4-2"&gt;&lt;/a&gt;&lt;span class="s2"&gt;&amp;lt;link rel="stylesheet" type="text/css" href="/assets/css/fontawesome.css"&amp;gt;&lt;/span&gt;
+&lt;a name="rest_code_ba79a8285e9f45b699da9e0d540d30c4-3"&gt;&lt;/a&gt;&lt;span class="s2"&gt;&amp;lt;link rel="stylesheet" type="text/css" href="/assets/css/titillium.css"&amp;gt;&lt;/span&gt;
+&lt;a name="rest_code_ba79a8285e9f45b699da9e0d540d30c4-4"&gt;&lt;/a&gt;&lt;span class="s2"&gt;&amp;lt;link rel="stylesheet" type="text/css" href="/assets/css/mermaid.forest.css"&amp;gt;&lt;/span&gt;
+&lt;a name="rest_code_ba79a8285e9f45b699da9e0d540d30c4-5"&gt;&lt;/a&gt;&lt;span class="s2"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_ba79a8285e9f45b699da9e0d540d30c4-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ba79a8285e9f45b699da9e0d540d30c4-7"&gt;&lt;/a&gt;&lt;span class="n"&gt;BODY_END&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"""&lt;/span&gt;
+&lt;a name="rest_code_ba79a8285e9f45b699da9e0d540d30c4-8"&gt;&lt;/a&gt;&lt;span class="s2"&gt;&amp;lt;script src="/assets/js/mermaid.js"&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;a name="rest_code_ba79a8285e9f45b699da9e0d540d30c4-9"&gt;&lt;/a&gt;&lt;span class="s2"&gt;&amp;lt;script&amp;gt;mermaid.initialize({startOnLoad:true, cloneCssStyles: false});&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;a name="rest_code_ba79a8285e9f45b699da9e0d540d30c4-10"&gt;&lt;/a&gt;&lt;span class="s2"&gt;"""&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Where do all these files come from though ? In my case, I have a custom theme, based on &lt;tt class="docutils literal"&gt;zen&lt;/tt&gt; called &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;zen-cyplo&lt;/span&gt;&lt;/tt&gt;. The assets in the sources are located under &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;themes/zen-cyplo/assets/&lt;/span&gt;&lt;/tt&gt;.
+Oh, and &lt;tt class="docutils literal"&gt;cloneCssStyles: false&lt;/tt&gt; is there as the default of &lt;tt class="docutils literal"&gt;true&lt;/tt&gt; made the different css styles on my blog clash.
+Finally, to use mermaid in the post do (for reStructured Text):&lt;/p&gt;
+&lt;pre class="code restructuredtext"&gt;&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-1"&gt;&lt;/a&gt;&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;raw&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt; html
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-3"&gt;&lt;/a&gt;        &amp;lt;div class="mermaid"&amp;gt;
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-4"&gt;&lt;/a&gt;        graph TB
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-5"&gt;&lt;/a&gt;                        subgraph one
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-6"&gt;&lt;/a&gt;                        a1--&amp;gt;a2
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-7"&gt;&lt;/a&gt;                        end
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-8"&gt;&lt;/a&gt;                        subgraph two
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-9"&gt;&lt;/a&gt;                        b1--&amp;gt;b2
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-10"&gt;&lt;/a&gt;                        end
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-11"&gt;&lt;/a&gt;                        subgraph three
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-12"&gt;&lt;/a&gt;                        c1--&amp;gt;c2
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-13"&gt;&lt;/a&gt;                        end
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-14"&gt;&lt;/a&gt;                        c1--&amp;gt;a2
+&lt;a name="rest_code_375fbb3b32104ec79cfaaf8f6ac71e37-15"&gt;&lt;/a&gt;        &amp;lt;/div&amp;gt;
+&lt;/pre&gt;&lt;p&gt;You can click on &lt;tt class="docutils literal"&gt;source&lt;/tt&gt; button located below the title of this post to see it in action. If you are interested in the build process and how all these come together - the complete sources for this blog are hosted under &lt;a class="reference external" href="https://github.com/cyplo/blog"&gt;https://github.com/cyplo/blog&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>blog</category><category>graph</category><category>mermaid</category><category>nikola</category><category>rst</category><guid>https://blog.cyplo.net/posts/2017/07/adding-graphs-to-posts-in-nikola.html</guid><pubDate>Sat, 15 Jul 2017 20:13:50 GMT</pubDate></item></channel></rss>

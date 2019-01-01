@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Boldly go where no programmer has gone before.">
+<meta name="viewport" content="width=device-width">
+<title>Adventurous Computing (old posts, page 7) | Adventurous Computing</title>
+<link href="assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/index-7.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="assets/css/mermaid.forest.css">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+        <div class="post">
+            <h1 class="title"><a href="posts/2016/07/06/terminal-emulator-windows-10-bash.html">The best terminal emulator for Windows 10's Bash or how to run X applications</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2016-07-06T19:21:13+00:00">2016-07-06 19:21</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2016/07/06/terminal-emulator-windows-10-bash.html#disqus_thread" data-disqus-identifier="cache/posts/2016/07/06/terminal-emulator-windows-10-bash.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/bash.html" rel="tag">bash</a></li>
+           <li><a class="tag p-category" href="categories/emulator.html" rel="tag">emulator</a></li>
+           <li><a class="tag p-category" href="categories/linux.html" rel="tag">linux</a></li>
+           <li><a class="tag p-category" href="categories/terminal.html" rel="tag">terminal</a></li>
+           <li><a class="tag p-category" href="categories/terminator.html" rel="tag">terminator</a></li>
+           <li><a class="tag p-category" href="categories/windows-10.html" rel="tag">windows 10</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<div class="line-block">
+<div class="line"><strong>update as of 03/2017</strong></div>
+<div class="line">As this article is by far the most popular on my site right now I feel that an update is necessary, as the landscape evolved a bit since the original publish date.</div>
+<div class="line">
+<a class="reference external" href="https://conemu.github.io/">Conemu</a> started to support Bash on Windows properly now and this is what I settled on in the end.</div>
+<div class="line">The article below is still relevant for <em>the running X applications on Windows</em> part though.</div>
+</div>
+<hr class="docutils">
+<p>I've been playing a bit with
+<a class="reference external" href="https://mikegerwitz.com/2016/04/GNU-kWindows">GNU/kWindows</a> a.k.a.
+Bash on Windows a.k.a Windows Subsystem for Linux (Beta). I was
+especially interested whether I can use my regular Linux
+<a class="reference external" href="https://github.com/cyplo/dotfiles/">dotfiles</a> to recreate my working
+environment of zsh + tmux + vim. The biggest troubles I had were with
+the terminal emulator. While the default one, invoked by saying <strong>bash</strong>
+is much better than powershell or cmd.exe already - it lacks some things
+I've learned to rely on, like 256-colour palette support. Thus the
+search for the ultimate terminal emulator begun. I tried <strong>ConEmu</strong>,
+<strong>cmder</strong> and their spinoffs to no avail. Either the colours were
+lacking, or the emulator would swallow up certain strokes like the arrow
+keys. Then I thought - hey, I use <strong>terminator</strong> on Linux, maybe it
+would be possible to use it here as well. To my surprise the answer was - yes !</p>
+<ul class="simple">
+<li>install Windows Subsystem for Linux</li>
+<li>restart Windows</li>
+<li>install <a class="reference external" href="https://sourceforge.net/projects/vcxsrv">VcXsrv</a>
+</li>
+<li>run VcXsrv</li>
+<li>invoke the following from the bash console:</li>
+</ul>
+<pre class="code console"><a name="rest_code_d9e954716d854d5ab1446314edbd9e02-1"></a><span class="go">sudo apt-get install terminator</span>
+<a name="rest_code_d9e954716d854d5ab1446314edbd9e02-2"></a><span class="go">DISPLAY=:0 terminator -u</span>
+</pre>
+<ul class="simple">
+<li>profit !</li>
+</ul>
+<p><a class="reference external" href="wp-content/uploads/2016/07/Capture.png"><img alt="Capture" class="size-large wp-image-2136" src="wp-content/uploads/2016/07/Capture-1024x525.png" style="width: 1024px; height: 525px;"></a></p>
+<p>The font rendering is not ideal and the borderless mode does
+not work, but hey, it is quite usable nonetheless ! It even has
+bidirectional clipboard sharing with Windows' windows, which is good.
+P.S. konsole and gnome-terminal do seem to have troubles launching
+(crashy-crashes there)</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2016/06/12/dont-throw-away-fix.html">Don't throw away. Fix.</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2016-06-12T12:25:34+00:00">2016-06-12 12:25</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2016/06/12/dont-throw-away-fix.html#disqus_thread" data-disqus-identifier="cache/posts/2016/06/12/dont-throw-away-fix.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/bag.html" rel="tag">bag</a></li>
+           <li><a class="tag p-category" href="categories/fix-stuff.html" rel="tag">fix stuff</a></li>
+           <li><a class="tag p-category" href="categories/repair.html" rel="tag">repair</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<div class="line-block">
+<div class="line">Try fixing your things. It's already broken - no need to sweat.</div>
+<div class="line">You might learn something.</div>
+<div class="line">Level 2 - push for things to be easily fixable.</div>
+<div class="line">It's good for you. It's good for the planet.</div>
+</div>
+<p><a class="reference external" href="wp-content/uploads/2016/06/IMG_20160612_120814.jpg"><img alt="image0" src="wp-content/uploads/2016/06/IMG_20160612_120814-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2016/06/IMG_20160612_121012.jpg"><img alt="image1" src="wp-content/uploads/2016/06/IMG_20160612_121012-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2016/06/IMG_20160612_120945.jpg"><img alt="image2" src="wp-content/uploads/2016/06/IMG_20160612_120945-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2016/06/IMG_20160612_120730.jpg"><img alt="image3" src="wp-content/uploads/2016/06/IMG_20160612_120730-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2016/06/IMG_20160612_120723.jpg"><img alt="image4" src="wp-content/uploads/2016/06/IMG_20160612_120723-150x150.jpg"></a></p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2016/03/13/conferences.html">Conferences you did not know existed and now you know you just need to go to</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2016-03-13T11:43:03+00:00">2016-03-13 11:43</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2016/03/13/conferences.html#disqus_thread" data-disqus-identifier="cache/posts/2016/03/13/conferences.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/artificial-intelligence.html" rel="tag">artificial intelligence</a></li>
+           <li><a class="tag p-category" href="categories/camping.html" rel="tag">camping</a></li>
+           <li><a class="tag p-category" href="categories/ccc.html" rel="tag">ccc</a></li>
+           <li><a class="tag p-category" href="categories/chaos.html" rel="tag">chaos</a></li>
+           <li><a class="tag p-category" href="categories/codefreeze.html" rel="tag">codefreeze</a></li>
+           <li><a class="tag p-category" href="categories/conferences.html" rel="tag">conferences</a></li>
+           <li><a class="tag p-category" href="categories/erlang.html" rel="tag">erlang</a></li>
+           <li><a class="tag p-category" href="categories/functional-programming.html" rel="tag">functional programming</a></li>
+           <li><a class="tag p-category" href="categories/killer-segways.html" rel="tag">killer segways</a></li>
+           <li><a class="tag p-category" href="categories/nuclai.html" rel="tag">nuclai</a></li>
+           <li><a class="tag p-category" href="categories/socrates.html" rel="tag">socrates</a></li>
+           <li><a class="tag p-category" href="categories/talks.html" rel="tag">talks</a></li>
+           <li><a class="tag p-category" href="categories/travel.html" rel="tag">travel</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<div class="section" id="go-to-conferences-it-s-good-for-you">
+<h2>Go to conferences. It's good for you.</h2>
+<p>Ever wondered why to go to conferences ? Is it worth it, especially if
+you <a class="reference external" href="http://sarah.thesharps.us/2016/02/02/first-timers-guide-to-foss-conferences/">do not feel
+confident</a>
+that the conference is on something that would be in an immediate realm
+of your day-to-day interests ? Just go ! You might end up learning
+something and meeting new people. And new people mean more variables to
+mix up your life. A bit scary, I know. Still worth it though. Wondered
+what conference in <strong>Europe</strong> are weird enough so people wouldn't mind
+having another misfit ? Here you go.</p>
+</div>
+<div class="section" id="nucl-ai">
+<h2>nucl.ai</h2>
+<p>Now imagine something niche within the industry. To me, AI comes to
+mind. Mages in robes in their towers, sending out autonomous robot
+armies against each other. Right ? There's a conference for that ! At
+<a class="reference external" href="http://nucl.ai/">nucl.ai</a>, in July, in Vienna, you can meet AI
+professionals from academia and industry alike, most of them coming from
+game development background. The atmosphere is very newcomer-friendly,
+the only requirement is that you're interested in AI, not necessarily
+having anything to do with it professionally. Petra and Alex, the
+organizers, are wonderful people that make this conference quite unique.
+It's happy fun to see ideas floating from academia to the industry and
+vice versa. Don't forget the presentations on work-in-progress major AAA
+games ! I've learned there that the everyday programming in the games
+industry is quite different than the one I do in terms of best practices
+and patterns. Definitely worth a try !</p>
+</div>
+<div class="section" id="erlang-user-conference">
+<h2>Erlang User Conference</h2>
+<p>Speaking of something completely different. Erlang ! Was functional
+before being functional was <a class="reference external" href="https://www.youtube.com/watch?v=xrIjfIjssLE">considered
+cool</a>. Very practical,
+very fast, parallelize everything ! Processes everywhere ! Message
+passing ! Want to feel the groove as well ? Visit Stockholm in September
+for <a class="reference external" href="http://www.erlang-factory.com/">Erlang User Conference</a>. Meet
+creators of the language, talk about massive scale deployments. Other FP
+languages are welcome. I would even say, the more strange the better.
+<a class="reference external" href="http://www.idris-lang.org/">Idris</a> seems to be the topic of interest
+as well.  Eat good food, walk the city of dynamite. Erlang has a quite
+close-knit community which gives you this warm family feeling.</p>
+</div>
+<div class="section" id="socrates">
+<h2>SoCraTes</h2>
+<p>Speaking of family. There's a family of conferences known as
+<a class="reference external" href="https://www.socrates-conference.de/">SoCraTes</a>. Software
+Crafstmanship and Testing. SoCraTes. Get it ? :D As it's more than one
+conference a year, it's harder to go to all of them. I only went to
+<a class="reference external" href="http://www.codefreeze.fi/">Codefreeze</a>, in Finland, in January, and
+only once, but loved it already. Codefreeze, Finland, in January. Get it
+?! :D First thing is that you don't know what will happen there. You
+just go, meet the people and then you sit down and everyone talks about
+what they would like to learn and what they can share. This way you come
+up with some loose agenda you follow more or less. One track, very
+intense. Talking, swimming in ice water, learning, sauna going. Very
+intimate feel, not many people, lots of things to learn.</p>
+</div>
+<div class="section" id="chaos-communication-congress">
+<h2>Chaos Communication Congress</h2>
+<p>Speaking of lots of people and intimate feel. <a class="reference external" href="https://en.wikipedia.org/wiki/Chaos_Communication_Congress">Chaos Communication
+Congress</a>
+is, I think, the biggest gathering of all nerds and freaks in Europe,
+yet being there feels quite at home. The best organized conference I've
+been to. Friendly people showing their wares on their humble tables, 4
+simultaneous tracks, huge building with intricate hallways. It's
+cyberpunk, it's inclusive, it's about hardcore infosec topics, it's
+about politics. Everything's there, everyone's there. 4 days of data
+being constantly uploaded to your brain, on the waves of <a class="reference external" href="https://en.wikipedia.org/wiki/Club-Mate">Club
+Mate</a>. Feels like an
+extended holiday present, as it's happening in the last week of
+December.</p>
+</div>
+<div class="section" id="the-camps">
+<h2>The Camps</h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Chaos_Communication_Camp">Chaos Communication
+Camp</a> and
+<a class="reference external" href="https://en.wikipedia.org/wiki/Observe._Hack._Make.">The Dutch Camp</a>.
+Imagine CCC, the Congress, but in the woods. Middle of nowhere,
+multigigabit internet connection. sleeping in the tent, then going to a
+world-class lecture. Both CCC, the camp, and The Dutch Camp, the camp,
+are happening every 4 years, each of them taking alternating slots. So
+every 2 years there is a camp somewhere. Did I mention that the location
+changes every event ? Happy camping !</p>
+</div>
+<div class="section" id="summary">
+<h2>Summary</h2>
+<p>So go out there. Explore. Meet people. Learn. Have fun. None of the
+above are much expensive and most of the events have a policy of "write
+to us if you want to go but can't afford the ticket". Friendly people
+fixing problems together.</p>
+<div class="line-block">
+<div class="line">nucl.ai: July, tickets around 250EUR</div>
+<div class="line">EUC: September, tickets around 350EUR</div>
+<div class="line">SoCraTes: the cost and the time depend on the event</div>
+<div class="line">CCC: last week of December, tickets around 100EUR</div>
+<div class="line">The Camps: summer, tickets around 125EUR</div>
+</div>
+</div>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/12/31/productive-new-years-eve.html">Productive New Year's Eve</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-12-31T20:11:35+00:00">2015-12-31 20:11</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/12/31/productive-new-years-eve.html#disqus_thread" data-disqus-identifier="cache/posts/2015/12/31/productive-new-years-eve.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/kicad.html" rel="tag">kicad</a></li>
+           <li><a class="tag p-category" href="categories/layout.html" rel="tag">layout</a></li>
+           <li><a class="tag p-category" href="categories/pcb.html" rel="tag">pcb</a></li>
+           <li><a class="tag p-category" href="categories/sunpowered.html" rel="tag">sunpowered</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>It turns out that the last day of the year can be quite productive. I've
+managed to sneak in a PCB layout for the input measurement and
+protection board for my <a class="reference external" href="https://blog.cyplo.net/2015/05/02/grafana-influx/">sunpowered
+server</a> . Got it
+ordered, can't wait to test it ! I got carried away with via stitching
+there a bit - we'll see how hard it will be to solder the larger
+components because of that. The whole project is hosted
+<a class="reference external" href="https://lab.cyplo.net/cyplo/sunpowered/tree/master">here</a> - it's
+open hardware so please do take a look.</p>
+<p><a class="reference external" href="wp-content/uploads/2015/12/angled.png"><img alt="image0" src="wp-content/uploads/2015/12/angled-150x150.png"></a> <a class="reference external" href="wp-content/uploads/2015/12/bottom.png"><img alt="image1" src="wp-content/uploads/2015/12/bottom-150x150.png"></a> <a class="reference external" href="wp-content/uploads/2015/12/top.png"><img alt="image2" src="wp-content/uploads/2015/12/top-150x150.png"></a></p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/11/17/lets-encrypt-certificate.html">Sporting Let's Encrypt certificate</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-11-17T09:51:25+00:00">2015-11-17 09:51</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/11/17/lets-encrypt-certificate.html#disqus_thread" data-disqus-identifier="cache/posts/2015/11/17/lets-encrypt-certificate.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/automation.html" rel="tag">automation</a></li>
+           <li><a class="tag p-category" href="categories/ca.html" rel="tag">ca</a></li>
+           <li><a class="tag p-category" href="categories/letsencrypt.html" rel="tag">letsencrypt</a></li>
+           <li><a class="tag p-category" href="categories/pki.html" rel="tag">pki</a></li>
+           <li><a class="tag p-category" href="categories/ssl.html" rel="tag">ssl</a></li>
+           <li><a class="tag p-category" href="categories/tls.html" rel="tag">tls</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <p><a class="reference external" href="https://letsencrypt.org/">Let's Encrypt</a> is soon to be publicly
+available service to provide TLS certificates for free and in automated
+fashion. I'm helping them test their systems by participating in the
+<a class="reference external" href="https://letsencrypt.org/2015/11/12/public-beta-timing.html">beta
+program</a>.
+Because of that this site is now sporting, publicly recognizable
+certificate from Let's Encrypt. Yay ! The work they are doing I believe
+is of much importance. Lack of easy path for getting TLS certificate was
+a major hurdle for the most of the website owners, otherwise keen on
+getting their traffic encrypted. This, in turn, is important for two
+reasons. Not allowing the content you are viewing on the internet to be
+snooped at, not leaking you private data is one thing. Other, less
+known, but as much important, is countering the ability of injecting any
+malicious code/data into the responses from the servers you got and in
+turn preventing lots of man in the middle attacks. Hopefully, when Let's
+Encrypt becomes publicly available we would be on the path to much more
+friendly internet for all.</p>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/10/25/android-integration-test-timeouts.html">Fixing timeouts running Android integration tests</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-10-25T09:55:54+00:00">2015-10-25 09:55</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/10/25/android-integration-test-timeouts.html#disqus_thread" data-disqus-identifier="cache/posts/2015/10/25/android-integration-test-timeouts.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/adb.html" rel="tag">adb</a></li>
+           <li><a class="tag p-category" href="categories/android.html" rel="tag">android</a></li>
+           <li><a class="tag p-category" href="categories/androidconnectedtest.html" rel="tag">androidConnectedTest</a></li>
+           <li><a class="tag p-category" href="categories/ci.html" rel="tag">ci</a></li>
+           <li><a class="tag p-category" href="categories/ddm.html" rel="tag">ddm</a></li>
+           <li><a class="tag p-category" href="categories/ddmpreference.html" rel="tag">ddmpreference</a></li>
+           <li><a class="tag p-category" href="categories/integration-tests.html" rel="tag">integration tests</a></li>
+           <li><a class="tag p-category" href="categories/shellcommandunresponsive.html" rel="tag">shellcommandunresponsive</a></li>
+           <li><a class="tag p-category" href="categories/testing.html" rel="tag">testing</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>The main problem with Android CI I had recently is that, after switching
+to Lollipop, the integration tests wouldn't run. Invoking
+<strong>androidConnectedTest</strong> gradle target always resulted in crashing with
+<strong>ShellCommandUnresponsiveException</strong>. Internet says that in such a case
+ou just need to set <strong>ADB_INSTALL_TIMEOUT</strong>. Set and then nothing.
+Sourcediving it is then !</p>
+<p>A long while after that I got to this file:
+<a class="reference external" href="https://android.googlesource.com/platform/tools/base/+/master/ddmlib/src/main/java/com/android/ddmlib/Device.java">Device.java</a> [Linking
+to master, here's the commit
+hash:1cb1a4c2976b99ae53d28d7f01d975232c85f990, as I don't seem to be
+able to find how to link to that hash directly] What do we see there ?
+That indeed <strong>ADB_INSTALL_TIMEOUT</strong> is being used:</p>
+<pre class="code java"><a name="rest_code_07b28fc404d546c18c38f13367b565a2-1"></a><span class="kd">static</span> <span class="o">{</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-2"></a>    <span class="n">String</span> <span class="n">installTimeout</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getenv</span><span class="o">(</span><span class="s">"ADB_INSTALL_TIMEOUT"</span><span class="o">);</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-3"></a>    <span class="kt">long</span> <span class="n">time</span> <span class="o">=</span> <span class="mi">4</span><span class="o">;</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-4"></a>    <span class="k">if</span> <span class="o">(</span><span class="n">installTimeout</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-5"></a>        <span class="k">try</span> <span class="o">{</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-6"></a>            <span class="n">time</span> <span class="o">=</span> <span class="n">Long</span><span class="o">.</span><span class="na">parseLong</span><span class="o">(</span><span class="n">installTimeout</span><span class="o">);</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-7"></a>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">NumberFormatException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-8"></a>            <span class="c1">// use default value</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-9"></a>        <span class="o">}</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-10"></a>    <span class="o">}</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-11"></a>    <span class="n">INSTALL_TIMEOUT_MINUTES</span> <span class="o">=</span> <span class="n">time</span><span class="o">;</span>
+<a name="rest_code_07b28fc404d546c18c38f13367b565a2-12"></a><span class="o">}</span>
+</pre>
+<p>So far so good,
+ADB_INSTALL_TIMEOUT system variable seems to be respected when
+invoking package installation tools. Are the above the only methods that
+can install a package though ? Going further on that hunch we see that
+in addition to installing single packages there is a possibility of
+having a multi-package installation session.</p>
+<pre class="code java"><a name="rest_code_22936f6c66624e19a6c2e051e2286bce-1"></a><span class="kd">public</span> <span class="kt">void</span> <span class="nf">installPackages</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">apkFilePaths</span><span class="o">,</span> <span class="kt">int</span> <span class="n">timeOutInMs</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">reinstall</span><span class="o">,</span> <span class="n">String</span><span class="o">...</span> <span class="n">extraArgs</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InstallException</span> <span class="o">{</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-2"></a><span class="k">assert</span><span class="o">(!</span><span class="n">apkFilePaths</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">());</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-3"></a><span class="k">if</span> <span class="o">(</span><span class="n">getApiLevel</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="o">)</span> <span class="o">{</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-4"></a>        <span class="n">Log</span><span class="o">.</span><span class="na">w</span><span class="o">(</span><span class="s">"Internal error : installPackages invoked with device &lt; 21 for %s"</span><span class="o">,</span><span class="n">Joiner</span><span class="o">.</span><span class="na">on</span><span class="o">(</span><span class="s">","</span><span class="o">).</span><span class="na">join</span><span class="o">(</span><span class="n">apkFilePaths</span><span class="o">));</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-5"></a>        <span class="k">if</span> <span class="o">(</span><span class="n">apkFilePaths</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-6"></a>                <span class="n">installPackage</span><span class="o">(</span><span class="n">apkFilePaths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span> <span class="n">reinstall</span><span class="o">,</span> <span class="n">extraArgs</span><span class="o">);</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-7"></a>                <span class="k">return</span><span class="o">;</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-8"></a>        <span class="o">}</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-9"></a>        <span class="n">Log</span><span class="o">.</span><span class="na">e</span><span class="o">(</span><span class="s">"Internal error : installPackages invoked with device &lt; 21 for multiple APK : %s"</span><span class="o">,</span> <span class="n">Joiner</span><span class="o">.</span><span class="na">on</span><span class="o">(</span><span class="s">","</span><span class="o">).</span><span class="na">join</span><span class="o">(</span><span class="n">apkFilePaths</span><span class="o">));</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-10"></a>        <span class="k">throw</span> <span class="k">new</span> <span class="n">InstallException</span><span class="o">(</span><span class="s">"Internal error : installPackages invoked with device &lt; 21 for multiple APK : "</span> <span class="o">+</span> <span class="n">Joiner</span><span class="o">.</span><span class="na">on</span><span class="o">(</span><span class="s">","</span><span class="o">).</span><span class="na">join</span><span class="o">(</span><span class="n">apkFilePaths</span><span class="o">));</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-11"></a><span class="o">}</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-12"></a><span class="o">[...]</span>
+<a name="rest_code_22936f6c66624e19a6c2e051e2286bce-13"></a><span class="n">String</span> <span class="n">sessionId</span> <span class="o">=</span> <span class="n">createMultiInstallSession</span><span class="o">(</span><span class="n">apkFilePaths</span><span class="o">,</span> <span class="n">extraArgsList</span><span class="o">,</span> <span class="n">reinstall</span><span class="o">);</span>
+</pre>
+<p>Aha ! No-Lollipop check here, with a
+fallback to the old method - we may be onto something ! Some lines pass
+and we can see an invocation of <strong>createMultiInstallSession</strong>. What's
+there ?</p>
+<pre class="code java"><a name="rest_code_146fcc7d1d0b409a840baca8c46d47b1-1"></a><span class="kd">private</span> <span class="n">String</span> <span class="nf">createMultiInstallSession</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">apkFileNames</span><span class="o">,</span> <span class="nd">@NonNull</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">extraArgs</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">reinstall</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">TimeoutException</span><span class="o">,</span> <span class="n">AdbCommandRejectedException</span><span class="o">,</span> <span class="n">ShellCommandUnresponsiveException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+<a name="rest_code_146fcc7d1d0b409a840baca8c46d47b1-2"></a><span class="o">[...]</span>
+<a name="rest_code_146fcc7d1d0b409a840baca8c46d47b1-3"></a><span class="n">String</span> <span class="n">cmd</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"pm install-create %1$s -S %2$d"</span><span class="o">,</span> <span class="n">parameters</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span> <span class="n">totalFileSize</span><span class="o">);</span>
+<a name="rest_code_146fcc7d1d0b409a840baca8c46d47b1-4"></a><span class="n">executeShellCommand</span><span class="o">(</span><span class="n">cmd</span><span class="o">,</span> <span class="n">receiver</span><span class="o">,</span> <span class="n">DdmPreferences</span><span class="o">.</span><span class="na">getTimeOut</span><span class="o">());</span>
+<a name="rest_code_146fcc7d1d0b409a840baca8c46d47b1-5"></a><span class="o">[...]</span>
+</pre>
+<p>A different invocation of
+<strong>executeShellCommand</strong>, now using <strong>DdmPreferences.getTimeOut()</strong> as a
+timeout value source. Summarizing - this only happens if you install
+multiple applications for your androidConnectedTest and you are using
+android device to test on that has api version that is equal or greater
+to 21. That is all cool that we had this little Computer Science
+Investigation, but how to fix that - i.e. how to have proper timeouts
+for your installations ? Ideally from somewhere you configure and/or
+invoke your builds. It turns out that gradle supports invoking just
+enough Java for us to use there. In your <strong>gradle.build</strong> as the very
+first lines:</p>
+<pre class="code groovy"><a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-1"></a><span class="n">println</span> <span class="s2">"setting global timeout for apk installation to 10 minutes"</span>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-2"></a><span class="n">com</span><span class="o">.</span><span class="na">android</span><span class="o">.</span><span class="na">ddmlib</span><span class="o">.</span><span class="na">DdmPreferences</span><span class="o">.</span><span class="na">setTimeOut</span><span class="o">(</span><span class="mi">600000</span><span class="o">)</span>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-3"></a>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-4"></a><span class="n">android</span> <span class="o">{</span>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-5"></a>        <span class="n">compileSdkVersion</span> <span class="n">compileSdk</span>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-6"></a>        <span class="n">buildToolsVersion</span> <span class="n">buildTools</span>
+<a name="rest_code_7254559bb20d4b16b74ab1f027cdedb3-7"></a><span class="o">[...]</span>
+</pre>
+<p>That's it. Invoke your android tests with
+<strong>ADB_INSTALL_TIMEOUT</strong> env variable set <strong>AND</strong> have the
+<strong>DddPreference</strong> set in your gradle.build as in the example above and
+you should be golden. Happy droiding !</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/10/17/tools-indicator-holder.html">Tools: precision test indicator holder</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-10-17T13:46:36+00:00">2015-10-17 13:46</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/10/17/tools-indicator-holder.html#disqus_thread" data-disqus-identifier="cache/posts/2015/10/17/tools-indicator-holder.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/cnc.html" rel="tag">cnc</a></li>
+           <li><a class="tag p-category" href="categories/gauge.html" rel="tag">gauge</a></li>
+           <li><a class="tag p-category" href="categories/meter.html" rel="tag">meter</a></li>
+           <li><a class="tag p-category" href="categories/router.html" rel="tag">router</a></li>
+           <li><a class="tag p-category" href="categories/tools.html" rel="tag">tools</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>This is the second part in the series of the tools I use. Tools that are
+surprisingly useful, tools that are not that obvious to find. Check out
+the first part
+<a class="reference external" href="https://blog.cyplo.net/2015/03/28/tools-pcb-holder/">here</a>. Today:
+how to calibrate the CNC axis without actually cutting anything ? Use a
+test indicator ! How to hold the meter steady though, ? Attach it to the
+frame of your router using the power of magnets ! Sample item on Amazon
+<a class="reference external" href="http://www.amazon.com/gp/product/B00OZA71H6/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=B00OZA71H6&amp;linkCode=as2&amp;tag=adventucomput-20&amp;linkId=6ZJKCJHMA2YON4LY">here</a>
+[affiliate link warning]</p>
+<p><a class="reference external" href="wp-content/uploads/2015/10/IMG_1389.jpg"><img alt="image0" src="wp-content/uploads/2015/10/IMG_1389-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/10/IMG_1391.jpg"><img alt="image1" src="wp-content/uploads/2015/10/IMG_1391-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/10/IMG_1390.jpg"><img alt="image2" src="wp-content/uploads/2015/10/IMG_1390-150x150.jpg"></a></p>
+<p>Despite being attached to the frame by its back instead of the bottom it
+still holds beautifully.</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/09/27/usb-3-0-virtualbox-vms.html">Enabling USB 3.0 in already existing Virtualbox VMs</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-09-27T12:09:05+00:00">2015-09-27 12:09</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/09/27/usb-3-0-virtualbox-vms.html#disqus_thread" data-disqus-identifier="cache/posts/2015/09/27/usb-3-0-virtualbox-vms.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/usb.html" rel="tag">usb</a></li>
+           <li><a class="tag p-category" href="categories/vbox.html" rel="tag">vbox</a></li>
+           <li><a class="tag p-category" href="categories/virtualbox.html" rel="tag">virtualbox</a></li>
+           <li><a class="tag p-category" href="categories/vm.html" rel="tag">vm</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>Just a quick note on how to get USB 3.0 in Virtualbox for VMs that were
+created with USB 1.1 support only. First, download VirtualBox Extension
+Pack from <a class="reference external" href="https://www.virtualbox.org/wiki/Downloads">here</a>. Install
+it. Then quit Virtualbox completely. Go to your directory that contains
+your virtual machine and edit <strong>.vbox</strong> file. Replace the whole
+<strong>&lt;USBController&gt;</strong> section with the following:</p>
+<pre class="code xml"><a name="rest_code_df30499bfcb34dd68c20058e581bfc42-1"></a><span class="nt">&lt;USB&gt;</span>
+<a name="rest_code_df30499bfcb34dd68c20058e581bfc42-2"></a>    <span class="nt">&lt;Controllers&gt;</span>
+<a name="rest_code_df30499bfcb34dd68c20058e581bfc42-3"></a>        <span class="nt">&lt;Controller</span> <span class="na">name=</span><span class="s">"xHCI"</span> <span class="na">type=</span><span class="s">"XHCI"</span><span class="nt">/&gt;</span>
+<a name="rest_code_df30499bfcb34dd68c20058e581bfc42-4"></a>    <span class="nt">&lt;/Controllers&gt;</span>
+<a name="rest_code_df30499bfcb34dd68c20058e581bfc42-5"></a>    <span class="nt">&lt;DeviceFilters/&gt;</span>
+<a name="rest_code_df30499bfcb34dd68c20058e581bfc42-6"></a><span class="nt">&lt;/USB&gt;</span>
+</pre>
+<p>That's it, let me know if it works for you !</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/09/02/swap-on-temp-disk.html">When life gives you temp space - make lemonade !</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-09-02T20:00:24+00:00">2015-09-02 20:00</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/09/02/swap-on-temp-disk.html#disqus_thread" data-disqus-identifier="cache/posts/2015/09/02/swap-on-temp-disk.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/azure.html" rel="tag">azure</a></li>
+           <li><a class="tag p-category" href="categories/linux.html" rel="tag">linux</a></li>
+           <li><a class="tag p-category" href="categories/swap.html" rel="tag">swap</a></li>
+           <li><a class="tag p-category" href="categories/temp.html" rel="tag">temp</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>Some VPS providers, e.g. Azure (I know..) provide you with 2 disks for
+your VPSes. One, of very limited size, system disk, and the other one,
+spacy but with not guarantees that the data survives reboot. Basically
+it means that you can have a small VPS, with a small amount of RAM but
+large temp disk space. Why this could be useful ? Imagine tasks with
+lots of mem requirements but that not need to be extra fast, where
+swapping is allowed. Like complex nightly builds. Here is a set of super
+simple scripts I've come up with to quickly boot up a system, and then
+in the background add a new swap file on the temp drive there. The temp
+drive is assumed to be under /mnt.</p>
+<pre class="code bash"><a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-1"></a>root@someazurehost:~# cat /etc/rc.local
+<a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-2"></a><span class="c1">#!/bin/sh -e</span>
+<a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-3"></a><span class="nb">set</span> -v
+<a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-4"></a>
+<a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-5"></a><span class="c1"># do not wait for swap to become online,</span>
+<a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-6"></a><span class="c1"># proceed with the boot further,</span>
+<a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-7"></a><span class="c1"># with swap being created in the background</span>
+<a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-8"></a>/etc/make_and_enable_swap <span class="p">&amp;</span>
+<a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-9"></a>
+<a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-10"></a><span class="nb">exit</span> <span class="m">0</span>
+</pre>
+<pre class="code bash"><a name="rest_code_baadb8f7b287400389f39751ca521e53-1"></a>root@someazurehost:~# cat /etc/make_and_enable_swap
+<a name="rest_code_baadb8f7b287400389f39751ca521e53-2"></a><span class="c1">#!/bin/sh</span>
+<a name="rest_code_baadb8f7b287400389f39751ca521e53-3"></a><span class="nb">set</span> -e
+<a name="rest_code_baadb8f7b287400389f39751ca521e53-4"></a><span class="nb">set</span> -v
+<a name="rest_code_baadb8f7b287400389f39751ca521e53-5"></a><span class="c1"># create new 2GB swap file</span>
+<a name="rest_code_baadb8f7b287400389f39751ca521e53-6"></a>dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/mnt/swap <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">2048</span>
+<a name="rest_code_baadb8f7b287400389f39751ca521e53-7"></a>chmod <span class="m">0600</span> /mnt/swap
+<a name="rest_code_baadb8f7b287400389f39751ca521e53-8"></a>mkswap /mnt/swap
+<a name="rest_code_baadb8f7b287400389f39751ca521e53-9"></a>swapon /mnt/swap
+</pre>
+<p>Don't forget to make <strong>/etc/make_and_enable_swap</strong> executable !
+Do not add this swap file to fstab, as it is being read before rc.local,
+and this may certainly result in a boot failure, as the swap file would
+not be ready yet.</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/08/12/containerized-zombie-spawner.html">Containerized zombie spawner</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-08-12T21:21:13+00:00">2015-08-12 21:21</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/08/12/containerized-zombie-spawner.html#disqus_thread" data-disqus-identifier="cache/posts/2015/08/12/containerized-zombie-spawner.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/docker.html" rel="tag">docker</a></li>
+           <li><a class="tag p-category" href="categories/init.html" rel="tag">init</a></li>
+           <li><a class="tag p-category" href="categories/jenkins.html" rel="tag">jenkins</a></li>
+           <li><a class="tag p-category" href="categories/pid-1.html" rel="tag">pid 1</a></li>
+           <li><a class="tag p-category" href="categories/reaper.html" rel="tag">reaper</a></li>
+           <li><a class="tag p-category" href="categories/zombie.html" rel="tag">zombie</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <p>Recently I was playing with a fully Dockerized setup of Jenkins at work
+and found a curious issue there. Whenever Jenkins was polling the git
+server the side effect was that it created a zombie ssh process. The
+issue is actually
+<a class="reference external" href="https://github.com/jenkinsci/docker/issues/54">remediated</a> by the
+Jenkins team now by <a class="reference external" href="https://github.com/jenkinsci/docker/commit/d5aea67dcae9d62fe4ca6ad961ffe66f65d9a591">explicitly
+using</a>
+a tiny init system called ...
+<a class="reference external" href="https://github.com/krallin/tini">tini,</a> started as the main
+container's process instead of just starting Jenkins there. This tiny
+tini thing can properly adopt and reap the children. I was all like -
+wow, what a great blog entry is coming at me. I was planning to describe
+how zombies come to existence on Linux and why Docker should, in my
+opinion, provide an adopter-reaper by default and other very interesting
+things ! But then I found a really excellent article by the
+<a class="reference external" href="http://www.phusion.nl/">Phusion</a> team
+<a class="reference external" href="https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/">here</a>
+explaining all that and more. It is very good. You should read it. That
+is it. The end. Happy reaping !</p>
+            </div>
+        </div>
+    
+        <nav class="postindexpager"><ul class="pager">
+<li class="previous">
+                <a href="index-8.html" rel="prev">Newer posts</a>
+            </li>
+            <li class="next">
+                <a href="index-6.html" rel="next">Older posts</a>
+            </li>
+        </ul></nav><script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

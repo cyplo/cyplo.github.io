@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about python)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/python.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Upload your site to Netlify using their incremental deployment API</title><link>https://blog.cyplo.net/posts/2017/03/netlify-incremental-deployer.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;I've recently switched to a setup where I do all my builds for this blog on &lt;a class="reference external" href="https://travis-ci.org/cyplo/blog"&gt;Travis&lt;/a&gt;. While doing so I needed to migrate away from using Netlify's internal build infrastructure. This resulted in a quick &lt;a class="reference external" href="https://github.com/cyplo/netlify_deployer"&gt;python script&lt;/a&gt; that allows you to upload arbitrary directory tree to Netlify and does so using their &lt;a class="reference external" href="https://www.netlify.com/docs/api/#deploying-to-netlify"&gt;incremental deployment API&lt;/a&gt;. All that means that while this site is quite big in size the deployments go rather quickly ! There are some &lt;a class="reference external" href="https://github.com/cyplo/netlify_deployer/issues"&gt;known issues&lt;/a&gt; but apart from them the script should just work for any custom Netlify deployment you would like to have. I use it on this very site, to have a preview of any PR before merging it as well as for deploying the main site after the PR is merged. I hope you will find it useful and please do not hesitate if you want to post an issue or a PR !&lt;/p&gt;</description><category>blog</category><category>deployment</category><category>netlify</category><category>python</category><guid>https://blog.cyplo.net/posts/2017/03/netlify-incremental-deployer.html</guid><pubDate>Mon, 20 Mar 2017 19:25:25 GMT</pubDate></item><item><title>Adding voltage and current measurements to the sunpowered Pi</title><link>https://blog.cyplo.net/posts/2014/04/21/adding-voltage-current-measurements-sunpowered-pi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Remember my &lt;a class="reference external" href="https://blog.cyplo.net/2014/02/16/sunpowered-server-setup/"&gt;sunpowered
+Pi&lt;/a&gt;
+installation on the balcony ? The only indication I had, since recently,
+on how well the system is doing was an LED blinking red when battery was
+low. Not really helpful in making predictions or making measurements
+over the time. I've searched for simple ADC solution to hook up into Pi
+and allow for some voltage and power measurements. I've decided on &lt;a class="reference external" href="http://www.abelectronics.co.uk/products/3/Raspberry-Pi/17/ADC-Pi-V2---Raspberry-Pi-Analogue-to-Digital-converter"&gt;ADC
+Pi&lt;/a&gt;,
+as it seemed very straightforward in its design and also comes with
+example python code. Did I say Python ?! I must admit that it is not at
+the top of my favourite languages list. But then I had fun. It turned
+out that Python has excellent&lt;a class="reference external" href="http://matplotlib.org/"&gt;graph plotting
+library&lt;/a&gt; as well as it is very well equipped
+with general purpose functions and hardware specific stuff support, like
+i2c. But back to the system design. The panel itself can generate up to
+about 30V under no load. Battery is 12V nominal but can get to 14.5V
+when charging, the specs say. ADC Pi however, can measure up to 5V. You
+have some resistors laying around you say ? Voltage divider it is. For
+current measurement I've used &lt;a class="reference external" href="http://www.pololu.com/product/1185"&gt;hall effect sensor
+module&lt;/a&gt; from Pololu. Summarising,
+I have 8 measurement lines, hooked up as follows:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;unused :D&lt;/li&gt;
+&lt;li&gt;voltage of the power line from Pi to current sensor&lt;/li&gt;
+&lt;li&gt;panel voltage&lt;/li&gt;
+&lt;li&gt;battery voltage&lt;/li&gt;
+&lt;li&gt;load voltage&lt;/li&gt;
+&lt;li&gt;regulated 12V rail voltage&lt;/li&gt;
+&lt;li&gt;regulated 5V rail voltage&lt;/li&gt;
+&lt;li&gt;current sensor reading voltage&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;It turned out that for the current measurement to be accurate I can't
+trust the voltage coming from the Pi to be stable. I actually measure
+that and use that to calculate the real reading. The docs round the hall
+sensor are not that obvious at the first sight, so here's the formula I
+came up with, for the greater good:&lt;/p&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;current = (measured_sensor_voltage - &lt;span class="pre"&gt;(voltage_powering_sensor/2))/0.185&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;Finally, sprinkle all of the above with &lt;a class="reference external" href="https://github.com/cyplo/sunpowered"&gt;some
+python&lt;/a&gt; and get the following:
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/voltages1.png"&gt;&lt;img alt="voltages1" src="https://blog.cyplo.net/wp-content/uploads/2014/04/voltages1-1024x480.png"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Looking at this you can spot 2 things. One - April the 5th
+was supercloudy superrainy and the battery did not get much charge. And
+the second being that on the average day the battery gets to the full
+capacity near the half of the sunny period. This is the data I was after
+! I think this means that I can add more batteries to the system and on
+a sunny day they will get filled up and this should suffice for couple
+of rainy days in a row. Here, get some photos as the bonus, also:&lt;/p&gt;
+&lt;p&gt;TODOs, for me, and everyone else, to remember that nothing is ever finished in the
+realm of hobby stuff:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;add graph for power usage&lt;/li&gt;
+&lt;li&gt;would be super cool to add the weather data to the graphs&lt;/li&gt;
+&lt;li&gt;clean up python stuff, add more unit tests there&lt;/li&gt;
+&lt;li&gt;write next post on the above ;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0947.jpg"&gt;&lt;img alt="image1" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0947-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0948.jpg"&gt;&lt;img alt="image2" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0948-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0949.jpg"&gt;&lt;img alt="image3" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0949-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0950.jpg"&gt;&lt;img alt="image4" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0950-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0951.jpg"&gt;&lt;img alt="image5" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0951-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0952.jpg"&gt;&lt;img alt="image6" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0952-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0953.jpg"&gt;&lt;img alt="image7" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0953-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0954.jpg"&gt;&lt;img alt="image8" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0954-150x150.jpg"&gt;&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0955.jpg"&gt;&lt;img alt="image9" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0955-150x150.jpg"&gt;&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>adc pi</category><category>current</category><category>measurement</category><category>pi</category><category>python</category><category>raspberry pi</category><category>sensor</category><category>sun</category><category>sunpowered</category><category>voltage</category><guid>https://blog.cyplo.net/posts/2014/04/21/adding-voltage-current-measurements-sunpowered-pi.html</guid><pubDate>Mon, 21 Apr 2014 14:39:13 GMT</pubDate></item></channel></rss>

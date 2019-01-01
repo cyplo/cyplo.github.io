@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about macos)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/macos.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Installing MacOSX Server 10.6 on VirtualBox</title><link>https://blog.cyplo.net/posts/2011/05/07/installing-macosx-server-on-virtualbox.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;It all started with my work assignment of installing MacOSX Server 10.6
+on the XServe rack. Of course nothing went really well. The universe
+keeps on picking up the most faulty scenarios for me, I think it's just
+less boring. Briefly speaking, after debugging some hardware problem
+with the CPU temperature meter I managed to install the base OSX server
+system there. Hardware boy inside me is not amused with Apple's ideas
+there. After that I needed to set up VMs with 10.6 64bit and 10.4 32bit
+on top of that. Why so if already having 10.6 as the base system ?
+Simply I wanted to avoid constant reinstallation of the base system, as
+the machines are meant to be used for development and testing. Also the
+XServe hardware was needed instead of classic blade system to meet Apple
+license requirements. Having the internet read twice I decided to give
+VirtualBox a try. My way of thinking was that I am already familliar
+with that piece of software and know it as a easy to use one. In
+addition to being pretty idiot-proof it also enables more enterprisely
+features like operating from the commandline only. So what's the deal ?
+Bring up VirtualBox GUI, click on new virtual machine creation button,
+choose MacOSXServer, insert the iso file made from the installation dvd
+and volia ? Not even remotely close. It appears that Apple has embedded
+some kind of valid processors db into the system and checks the
+processors present against it on every boot. Fine. But I am running this
+thing on the Apple hardware. The only configuration I managed to install
+and launch was single-core. Both 32 and 64bit guests seem to be working
+fine. But what's the point of having many cores there if only one can be
+used per a VM ? As with many other interesting problems I took it home.
+Some time after that I found brilliant blog pair by
+&lt;a class="reference external" href="http://prasys.info/"&gt;prasys&lt;/a&gt; and
+&lt;a class="reference external" href="http://blog.nawcom.com/"&gt;nawcom&lt;/a&gt;. It seems that the latter one
+produces what's called &lt;a class="reference external" href="http://blog.nawcom.com/?p=446"&gt;ModCD&lt;/a&gt; which
+allows booting with the processor checks disabled. Recipe for amd64:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;create new MacOSX vm in VirtualBox&lt;/li&gt;
+&lt;li&gt;change it to non-EFI type&lt;/li&gt;
+&lt;li&gt;boot ModCD&lt;/li&gt;
+&lt;li&gt;swap iso image for the one with the MacOS install&lt;/li&gt;
+&lt;li&gt;press f5&lt;/li&gt;
+&lt;li&gt;type -force64&lt;/li&gt;
+&lt;li&gt;press enter&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For me the installer crashed on the last step before reboot, but then it
+rebooted successfully and continued on with the installation. Don't
+forget to donate to nawcom if you can.&lt;/p&gt;&lt;/div&gt;</description><category>apple</category><category>mac</category><category>macos</category><category>macosx</category><category>processor</category><category>server</category><category>virtualbox</category><category>xserve</category><guid>https://blog.cyplo.net/posts/2011/05/07/installing-macosx-server-on-virtualbox.html</guid><pubDate>Sat, 07 May 2011 14:23:30 GMT</pubDate></item></channel></rss>

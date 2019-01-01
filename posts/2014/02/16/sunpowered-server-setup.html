@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Sunpowered server setup | Adventurous Computing</title>
+<link href="../../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2014/02/16/sunpowered-server-setup.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="Sunpowered server setup">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2014/02/16/sunpowered-server-setup.html">
+<meta property="og:description" content="Remember my NAS
+stuff ? It
+turned out great ! Very reliable storage, I had a disk failure once and
+haven't noticed for some time because all the files were just there.
+Hardware enhanced virtualization">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2014-02-16T21:13:46Z">
+<meta property="article:tag" content="photovoltaic">
+<meta property="article:tag" content="pi">
+<meta property="article:tag" content="pv">
+<meta property="article:tag" content="raspberry pi">
+<meta property="article:tag" content="raspberrypi">
+<meta property="article:tag" content="server">
+<meta property="article:tag" content="solar">
+<meta property="article:tag" content="sun">
+<meta property="article:tag" content="sunpowered">
+<meta property="article:tag" content="wrt54gl">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">Sunpowered server setup</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2014-02-16T21:13:46+00:00">2014-02-16 21:13</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../../categories/photovoltaic.html" rel="tag">photovoltaic</a></li>
+           <li><a class="tag p-category" href="../../../../categories/pi.html" rel="tag">pi</a></li>
+           <li><a class="tag p-category" href="../../../../categories/pv.html" rel="tag">pv</a></li>
+           <li><a class="tag p-category" href="../../../../categories/raspberry-pi.html" rel="tag">raspberry pi</a></li>
+           <li><a class="tag p-category" href="../../../../categories/raspberrypi.html" rel="tag">raspberrypi</a></li>
+           <li><a class="tag p-category" href="../../../../categories/server.html" rel="tag">server</a></li>
+           <li><a class="tag p-category" href="../../../../categories/solar.html" rel="tag">solar</a></li>
+           <li><a class="tag p-category" href="../../../../categories/sun.html" rel="tag">sun</a></li>
+           <li><a class="tag p-category" href="../../../../categories/sunpowered.html" rel="tag">sunpowered</a></li>
+           <li><a class="tag p-category" href="../../../../categories/wrt54gl.html" rel="tag">wrt54gl</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<p>Remember my <a class="reference external" href="https://blog.cyplo.net/2013/03/31/building-nas/">NAS</a>
+<a class="reference external" href="https://blog.cyplo.net/2013/05/26/building-nas-software/">stuff</a> ? It
+turned out great ! Very reliable storage, I had a disk failure once and
+haven't noticed for some time because all the files were just there.
+Hardware enhanced virtualization is another great stuff. I ended up
+migrating  all my of infrastructure there, each service in separate
+virtual machine; email, calendar, contacts, tor node and such. Only
+caveat ? Power consumption. This setup just eats Watts. About 50W
+constant power usage is not something you want to have turned on
+24h/day. One such day I had a realization that this giant ball of plasma
+that is hanging out there might be of some use. One side of my balcony
+is to the south somewhat, gets lots of sunshine no matter whether it's
+morning or evening. Why not exploit that ? That's how my first
+solarpowered server setup was born. Enjoy the photos ! Also please find
+upgrade options and general notes after the break ! There's a <a class="reference external" href="https://blog.cyplo.net/2014/04/21/adding-voltage-current-measurements-sunpowered-pi/">part
+2</a>of
+this post you might be interested in as well.</p>
+<p>Setup itself consists of:</p>
+<ul class="simple">
+<li>144W solar panel</li>
+<li>33Ah 12V battery</li>
+<li>trusty old WRT54GL</li>
+<li>Raspberry Pi model B</li>
+<li>charging controller</li>
+<li>12V and 5V step up/step down converters. Don't use linear converters,
+especially for the 5V rail. As these will give you the 5V by
+dissipating the difference from 12V directly onto their heatsinks,
+huge power loses.</li>
+<li>around one hundred M3 hexhead screws with nuts and washers. yup.</li>
+</ul>
+<p>The router acts as wireless bridge to my home WiFi network, there are no
+cables running from inside the house to the balcony. Router and raspi
+use about 8W total. It is winter in here now and  this seems to be
+holding nicely, panel being able to charge the battery for the night
+during relatively short day, even if the weather is bad. However, I want
+more computing power there and this setup does not seem to be very
+scalable. Another raspi model B means another 4W constant power usage. I
+estimate the whole thing will start loosing power during the night with
+about 15W constant consumption. Which is okay for stuff like email
+server, but not really for blog or other sites. Hence my first idea for
+improvement: discard router and change for the separate raspis, model A,
+with wireless network cards each. Should be much better. Some general
+notes:</p>
+<ul class="simple">
+<li>Use equipment specifically designed for DC. You want to disconnect
+the solar panel or battery sometimes. To be able to to that without
+that fancy sparks show you need proper DC switch able to handle high
+currents. AC switches as any other equipment dragged from AC land are
+not really a choice. If you use AC mains switch to switch high
+current DC you might end up with nice weld in place of your switch.
+Same for fuses.</li>
+<li>My ability to cut acrylic to line is nonexistent. Probably maybe use
+better tools ? Or even, since I now know how the box should be cut -
+just order pieces for box 2.0 cut to size already.</li>
+<li>Same for my ability to make stuff look nice and clean</li>
+<li>I like the look of bare PCBs inside of transparent box though</li>
+<li>The box itself seems to be holding up nicely against below zero
+temperatures as well as rain.</li>
+<li>Air flow is nice, nothing is heating up. Air enters from the bottom,
+heats up a bit and moves up. Goes through the holes on the left, into
+the funnel and exist on the right. Water does not enter as there is
+pretty steep slope there.</li>
+<li>Watch for SD card corruption. Most often, the cause is having 5V not
+really being 5V. Raspi does not really like lower voltages. One
+preventive measure would be not to use some cheap voltage converters.
+Another is to mount SD card with very conservative options. I use</li>
+</ul>
+<p><tt class="docutils literal">/dev/mmcblk0p2 / ext4 defaults,rw,data=journal,journal_checksum,discard 0 1</tt></p>
+<ul class="simple">
+<li>Make sure your electronic components are rated for -40C to +80C</li>
+<li>I'm a bit worried of battery being in such proximity to the airco
+unit. We'll see in the summer whether it needs relocation, for now
+the unit is completely powered off.</li>
+<li>mountain climbing equipment comes in handy when hanging stuff from
+your balcony</li>
+</ul>
+<p>Future improvements:</p>
+<ul class="simple">
+<li>most pressing: get the power usage down by changing to model A + wifi
+card</li>
+<li>add monitoring, something like ADC connected to raspi's GPIO ports,
+gathering voltages all across. I would like to get readings on: solar
+panel voltage, battery voltage, 5V rail actual voltage and the whole
+system power usage at least</li>
+<li>more safety fuses and bypass diodes</li>
+</ul>
+<p><a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0912.jpg"><img alt="image0" src="../../../../wp-content/uploads/2014/02/IMG_0912-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0913.jpg"><img alt="image1" src="../../../../wp-content/uploads/2014/02/IMG_0913-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0915.jpg"><img alt="image2" src="../../../../wp-content/uploads/2014/02/IMG_0915-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0916.jpg"><img alt="image3" src="../../../../wp-content/uploads/2014/02/IMG_0916-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0917.jpg"><img alt="image4" src="../../../../wp-content/uploads/2014/02/IMG_0917-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0918.jpg"><img alt="image5" src="../../../../wp-content/uploads/2014/02/IMG_0918-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0921.jpg"><img alt="image6" src="../../../../wp-content/uploads/2014/02/IMG_0921-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0922.jpg"><img alt="image7" src="../../../../wp-content/uploads/2014/02/IMG_0922-150x150.jpg"></a>
+<a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0923.jpg"><img alt="image8" src="../../../../wp-content/uploads/2014/02/IMG_0923-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0925.jpg"><img alt="image9" src="../../../../wp-content/uploads/2014/02/IMG_0925-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0927.jpg"><img alt="image10" src="../../../../wp-content/uploads/2014/02/IMG_0927-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0930.jpg"><img alt="image11" src="../../../../wp-content/uploads/2014/02/IMG_0930-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0932.jpg"><img alt="image12" src="../../../../wp-content/uploads/2014/02/IMG_0932-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0933.jpg"><img alt="image13" src="../../../../wp-content/uploads/2014/02/IMG_0933-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0934.jpg"><img alt="image14" src="../../../../wp-content/uploads/2014/02/IMG_0934-150x150.jpg"></a>
+<a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0935.jpg"><img alt="image15" src="../../../../wp-content/uploads/2014/02/IMG_0935-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0937.jpg"><img alt="image16" src="../../../../wp-content/uploads/2014/02/IMG_0937-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0940.jpg"><img alt="image17" src="../../../../wp-content/uploads/2014/02/IMG_0940-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0941.jpg"><img alt="image18" src="../../../../wp-content/uploads/2014/02/IMG_0941-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_0942.jpg"><img alt="image19" src="../../../../wp-content/uploads/2014/02/IMG_0942-150x150.jpg"></a> <a class="reference external" href="../../../../wp-content/uploads/2014/02/IMG_09381.jpg"><img alt="image20" src="../../../../wp-content/uploads/2014/02/IMG_09381-150x150.jpg"></a></p>
+</div>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../11/today-fight-back.html" rel="prev" title="Today we fight back">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../24/wifi-raspberrypi.html" rel="next" title="WiFi on RaspberryPi">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2014/02/16/sunpowered-server-setup.html",
+        disqus_title="Sunpowered server setup",
+        disqus_identifier="cache/posts/2014/02/16/sunpowered-server-setup.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

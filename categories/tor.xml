@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about tor)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/tor.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:12 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Tor talk</title><link>https://blog.cyplo.net/posts/2014/11/01/tor-talk.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;I gave a talk this Monday, an important one I think. The one from the
+kind of spreading  knowledge on the safe internet usage to people not
+necessarily of the tech background. This was my first one given to a
+such audience and to add to it all, it was given in Polish. The biggest
+challenge ? Finding good equivalent for the English tech terms. I think
+the talks went quite okay and the discussion afterwards was quite
+lively. I said a bit on how the internet works and what's wrong with
+that, to transition later to what problems Tor addresses and which it
+does not. I tried to emphasize that using Tor does not make you
+automatically immune to the dangers of the internet. Big thanks to the
+organizers, &lt;a class="reference external" href="http://praxis.ue.wroc.pl/"&gt;Praxis&lt;/a&gt; student group from
+the Wroclaw University of Economy. You can find my slides' sources
+&lt;a class="reference external" href="https://github.com/cyplo/talks/tree/master/tor_for_beginners"&gt;here&lt;/a&gt;,
+along with speaker notes.&lt;/p&gt;</description><category>praxis</category><category>speaking</category><category>talk</category><category>tor</category><guid>https://blog.cyplo.net/posts/2014/11/01/tor-talk.html</guid><pubDate>Sat, 01 Nov 2014 12:19:49 GMT</pubDate></item></channel></rss>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about cnc)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/cnc.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:12 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Tools: precision test indicator holder</title><link>https://blog.cyplo.net/posts/2015/10/17/tools-indicator-holder.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;This is the second part in the series of the tools I use. Tools that are
+surprisingly useful, tools that are not that obvious to find. Check out
+the first part
+&lt;a class="reference external" href="https://blog.cyplo.net/2015/03/28/tools-pcb-holder/"&gt;here&lt;/a&gt;. Today:
+how to calibrate the CNC axis without actually cutting anything ? Use a
+test indicator ! How to hold the meter steady though, ? Attach it to the
+frame of your router using the power of magnets ! Sample item on Amazon
+&lt;a class="reference external" href="http://www.amazon.com/gp/product/B00OZA71H6/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;amp;camp=1789&amp;amp;creative=9325&amp;amp;creativeASIN=B00OZA71H6&amp;amp;linkCode=as2&amp;amp;tag=adventucomput-20&amp;amp;linkId=6ZJKCJHMA2YON4LY"&gt;here&lt;/a&gt;
+[affiliate link warning]&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/10/IMG_1389.jpg"&gt;&lt;img alt="image0" src="https://blog.cyplo.net/wp-content/uploads/2015/10/IMG_1389-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/10/IMG_1391.jpg"&gt;&lt;img alt="image1" src="https://blog.cyplo.net/wp-content/uploads/2015/10/IMG_1391-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/10/IMG_1390.jpg"&gt;&lt;img alt="image2" src="https://blog.cyplo.net/wp-content/uploads/2015/10/IMG_1390-150x150.jpg"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Despite being attached to the frame by its back instead of the bottom it
+still holds beautifully.&lt;/p&gt;&lt;/div&gt;</description><category>cnc</category><category>gauge</category><category>meter</category><category>router</category><category>tools</category><guid>https://blog.cyplo.net/posts/2015/10/17/tools-indicator-holder.html</guid><pubDate>Sat, 17 Oct 2015 13:46:36 GMT</pubDate></item><item><title>My CNC machining workflow</title><link>https://blog.cyplo.net/posts/2015/05/28/cnc-workflow.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Hello ! Today we'll talk about driving CNC machines, toolpaths and
+Debian, so stay tuned ! I have a separate old PC for driving the CNC
+machine via parallel port. This is, as they say, the Only Proper Way and
+It Was Always Like That. I'm thinking about changing this to
+usb+&lt;a class="reference external" href="https://github.com/grbl/grbl"&gt;grbl&lt;/a&gt; in the future then ;) Up
+till now, my workflow went as follows;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Do the research and drawing/parts modeling in FreeCad, on my main workstation&lt;/li&gt;
+&lt;li&gt;Export to e.g. DXF&lt;/li&gt;
+&lt;li&gt;Import in HeeksCad&lt;/li&gt;
+&lt;li&gt;Design machining operations, export gcode&lt;/li&gt;
+&lt;li&gt;Copy gcode to a network drive&lt;/li&gt;
+&lt;li&gt;Switch the monitor and keyboard to the one of the old PC&lt;/li&gt;
+&lt;li&gt;Open gcode in LinuxCNC and go&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;What happens if it's not perfect at first try though ?! Most commonly the issue  is with the
+toolpath, like I want to change feeds or speeds or depth of cut, rarely
+it is with the part itself, fortunately. It may have something to do
+with the fact that I'm mostly working with other people's parts for now
+;) Anyway, to do any correction I need to switch back to the main
+workstation, correct in Heeks, re-export to the network drive and switch
+back, reimport. Not very annoying but not very convenient either. But
+wait. What if...I install Heeks on the old PC ?! It's running
+&lt;a class="reference external" href="http://linuxcnc.org/"&gt;LinuxCNC&lt;/a&gt; realtime distro, which is based on
+Debian wheezy. Heeks packages are available prepackaged for Ubuntu only.
+With the help of the
+&lt;a class="reference external" href="https://code.google.com/p/heekscad/wiki/BuildDebianPackages"&gt;documentation&lt;/a&gt;
+and the comments there and in other corners of the internet I was able
+to get this little script done:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-2"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-5"&gt;&lt;/a&gt;sudo apt-get update
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-6"&gt;&lt;/a&gt;sudo apt-get -y install liboce-visualization-dev libwxgtk2.8-dev libgtkglext1-dev python-dev build-essential bzr git libboost-dev libboost-python-dev subversion debhelper cmake liboce-ocaf2 liboce-ocaf-dev oce-draw
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-7"&gt;&lt;/a&gt;mkdir heeks_build
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-8"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; heeks_build
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-9"&gt;&lt;/a&gt;svn checkout http://libarea.googlecode.com/svn/trunk/ libarea
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-10"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; libarea
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-11"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-12"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-13"&gt;&lt;/a&gt;sudo dpkg -i libarea*.deb python-area*.deb
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-14"&gt;&lt;/a&gt;svn checkout http://heekscad.googlecode.com/svn/trunk/ heekscad
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-15"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; heekscad
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-16"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-18"&gt;&lt;/a&gt;sudo dpkg -i *heeks*.deb
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-19"&gt;&lt;/a&gt;svn checkout http://heekscnc.googlecode.com/svn/trunk/ heekscnc
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-20"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; heekscnc
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-21"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-22"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-23"&gt;&lt;/a&gt;git clone https://github.com/aewallin/opencamlib.git
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-24"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; opencamlib
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-25"&gt;&lt;/a&gt;bzr branch lp:~neomilium/opencamlib/packaging debian
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-26"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-27"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-28"&gt;&lt;/a&gt;sudo dpkg -i python-ocl*.deb
+&lt;a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-29"&gt;&lt;/a&gt;sudo dpkg -i heekscnc*.deb
+&lt;/pre&gt;&lt;p&gt;Run this on your LinuxCNC machine and that's it. It will download and
+build all the dependencies and Heeks CAD and CAM packages. This way, my
+current workflow goes more like this:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Do the research and drawing/parts modeling in FreeCad, on my main workstation&lt;/li&gt;
+&lt;li&gt;Export to e.g. DXF to a network drive&lt;/li&gt;
+&lt;li&gt;Switch the monitor and keyboard to the one of the old PC&lt;/li&gt;
+&lt;li&gt;Import in HeeksCad&lt;/li&gt;
+&lt;li&gt;Design machining operations, export gcode&lt;/li&gt;
+&lt;li&gt;Open gcode in LinuxCNC and go&lt;/li&gt;
+&lt;li&gt;Repeat last 2 steps if necessary - no machine switching&lt;/li&gt;
+&lt;/ul&gt;&lt;/div&gt;</description><category>cnc</category><category>debian</category><category>grbl</category><category>heeks</category><category>heekscad</category><category>heekscnc</category><category>linux</category><category>linuxcnc</category><category>machining</category><category>wheezy</category><guid>https://blog.cyplo.net/posts/2015/05/28/cnc-workflow.html</guid><pubDate>Thu, 28 May 2015 19:01:33 GMT</pubDate></item><item><title>CNC router arrives</title><link>https://blog.cyplo.net/posts/2015/04/26/cnc-router-arrives.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;After 2 months of waiting - my CNC router arrives. 8 weeks lead time
+they said - 7 weeks and 4 days it was ! Who are they ?
+&lt;a class="reference external" href="http://tanie-cnc.pl/"&gt;TanieCNC&lt;/a&gt; people [CheapCNC in Polish :].
+Although it may look like they don't know how to make websites AND their
+name does not instill a lot of confidence - but girl, they certainly
+know how to weld and make precise machinery ! The size of the package
+caught me off guard, I've spent an hour disassembling the crate in full
+sun. After that I wasn't able to get it through the stairs myself,
+fortunately a friendly neighbour gave me their pair of hands. Lifting
+the machine by 2 people is okay, it's still not lightweight, but
+bearable. Putting it on the table was a different affair entirely.
+Careful not to damage anything, especially the motor assemblies - we've
+put it on a improptu wood ramp. Using heavy duty straps, we've lifted it
+up little by little. Then some inspection - the quality is really
+superb, especially of the metal frame ! After that I got an old PC with
+Windows XP and parallel port running Mach3 software - I wanted to set it
+up as in any other shop at start. Later on I'm planning on moving to
+LinuxCNC and then gradually off parallel port on to a USB stack,
+something more like an arduino parsing gcode and driving motors instead
+of relying of the accurate timing of the PC. TODOs:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;add an MDF bed layer on top of existing bed&lt;/li&gt;
+&lt;li&gt;get better clamps&lt;/li&gt;
+&lt;li&gt;get more router bits&lt;/li&gt;
+&lt;li&gt;get a vacuum attachment for the spindle&lt;/li&gt;
+&lt;li&gt;move to LinuxCNC&lt;/li&gt;
+&lt;li&gt;move off parallel-port driving&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_20150424_160003-e1430045532334.jpg"&gt;&lt;img alt="image0" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_20150424_160003-e1430045532334-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_20150424_161735-e1430045547777.jpg"&gt;&lt;img alt="image1" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_20150424_161735-e1430045547777-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1254.jpg"&gt;&lt;img alt="image2" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1254-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1255.jpg"&gt;&lt;img alt="image3" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1255-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1257.jpg"&gt;&lt;img alt="image4" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1257-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1261.jpg"&gt;&lt;img alt="image5" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1261-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1262.jpg"&gt;&lt;img alt="image6" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1262-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1263.jpg"&gt;&lt;img alt="image7" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1263-150x150.jpg"&gt;&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1264.jpg"&gt;&lt;img alt="image8" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1264-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1266.jpg"&gt;&lt;img alt="image9" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1266-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1267-e1430045605467.jpg"&gt;&lt;img alt="image10" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1267-e1430045605467-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1268.jpg"&gt;&lt;img alt="image11" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1268-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1270.jpg"&gt;&lt;img alt="image12" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1270-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1272.jpg"&gt;&lt;img alt="image13" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1272-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1273-e1430045590746.jpg"&gt;&lt;img alt="image14" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1273-e1430045590746-150x150.jpg"&gt;&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1274-e1430045623221.jpg"&gt;&lt;img alt="image15" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1274-e1430045623221-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1276-e1430045638798.jpg"&gt;&lt;img alt="image16" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1276-e1430045638798-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1277.jpg"&gt;&lt;img alt="image17" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1277-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1278.jpg"&gt;&lt;img alt="image18" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1278-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1282.jpg"&gt;&lt;img alt="image19" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1282-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1279.jpg"&gt;&lt;img alt="image20" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1279-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1280.jpg"&gt;&lt;img alt="image21" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1280-150x150.jpg"&gt;&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1281.jpg"&gt;&lt;img alt="image22" src="https://blog.cyplo.net/wp-content/uploads/2015/04/IMG_1281-150x150.jpg"&gt;&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>cnc</category><category>router</category><guid>https://blog.cyplo.net/posts/2015/04/26/cnc-router-arrives.html</guid><pubDate>Sun, 26 Apr 2015 13:17:05 GMT</pubDate></item></channel></rss>

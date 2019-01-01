@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about wallet)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/wallet.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:12 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Bitcoin wallet recovery using Photorec</title><link>https://blog.cyplo.net/posts/2012/04/01/bitcoin-wallet-recovery-photorec.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Ever cried over damaged disk holding your bitcoin wallet ? Ever
+formatted storage holding a perfectly valid and the only copy of your
+wallet.dat ? Yes, me too. Well, there's
+&lt;a class="reference external" href="http://www.cgsecurity.org/wiki/PhotoRec"&gt;Photorec&lt;/a&gt;, opensource file
+recovery software. It just skips the partition and filesystem info and
+scans for plain file signatures on the disk. Unfortunately it does not
+recognize Bitcoin's Wallet as a file format. Bitcoin wiki
+&lt;a class="reference external" href="https://en.bitcoin.it/wiki/Wallet"&gt;states&lt;/a&gt; that wallet.dat is just a
+good old BerkeleyDB. Just let me check that with the famous file
+command:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_62f085e076a84652b36220a3f3ce45de-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;[cyryl@uglybook ~]$&lt;/span&gt; file .bitcoin/wallet.dat
+&lt;a name="rest_code_62f085e076a84652b36220a3f3ce45de-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;.bitcoin/wallet.dat: Berkeley DB (Btree, version 9, native byte-order)&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;That is right. Photorec however, has its own file-type
+detection magic, for the reason unknown to me. Let's see whether it
+works on the wallet.&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_b2c21b82c0714a6da79a43bdf7c8fee7-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;[cyryl@uglybook ~]$&lt;/span&gt; fidentify .bitcoin/wallet.dat
+&lt;a name="rest_code_b2c21b82c0714a6da79a43bdf7c8fee7-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;.bitcoin/wallet.dat: unknown&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Uhoh. Do not abandon hope for not all is lost ! Photorec &lt;a class="reference external" href="http://www.cgsecurity.org/wiki/Add_your_own_extension_to_PhotoRec"&gt;provides a
+way&lt;/a&gt;
+for you to add custom signatures. The only missing ingredient appears to
+be the knowledge of &lt;strong&gt;file&lt;/strong&gt;. Just check your linux installation for
+&lt;strong&gt;file&lt;/strong&gt;'s detection signatures. On my system these are to be found
+under &lt;strong&gt;/usr/share/misc/magic&lt;/strong&gt; We need file extensions, offset and some
+magic number for Photorec to work. Well, extension is &lt;strong&gt;.dat&lt;/strong&gt;, magics
+and offsets are stored in the file mentioned above. Translate offsets
+from decimal-based to hexs and take care of endianess &lt;em&gt;et volia&lt;/em&gt;&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;[cyryl@uglybook ~]#&lt;/span&gt; cat .photorec.sig
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0x0 0x00061561&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0x0 0x61150600&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0x0 0x00053162&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0x0 0x62310500&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x00061561&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x61150600&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x00053162&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x62310500&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x00042253&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-11"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x53220400&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x00040988&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x88090400&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;That is it. Happy wallet recovery.&lt;/p&gt;&lt;/div&gt;</description><category>bitcoin</category><category>photorec</category><category>recovery</category><category>signature</category><category>wallet</category><category>wallet.dat</category><guid>https://blog.cyplo.net/posts/2012/04/01/bitcoin-wallet-recovery-photorec.html</guid><pubDate>Sun, 01 Apr 2012 21:06:01 GMT</pubDate></item></channel></rss>

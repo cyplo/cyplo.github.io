@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>galleries | Adventurous Computing</title>
+<link href="../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/galleries/index.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../assets/css/mermaid.forest.css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<style type="text/css">
+    .image-block {
+        display: inline-block;
+    }
+    .flowr_row {
+        width: 100%;
+    }
+    </style>
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    
+<nav class="breadcrumbs"><ul class="breadcrumb">
+<li>galleries</li>
+</ul></nav><h1>galleries</h1>
+    <ul>
+<li><a href="30C3/"><i class="icon-folder-open"></i> 30C3</a></li>
+        <li><a href="PioneerSE50/"><i class="icon-folder-open"></i> PioneerSE50</a></li>
+    </ul>
+<div id="gallery_container"></div>
+
+             
+        <footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../assets/js/jquery.timeago.js" type="text/javascript"></script><script src="../assets/js/flowr.js"></script><script>
+jsonContent = [];
+flowr(document.querySelectorAll("#gallery_container")[0], {
+        data : jsonContent,
+        height : 180*.6,
+        padding: 5,
+        rows: -1,
+        render : function(params) {
+            // Just return a div, string or a dom object, anything works fine
+            var img = document.createElement("img");
+            img.setAttribute('src', params.itemData.url_thumb);
+            img.setAttribute('width', params.width);
+            img.setAttribute('height', params.height);
+            img.setAttribute('alt', params.itemData.title);
+            img.style.maxWidth = '100%';
+            link = document.createElement("a");
+            link.setAttribute('href', params.itemData.url);
+            link.setAttribute('class', 'image-reference');
+            div = document.createElement("div");
+            div.setAttribute('class', 'image-block');
+            div.setAttribute('title', params.itemData.title);
+            div.setAttribute('data-toggle', "tooltip")
+            link.append(img);
+            div.append(link);
+            //div.hover(div.tooltip());
+            return div;
+        },
+        itemWidth : function(data) { return data.size.w; },
+        itemHeight : function(data) { return data.size.h; },
+        complete : function(params) {
+            if( jsonContent.length > params.renderedItems ) {
+                nextRenderList = jsonContent.slice( params.renderedItems );
+            }
+        }
+    });
+    baguetteBox.run('#gallery_container', {
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+</script>
+</body>
+</html>

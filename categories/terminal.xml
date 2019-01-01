@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about terminal)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/terminal.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>The best terminal emulator for Windows 10's Bash or how to run X applications</title><link>https://blog.cyplo.net/posts/2016/07/06/terminal-emulator-windows-10-bash.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;div class="line-block"&gt;
+&lt;div class="line"&gt;&lt;strong&gt;update as of 03/2017&lt;/strong&gt;&lt;/div&gt;
+&lt;div class="line"&gt;As this article is by far the most popular on my site right now I feel that an update is necessary, as the landscape evolved a bit since the original publish date.&lt;/div&gt;
+&lt;div class="line"&gt;&lt;a class="reference external" href="https://conemu.github.io/"&gt;Conemu&lt;/a&gt; started to support Bash on Windows properly now and this is what I settled on in the end.&lt;/div&gt;
+&lt;div class="line"&gt;The article below is still relevant for &lt;em&gt;the running X applications on Windows&lt;/em&gt; part though.&lt;/div&gt;
+&lt;/div&gt;
+&lt;hr class="docutils"&gt;
+&lt;p&gt;I've been playing a bit with
+&lt;a class="reference external" href="https://mikegerwitz.com/2016/04/GNU-kWindows"&gt;GNU/kWindows&lt;/a&gt; a.k.a.
+Bash on Windows a.k.a Windows Subsystem for Linux (Beta). I was
+especially interested whether I can use my regular Linux
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles/"&gt;dotfiles&lt;/a&gt; to recreate my working
+environment of zsh + tmux + vim. The biggest troubles I had were with
+the terminal emulator. While the default one, invoked by saying &lt;strong&gt;bash&lt;/strong&gt;
+is much better than powershell or cmd.exe already - it lacks some things
+I've learned to rely on, like 256-colour palette support. Thus the
+search for the ultimate terminal emulator begun. I tried &lt;strong&gt;ConEmu&lt;/strong&gt;,
+&lt;strong&gt;cmder&lt;/strong&gt; and their spinoffs to no avail. Either the colours were
+lacking, or the emulator would swallow up certain strokes like the arrow
+keys. Then I thought - hey, I use &lt;strong&gt;terminator&lt;/strong&gt; on Linux, maybe it
+would be possible to use it here as well. To my surprise the answer was - yes !&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;install Windows Subsystem for Linux&lt;/li&gt;
+&lt;li&gt;restart Windows&lt;/li&gt;
+&lt;li&gt;install &lt;a class="reference external" href="https://sourceforge.net/projects/vcxsrv"&gt;VcXsrv&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;run VcXsrv&lt;/li&gt;
+&lt;li&gt;invoke the following from the bash console:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_d9e954716d854d5ab1446314edbd9e02-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;sudo apt-get install terminator&lt;/span&gt;
+&lt;a name="rest_code_d9e954716d854d5ab1446314edbd9e02-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;DISPLAY=:0 terminator -u&lt;/span&gt;
+&lt;/pre&gt;&lt;ul class="simple"&gt;
+&lt;li&gt;profit !&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2016/07/Capture.png"&gt;&lt;img alt="Capture" class="size-large wp-image-2136" src="https://blog.cyplo.net/wp-content/uploads/2016/07/Capture-1024x525.png" style="width: 1024px; height: 525px;"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The font rendering is not ideal and the borderless mode does
+not work, but hey, it is quite usable nonetheless ! It even has
+bidirectional clipboard sharing with Windows' windows, which is good.
+P.S. konsole and gnome-terminal do seem to have troubles launching
+(crashy-crashes there)&lt;/p&gt;&lt;/div&gt;</description><category>bash</category><category>emulator</category><category>linux</category><category>terminal</category><category>terminator</category><category>windows 10</category><guid>https://blog.cyplo.net/posts/2016/07/06/terminal-emulator-windows-10-bash.html</guid><pubDate>Wed, 06 Jul 2016 19:21:13 GMT</pubDate></item><item><title>Changing Terminal preferences in Gnome 3</title><link>https://blog.cyplo.net/posts/2014/03/29/changing-terminal-preferences-gnome-3.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;It turns out this was not that obvious, at least for me, how to change
+various profile preferences for Gnome Terminal under Gnome 3. You can go
+and fetch the list of profiles this way:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_407e743fb40b46c595ddb563d10aca3b-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf list /org/gnome/terminal/legacy/profiles:/&lt;/span&gt;
+&lt;a name="rest_code_407e743fb40b46c595ddb563d10aca3b-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;And then you can use the profile id to list and change various settings:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf list /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;foreground-color&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;login-shell&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;palette&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;use-system-font&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;use-theme-colors&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;font&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;bold-color-same-as-fg&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;bold-color&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;background-color&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-11"&gt;&lt;/a&gt;&lt;span class="go"&gt;audible-bell&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-12"&gt;&lt;/a&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Inconsolata for Powerline Medium 18'"&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/login-shell true&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>commandline</category><category>dconf</category><category>font</category><category>gnome</category><category>gnome3</category><category>shell</category><category>terminal</category><guid>https://blog.cyplo.net/posts/2014/03/29/changing-terminal-preferences-gnome-3.html</guid><pubDate>Sat, 29 Mar 2014 22:34:21 GMT</pubDate></item></channel></rss>

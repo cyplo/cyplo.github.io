@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Boldly go where no programmer has gone before.">
+<meta name="viewport" content="width=device-width">
+<title>Adventurous Computing (old posts, page 6) | Adventurous Computing</title>
+<link href="assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/index-6.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="assets/css/mermaid.forest.css">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/05/28/cnc-workflow.html">My CNC machining workflow</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-05-28T19:01:33+00:00">2015-05-28 19:01</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/05/28/cnc-workflow.html#disqus_thread" data-disqus-identifier="cache/posts/2015/05/28/cnc-workflow.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/cnc.html" rel="tag">cnc</a></li>
+           <li><a class="tag p-category" href="categories/debian.html" rel="tag">debian</a></li>
+           <li><a class="tag p-category" href="categories/grbl.html" rel="tag">grbl</a></li>
+           <li><a class="tag p-category" href="categories/heeks.html" rel="tag">heeks</a></li>
+           <li><a class="tag p-category" href="categories/heekscad.html" rel="tag">heekscad</a></li>
+           <li><a class="tag p-category" href="categories/heekscnc.html" rel="tag">heekscnc</a></li>
+           <li><a class="tag p-category" href="categories/linux.html" rel="tag">linux</a></li>
+           <li><a class="tag p-category" href="categories/linuxcnc.html" rel="tag">linuxcnc</a></li>
+           <li><a class="tag p-category" href="categories/machining.html" rel="tag">machining</a></li>
+           <li><a class="tag p-category" href="categories/wheezy.html" rel="tag">wheezy</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>Hello ! Today we'll talk about driving CNC machines, toolpaths and
+Debian, so stay tuned ! I have a separate old PC for driving the CNC
+machine via parallel port. This is, as they say, the Only Proper Way and
+It Was Always Like That. I'm thinking about changing this to
+usb+<a class="reference external" href="https://github.com/grbl/grbl">grbl</a> in the future then ;) Up
+till now, my workflow went as follows;</p>
+<ul class="simple">
+<li>Do the research and drawing/parts modeling in FreeCad, on my main workstation</li>
+<li>Export to e.g. DXF</li>
+<li>Import in HeeksCad</li>
+<li>Design machining operations, export gcode</li>
+<li>Copy gcode to a network drive</li>
+<li>Switch the monitor and keyboard to the one of the old PC</li>
+<li>Open gcode in LinuxCNC and go</li>
+</ul>
+<p>What happens if it's not perfect at first try though ?! Most commonly the issue  is with the
+toolpath, like I want to change feeds or speeds or depth of cut, rarely
+it is with the part itself, fortunately. It may have something to do
+with the fact that I'm mostly working with other people's parts for now
+;) Anyway, to do any correction I need to switch back to the main
+workstation, correct in Heeks, re-export to the network drive and switch
+back, reimport. Not very annoying but not very convenient either. But
+wait. What if...I install Heeks on the old PC ?! It's running
+<a class="reference external" href="http://linuxcnc.org/">LinuxCNC</a> realtime distro, which is based on
+Debian wheezy. Heeks packages are available prepackaged for Ubuntu only.
+With the help of the
+<a class="reference external" href="https://code.google.com/p/heekscad/wiki/BuildDebianPackages">documentation</a>
+and the comments there and in other corners of the internet I was able
+to get this little script done:</p>
+<pre class="code bash"><a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-2"></a><span class="nb">set</span> -e
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-3"></a><span class="nb">set</span> -v
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-4"></a>
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-5"></a>sudo apt-get update
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-6"></a>sudo apt-get -y install liboce-visualization-dev libwxgtk2.8-dev libgtkglext1-dev python-dev build-essential bzr git libboost-dev libboost-python-dev subversion debhelper cmake liboce-ocaf2 liboce-ocaf-dev oce-draw
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-7"></a>mkdir heeks_build
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-8"></a><span class="nb">cd</span> heeks_build
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-9"></a>svn checkout http://libarea.googlecode.com/svn/trunk/ libarea
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-10"></a><span class="nb">cd</span> libarea
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-11"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-12"></a><span class="nb">cd</span> ..
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-13"></a>sudo dpkg -i libarea*.deb python-area*.deb
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-14"></a>svn checkout http://heekscad.googlecode.com/svn/trunk/ heekscad
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-15"></a><span class="nb">cd</span> heekscad
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-16"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-17"></a><span class="nb">cd</span> ..
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-18"></a>sudo dpkg -i *heeks*.deb
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-19"></a>svn checkout http://heekscnc.googlecode.com/svn/trunk/ heekscnc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-20"></a><span class="nb">cd</span> heekscnc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-21"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-22"></a><span class="nb">cd</span> ..
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-23"></a>git clone https://github.com/aewallin/opencamlib.git
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-24"></a><span class="nb">cd</span> opencamlib
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-25"></a>bzr branch lp:~neomilium/opencamlib/packaging debian
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-26"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-27"></a><span class="nb">cd</span> ..
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-28"></a>sudo dpkg -i python-ocl*.deb
+<a name="rest_code_b160f565c20943baaa955dc6a8bacfc3-29"></a>sudo dpkg -i heekscnc*.deb
+</pre>
+<p>Run this on your LinuxCNC machine and that's it. It will download and
+build all the dependencies and Heeks CAD and CAM packages. This way, my
+current workflow goes more like this:</p>
+<ul class="simple">
+<li>Do the research and drawing/parts modeling in FreeCad, on my main workstation</li>
+<li>Export to e.g. DXF to a network drive</li>
+<li>Switch the monitor and keyboard to the one of the old PC</li>
+<li>Import in HeeksCad</li>
+<li>Design machining operations, export gcode</li>
+<li>Open gcode in LinuxCNC and go</li>
+<li>Repeat last 2 steps if necessary - no machine switching</li>
+</ul>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/05/02/grafana-influx.html">Update on the sunpowered server</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-05-02T14:54:05+00:00">2015-05-02 14:54</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/05/02/grafana-influx.html#disqus_thread" data-disqus-identifier="cache/posts/2015/05/02/grafana-influx.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/balcony.html" rel="tag">balcony</a></li>
+           <li><a class="tag p-category" href="categories/grafana.html" rel="tag">grafana</a></li>
+           <li><a class="tag p-category" href="categories/influxdb.html" rel="tag">influxdb</a></li>
+           <li><a class="tag p-category" href="categories/raspberry-pi.html" rel="tag">raspberry pi</a></li>
+           <li><a class="tag p-category" href="categories/solar-power.html" rel="tag">solar power</a></li>
+           <li><a class="tag p-category" href="categories/timeseries.html" rel="tag">timeseries</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>TL;DR - go to <a class="reference external" href="http://data.cyplo.net/dashboard/db/sunpowered">data.cyplo.net</a></p>
+<p>Some, rather long, time ago I've <a class="reference external" href="https://blog.cyplo.net/2014/04/21/adding-voltage-current-measurements-sunpowered-pi/">added a custom
+python-driven</a>
+data acquisition and graphing to my sunpowered RaspberryPi installation
+on the balcony. Since then I've upgraded it to Raspi2 and ported the
+data thingy to influxdb + grafana. All 3 of those things I am very
+positively surprised by.</p>
+<p>RaspberryPi2 - definitely worth the upgrade - it's a speed daemon now.  Small caveat - I recommend
+installing raspbian from scratch, especially if you had some custom
+overclocking config, as these do not seem to be compatible between 1 and
+2. Also RasPi2 needs a microsd card instead of full-sized one. As for
+the software - since everything went suprisingly smoothly this post is
+not much of a tutorial. Just go to <a class="reference external" href="http://influxdb.com/">influxdb</a>
+and <a class="reference external" href="http://grafana.org/">Grafana</a> and go through the respective
+installation documentation. You need x86 64bit server to host this, so
+unfortunately no self-hosting on RaspberryPi - at least I wasn't able to
+compile the software there. I've <a class="reference external" href="https://github.com/cyplo/sunpowered/tree/master/software">changed the original python scripts
+slightly</a>,
+to upload the data to influxdb instead of graphing directly via
+matplotlib. Then configured grafana to display some cool graphs and that
+was pretty much it - you can see the result at
+<a class="reference external" href="http://data.cyplo.net/dashboard/db/sunpowered">data.cyplo.net</a>.</p>
+<p>Right now I'm testing 2 different sizes of solar panels and
+batteries, hooked at the same time. The ADC is connected as it was
+before though, so a TODO is to add more measurements, to see how the
+individual  panels' output change during the data and how does it affect
+each of the batteries.</p>
+<p><a class="reference external" href="wp-content/uploads/2015/05/IMG_1289-e1430570843289.jpg"><img alt="IMG_1289" class="alignleft wp-image-1952 size-medium" src="wp-content/uploads/2015/05/IMG_1289-e1430570843289-225x300.jpg" style="width: 225px; height: 300px;"></a> <a class="reference external" href="wp-content/uploads/2015/05/IMG_1291.jpg"><img alt="IMG_1291" class="alignleft size-medium wp-image-1955" src="wp-content/uploads/2015/05/IMG_1291-300x225.jpg" style="width: 300px; height: 225px;"></a></p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/04/26/cnc-router-arrives.html">CNC router arrives</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-04-26T13:17:05+00:00">2015-04-26 13:17</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/04/26/cnc-router-arrives.html#disqus_thread" data-disqus-identifier="cache/posts/2015/04/26/cnc-router-arrives.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/cnc.html" rel="tag">cnc</a></li>
+           <li><a class="tag p-category" href="categories/router.html" rel="tag">router</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>After 2 months of waiting - my CNC router arrives. 8 weeks lead time
+they said - 7 weeks and 4 days it was ! Who are they ?
+<a class="reference external" href="http://tanie-cnc.pl/">TanieCNC</a> people [CheapCNC in Polish :].
+Although it may look like they don't know how to make websites AND their
+name does not instill a lot of confidence - but girl, they certainly
+know how to weld and make precise machinery ! The size of the package
+caught me off guard, I've spent an hour disassembling the crate in full
+sun. After that I wasn't able to get it through the stairs myself,
+fortunately a friendly neighbour gave me their pair of hands. Lifting
+the machine by 2 people is okay, it's still not lightweight, but
+bearable. Putting it on the table was a different affair entirely.
+Careful not to damage anything, especially the motor assemblies - we've
+put it on a improptu wood ramp. Using heavy duty straps, we've lifted it
+up little by little. Then some inspection - the quality is really
+superb, especially of the metal frame ! After that I got an old PC with
+Windows XP and parallel port running Mach3 software - I wanted to set it
+up as in any other shop at start. Later on I'm planning on moving to
+LinuxCNC and then gradually off parallel port on to a USB stack,
+something more like an arduino parsing gcode and driving motors instead
+of relying of the accurate timing of the PC. TODOs:</p>
+<ul class="simple">
+<li>add an MDF bed layer on top of existing bed</li>
+<li>get better clamps</li>
+<li>get more router bits</li>
+<li>get a vacuum attachment for the spindle</li>
+<li>move to LinuxCNC</li>
+<li>move off parallel-port driving</li>
+</ul>
+<p><a class="reference external" href="wp-content/uploads/2015/04/IMG_20150424_160003-e1430045532334.jpg"><img alt="image0" src="wp-content/uploads/2015/04/IMG_20150424_160003-e1430045532334-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_20150424_161735-e1430045547777.jpg"><img alt="image1" src="wp-content/uploads/2015/04/IMG_20150424_161735-e1430045547777-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1254.jpg"><img alt="image2" src="wp-content/uploads/2015/04/IMG_1254-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1255.jpg"><img alt="image3" src="wp-content/uploads/2015/04/IMG_1255-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1257.jpg"><img alt="image4" src="wp-content/uploads/2015/04/IMG_1257-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1261.jpg"><img alt="image5" src="wp-content/uploads/2015/04/IMG_1261-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1262.jpg"><img alt="image6" src="wp-content/uploads/2015/04/IMG_1262-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1263.jpg"><img alt="image7" src="wp-content/uploads/2015/04/IMG_1263-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2015/04/IMG_1264.jpg"><img alt="image8" src="wp-content/uploads/2015/04/IMG_1264-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1266.jpg"><img alt="image9" src="wp-content/uploads/2015/04/IMG_1266-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1267-e1430045605467.jpg"><img alt="image10" src="wp-content/uploads/2015/04/IMG_1267-e1430045605467-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1268.jpg"><img alt="image11" src="wp-content/uploads/2015/04/IMG_1268-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1270.jpg"><img alt="image12" src="wp-content/uploads/2015/04/IMG_1270-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1272.jpg"><img alt="image13" src="wp-content/uploads/2015/04/IMG_1272-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1273-e1430045590746.jpg"><img alt="image14" src="wp-content/uploads/2015/04/IMG_1273-e1430045590746-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2015/04/IMG_1274-e1430045623221.jpg"><img alt="image15" src="wp-content/uploads/2015/04/IMG_1274-e1430045623221-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1276-e1430045638798.jpg"><img alt="image16" src="wp-content/uploads/2015/04/IMG_1276-e1430045638798-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1277.jpg"><img alt="image17" src="wp-content/uploads/2015/04/IMG_1277-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1278.jpg"><img alt="image18" src="wp-content/uploads/2015/04/IMG_1278-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1282.jpg"><img alt="image19" src="wp-content/uploads/2015/04/IMG_1282-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1279.jpg"><img alt="image20" src="wp-content/uploads/2015/04/IMG_1279-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/04/IMG_1280.jpg"><img alt="image21" src="wp-content/uploads/2015/04/IMG_1280-150x150.jpg"></a>
+<a class="reference external" href="wp-content/uploads/2015/04/IMG_1281.jpg"><img alt="image22" src="wp-content/uploads/2015/04/IMG_1281-150x150.jpg"></a></p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/03/28/tools-pcb-holder.html">Tools: PCB holder</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-03-28T18:33:53+00:00">2015-03-28 18:33</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/03/28/tools-pcb-holder.html#disqus_thread" data-disqus-identifier="cache/posts/2015/03/28/tools-pcb-holder.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/assembly.html" rel="tag">assembly</a></li>
+           <li><a class="tag p-category" href="categories/hardware.html" rel="tag">hardware</a></li>
+           <li><a class="tag p-category" href="categories/pcb.html" rel="tag">pcb</a></li>
+           <li><a class="tag p-category" href="categories/soldering.html" rel="tag">soldering</a></li>
+           <li><a class="tag p-category" href="categories/tools.html" rel="tag">tools</a></li>
+           <li><a class="tag p-category" href="categories/workshop.html" rel="tag">workshop</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>I thought it would be cool to share with you the tools I find
+surprisingly useful. Behold the first in the series: the PCB holder ! I
+cannot overstate how much is that of a difference from the 'third
+hand'-type of holders. The grip is very firm but won't scratch the
+surface nor short anything because the jaws are made from a soft
+plastic. And the whole thing <strong>ROTATES</strong> !</p>
+<p><a class="reference external" href="wp-content/uploads/2015/03/IMG_1248.jpg"><img alt="image0" src="wp-content/uploads/2015/03/IMG_1248-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/03/IMG_1250.jpg"><img alt="image1" src="wp-content/uploads/2015/03/IMG_1250-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/03/IMG_1249.jpg"><img alt="image2" src="wp-content/uploads/2015/03/IMG_1249-150x150.jpg"></a></p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/03/20/pocgtfo-0x07-is-out.html">PoC||GTFO 0x07 is out !</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-03-20T14:09:40+00:00">2015-03-20 14:09</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/03/20/pocgtfo-0x07-is-out.html#disqus_thread" data-disqus-identifier="cache/posts/2015/03/20/pocgtfo-0x07-is-out.html">Comments</a>
+
+
+                </div>
+            
+
+            </div>
+            <div class="body">
+                <p>pocorgtfo07 among other rare gems, and for your own pleasure, just here on this humble <a class="reference external" href="files.html">server</a></p>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/02/14/backing-restoring-whole-block-devices.html">Backing up and restoring whole block devices</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-02-14T08:30:51+00:00">2015-02-14 08:30</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/02/14/backing-restoring-whole-block-devices.html#disqus_thread" data-disqus-identifier="cache/posts/2015/02/14/backing-restoring-whole-block-devices.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/backup.html" rel="tag">backup</a></li>
+           <li><a class="tag p-category" href="categories/raspberry-pi.html" rel="tag">raspberry pi</a></li>
+           <li><a class="tag p-category" href="categories/restore.html" rel="tag">restore</a></li>
+           <li><a class="tag p-category" href="categories/sd.html" rel="tag">sd</a></li>
+           <li><a class="tag p-category" href="categories/sdcard.html" rel="tag">sdcard</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>SD cards are not really a reliable storage, especially when used
+constantly e.g. while sitting in always powered-on Raspberry Pi. Because
+of that I've recently needed to perform lots of backup/restore
+operations ;) I wrote this script for backing up:</p>
+<pre class="code bash"><a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-2"></a>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-3"></a><span class="k">if</span> <span class="o">[[</span> -z <span class="nv">$1</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-4"></a>    <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> device_to_clone"</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-5"></a>    <span class="nb">exit</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-6"></a><span class="k">fi</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-7"></a>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-8"></a><span class="nv">device</span><span class="o">=</span><span class="nv">$1</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-9"></a>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-10"></a><span class="nv">timestamp</span><span class="o">=</span><span class="sb">`</span>date +%Y%m%d<span class="sb">`</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-11"></a><span class="nv">dest_file</span><span class="o">=</span><span class="s2">"/tmp/</span><span class="nv">$timestamp</span><span class="s2">.dd.xz"</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-12"></a>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-13"></a><span class="nb">echo</span> <span class="s2">"about to clone </span><span class="nv">$device</span><span class="s2"> to </span><span class="nv">$dest_file</span><span class="s2">"</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-14"></a><span class="nb">echo</span> <span class="s2">"ctrl-c or [enter]"</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-15"></a><span class="nb">read</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-16"></a>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-17"></a>sudo umount <span class="nv">$device</span>?
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-18"></a>sudo umount <span class="nv">$device</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-19"></a>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-20"></a>sudo sync
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-21"></a>sudo pv -tpreb <span class="nv">$device</span> <span class="p">|</span> dd <span class="nv">bs</span><span class="o">=</span>4M <span class="p">|</span> pixz &gt; <span class="nv">$dest_file</span>
+<a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-22"></a>sudo sync
+</pre>
+<p>And this one for restoring:</p>
+<pre class="code bash"><a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-2"></a>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-3"></a><span class="k">if</span> <span class="o">[[</span> -z <span class="nv">$1</span> <span class="o">]]</span> <span class="o">||</span> <span class="o">[[</span> -z <span class="nv">$2</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-4"></a>    <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> restore_file.xz device_to_restore_to"</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-5"></a>    <span class="nb">exit</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-6"></a><span class="k">fi</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-7"></a>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-8"></a><span class="nv">source_file</span><span class="o">=</span><span class="nv">$1</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-9"></a><span class="k">if</span> <span class="o">[[</span> ! -f <span class="nv">$source_file</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-10"></a>    <span class="nb">echo</span> <span class="s2">"cannot open </span><span class="nv">$source_file</span><span class="s2">"</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-11"></a>    <span class="nb">exit</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-12"></a><span class="k">fi</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-13"></a>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-14"></a><span class="nv">device</span><span class="o">=</span><span class="nv">$2</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-15"></a>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-16"></a><span class="nb">echo</span> <span class="s2">"about to restore </span><span class="nv">$source_file</span><span class="s2"> onto </span><span class="nv">$device</span><span class="s2">"</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-17"></a><span class="nb">echo</span> <span class="s2">"ctrl-c or [enter]"</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-18"></a><span class="nb">read</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-19"></a>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-20"></a>sudo umount <span class="nv">$device</span>?
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-21"></a>sudo umount <span class="nv">$device</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-22"></a>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-23"></a>pv -tpreb <span class="nv">$source_file</span> <span class="p">|</span> pixz -d <span class="p">|</span> sudo dd <span class="nv">bs</span><span class="o">=</span>4M <span class="nv">of</span><span class="o">=</span><span class="nv">$device</span>
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-24"></a>sudo sync
+<a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-25"></a>sudo eject <span class="nv">$device</span>
+</pre>
+<p>Some of the more fun features include progressbars and making sure you've unmounted the
+device properly before ;) This also uses parallel threads to deflate the
+data, so the XZ compression should not be a bottleneck on any modern
+machine. The scripts above were used to backup and restore SD cards but
+will work for any block device, be it an external or internal disk
+drive, etc. usage example [remember to use the whole device, not just
+its partition as an argument]:</p>
+<pre class="code console"><a name="rest_code_20e646e09107453b8804df39dbf46a24-1"></a><span class="go">./backup_sdcard /dev/sdc</span>
+<a name="rest_code_20e646e09107453b8804df39dbf46a24-2"></a><span class="go">about to clone /dev/sdc to /tmp/20150214.dd.xz</span>
+<a name="rest_code_20e646e09107453b8804df39dbf46a24-3"></a><span class="go">ctrl-c or [enter]</span>
+<a name="rest_code_20e646e09107453b8804df39dbf46a24-4"></a>
+<a name="rest_code_20e646e09107453b8804df39dbf46a24-5"></a><span class="go">[sudo] password for cyryl:</span>
+<a name="rest_code_20e646e09107453b8804df39dbf46a24-6"></a><span class="go">umount: /dev/sdc1: not mounted</span>
+<a name="rest_code_20e646e09107453b8804df39dbf46a24-7"></a><span class="go">umount: /dev/sdc2: not mounted</span>
+<a name="rest_code_20e646e09107453b8804df39dbf46a24-8"></a><span class="go">umount: /dev/sdc: not mounted</span>
+<a name="rest_code_20e646e09107453b8804df39dbf46a24-9"></a><span class="go">19,6MiB 0:00:02 [9,72MiB/s] [&gt;                       ]  0% ETA 0:52:26</span>
+</pre>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2015/01/06/standing-desk.html">Standing desk</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2015-01-06T14:19:40+00:00">2015-01-06 14:19</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2015/01/06/standing-desk.html#disqus_thread" data-disqus-identifier="cache/posts/2015/01/06/standing-desk.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/desk.html" rel="tag">desk</a></li>
+           <li><a class="tag p-category" href="categories/hack.html" rel="tag">hack</a></li>
+           <li><a class="tag p-category" href="categories/hardware.html" rel="tag">hardware</a></li>
+           <li><a class="tag p-category" href="categories/laptop.html" rel="tag">laptop</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>It was some time since the last photo-story so, please accept these
+pictures of my standing desk. On the actual desk, there is a laptop
+stand serving a role of a keyboard and mouse rest. Laptop itself is
+flipped on its back, motherboard attached to the back of what once was a
+lid. The whole thing is flying on standard monitor desk mount, using
+custom vesa-to-acrylic mounting system ;)</p>
+<p><a class="reference external" href="wp-content/uploads/2015/01/IMG_1238.jpg"><img alt="image0" src="wp-content/uploads/2015/01/IMG_1238-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/01/IMG_1239.jpg"><img alt="image1" src="wp-content/uploads/2015/01/IMG_1239-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/01/IMG_1240.jpg"><img alt="image2" src="wp-content/uploads/2015/01/IMG_1240-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/01/IMG_1241.jpg"><img alt="image3" src="wp-content/uploads/2015/01/IMG_1241-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/01/IMG_1242-e1420549865889.jpg"><img alt="image4" src="wp-content/uploads/2015/01/IMG_1242-e1420549865889-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/01/IMG_1243-e1420549912666.jpg"><img alt="image5" src="wp-content/uploads/2015/01/IMG_1243-e1420549912666-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/01/IMG_1244-e1420549957758.jpg"><img alt="image6" src="wp-content/uploads/2015/01/IMG_1244-e1420549957758-150x150.jpg"></a> <a class="reference external" href="wp-content/uploads/2015/01/IMG_1246.jpg"><img alt="image7" src="wp-content/uploads/2015/01/IMG_1246-150x150.jpg"></a></p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2014/11/09/gui-vagrant-box.html">GUI Vagrant box</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2014-11-09T16:02:13+00:00">2014-11-09 16:02</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2014/11/09/gui-vagrant-box.html#disqus_thread" data-disqus-identifier="cache/posts/2014/11/09/gui-vagrant-box.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/development.html" rel="tag">development</a></li>
+           <li><a class="tag p-category" href="categories/docker.html" rel="tag">docker</a></li>
+           <li><a class="tag p-category" href="categories/programming.html" rel="tag">programming</a></li>
+           <li><a class="tag p-category" href="categories/ubuntu.html" rel="tag">ubuntu</a></li>
+           <li><a class="tag p-category" href="categories/utopic.html" rel="tag">utopic</a></li>
+           <li><a class="tag p-category" href="categories/vagrant.html" rel="tag">vagrant</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>Recently I've started working on changing my default development
+workflow. I'm evaluating vagrant as a main env manager, and then docker
+for extra speed. In short, my <tt class="docutils literal">vagrant up</tt> boots up new dev box and
+then couple of docker containers. What I've found is that there is not
+really a plethora of GUI-enabled vagrant boxes, so I've created one ! If
+you want to use it, go:</p>
+<pre class="code console"><a name="rest_code_bd7ab2df181c4e0e94e0b70737901bf0-1"></a><span class="go">vagrant init</span>
+<a name="rest_code_bd7ab2df181c4e0e94e0b70737901bf0-2"></a><span class="go">cyplo/ubuntu-gnome-utopic-gui vagrant up</span>
+</pre>
+<p>I will write about the whole setup later, as I'm not yet sure what approach is best for me.</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2014/11/01/tor-talk.html">Tor talk</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2014-11-01T12:19:49+00:00">2014-11-01 12:19</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2014/11/01/tor-talk.html#disqus_thread" data-disqus-identifier="cache/posts/2014/11/01/tor-talk.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/praxis.html" rel="tag">praxis</a></li>
+           <li><a class="tag p-category" href="categories/speaking.html" rel="tag">speaking</a></li>
+           <li><a class="tag p-category" href="categories/talk.html" rel="tag">talk</a></li>
+           <li><a class="tag p-category" href="categories/tor.html" rel="tag">tor</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <p>I gave a talk this Monday, an important one I think. The one from the
+kind of spreading  knowledge on the safe internet usage to people not
+necessarily of the tech background. This was my first one given to a
+such audience and to add to it all, it was given in Polish. The biggest
+challenge ? Finding good equivalent for the English tech terms. I think
+the talks went quite okay and the discussion afterwards was quite
+lively. I said a bit on how the internet works and what's wrong with
+that, to transition later to what problems Tor addresses and which it
+does not. I tried to emphasize that using Tor does not make you
+automatically immune to the dangers of the internet. Big thanks to the
+organizers, <a class="reference external" href="http://praxis.ue.wroc.pl/">Praxis</a> student group from
+the Wroclaw University of Economy. You can find my slides' sources
+<a class="reference external" href="https://github.com/cyplo/talks/tree/master/tor_for_beginners">here</a>,
+along with speaker notes.</p>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2014/11/01/running-eagle-ubuntu-14-10-64bit.html">Running Eagle on Ubuntu 14.10 64bit</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2014-11-01T11:08:10+00:00">2014-11-01 11:08</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2014/11/01/running-eagle-ubuntu-14-10-64bit.html#disqus_thread" data-disqus-identifier="cache/posts/2014/11/01/running-eagle-ubuntu-14-10-64bit.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/32bit.html" rel="tag">32bit</a></li>
+           <li><a class="tag p-category" href="categories/64bit.html" rel="tag">64bit</a></li>
+           <li><a class="tag p-category" href="categories/cadsoft.html" rel="tag">cadsoft</a></li>
+           <li><a class="tag p-category" href="categories/eagle.html" rel="tag">eagle</a></li>
+           <li><a class="tag p-category" href="categories/linux.html" rel="tag">linux</a></li>
+           <li><a class="tag p-category" href="categories/ubuntu.html" rel="tag">ubuntu</a></li>
+           <li><a class="tag p-category" href="categories/utopic.html" rel="tag">utopic</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>Eagle is still the first choice when it comes to Open Hardware
+electronics design. That's a bit unfortunate because the software itself
+is proprietary. Sometimes you need to run it though. For example to
+migrate projects over to non-proprietary software ! Say, you'd like to
+run new Eagle 7.1 under Ubuntu ? Try repos. Repos have the old major
+version 6 only. The harder to get proprietary software the better, I
+suppose. Download the blob then:</p>
+<pre class="code console"><a name="rest_code_a3b90bae1adc44068d3611e43bd6e151-1"></a><span class="gp">$</span> wget -c http://web.cadsoft.de/ftp/eagle/program/7.1/eagle-lin-7.1.0.run
+<a name="rest_code_a3b90bae1adc44068d3611e43bd6e151-2"></a><span class="gp">$</span> chmod a+x eagle-lin-7.1.0.run
+</pre>
+<p>Inspect and run the stuff:</p>
+<pre class="code console"><a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-1"></a><span class="gp">$</span> vim eagle-lin-7.1.0.run
+<a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-2"></a><span class="gp">$</span> ./eagle-lin-7.1.0.run
+<a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-3"></a><span class="go">Ensure the following 32 bit libraries are available:</span>
+<a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-4"></a><span class="go">    libXrender.so.1 =&amp;gt; not found</span>
+<a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-5"></a><span class="go">    libXrandr.so.2 =&amp;gt; not found</span>
+<a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-6"></a><span class="go">    libXcursor.so.1 =&amp;gt; not found</span>
+<a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-7"></a><span class="go">    libfreetype.so.6 =&amp;gt; not found</span>
+<a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-8"></a><span class="go">    libfontconfig.so.1 =&amp;gt; not found</span>
+<a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-9"></a><span class="go">    libXi.so.6 =&amp;gt; not found</span>
+<a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-10"></a><span class="go">    libssl.so.1.0.0 =&amp;gt; not found</span>
+<a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-11"></a><span class="go">    libcrypto.so.1.0.0 =&amp;gt; not found</span>
+</pre>
+<p>32bit craziness, you say.
+New Ubuntu does not have ia32 libs prepackaged, you say ? Here, have
+this handy list of all of the dependencies then:</p>
+<pre class="code console"><a name="rest_code_67c8ff2989524b70aba6357d48ecd668-1"></a><span class="gp">$</span> sudo apt-get install libxrandr2:i386 libxrender1:i386 libxcursor1:i386 libfreetype6:i386 libfontconfig:i386 libxi6:i386 libssl1.0.0:i386 libcrypto++9:i386
+<a name="rest_code_67c8ff2989524b70aba6357d48ecd668-2"></a><span class="gp">#</span> should show you the installation wizard <span class="o">[</span>sic !<span class="o">]</span>
+<a name="rest_code_67c8ff2989524b70aba6357d48ecd668-3"></a><span class="gp">$</span> ./eagle-lin-7.1.0.run
+</pre>
+</div>
+            </div>
+        </div>
+    
+        <nav class="postindexpager"><ul class="pager">
+<li class="previous">
+                <a href="index-7.html" rel="prev">Newer posts</a>
+            </li>
+            <li class="next">
+                <a href="index-5.html" rel="next">Older posts</a>
+            </li>
+        </ul></nav><script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

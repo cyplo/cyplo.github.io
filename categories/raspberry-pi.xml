@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about raspberry pi)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/raspberry-pi.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Update on the sunpowered server</title><link>https://blog.cyplo.net/posts/2015/05/02/grafana-influx.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;TL;DR - go to &lt;a class="reference external" href="http://data.cyplo.net/dashboard/db/sunpowered"&gt;data.cyplo.net&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Some, rather long, time ago I've &lt;a class="reference external" href="https://blog.cyplo.net/2014/04/21/adding-voltage-current-measurements-sunpowered-pi/"&gt;added a custom
+python-driven&lt;/a&gt;
+data acquisition and graphing to my sunpowered RaspberryPi installation
+on the balcony. Since then I've upgraded it to Raspi2 and ported the
+data thingy to influxdb + grafana. All 3 of those things I am very
+positively surprised by.&lt;/p&gt;
+&lt;p&gt;RaspberryPi2 - definitely worth the upgrade - it's a speed daemon now.  Small caveat - I recommend
+installing raspbian from scratch, especially if you had some custom
+overclocking config, as these do not seem to be compatible between 1 and
+2. Also RasPi2 needs a microsd card instead of full-sized one. As for
+the software - since everything went suprisingly smoothly this post is
+not much of a tutorial. Just go to &lt;a class="reference external" href="http://influxdb.com/"&gt;influxdb&lt;/a&gt;
+and &lt;a class="reference external" href="http://grafana.org/"&gt;Grafana&lt;/a&gt; and go through the respective
+installation documentation. You need x86 64bit server to host this, so
+unfortunately no self-hosting on RaspberryPi - at least I wasn't able to
+compile the software there. I've &lt;a class="reference external" href="https://github.com/cyplo/sunpowered/tree/master/software"&gt;changed the original python scripts
+slightly&lt;/a&gt;,
+to upload the data to influxdb instead of graphing directly via
+matplotlib. Then configured grafana to display some cool graphs and that
+was pretty much it - you can see the result at
+&lt;a class="reference external" href="http://data.cyplo.net/dashboard/db/sunpowered"&gt;data.cyplo.net&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Right now I'm testing 2 different sizes of solar panels and
+batteries, hooked at the same time. The ADC is connected as it was
+before though, so a TODO is to add more measurements, to see how the
+individual  panels' output change during the data and how does it affect
+each of the batteries.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/05/IMG_1289-e1430570843289.jpg"&gt;&lt;img alt="IMG_1289" class="alignleft wp-image-1952 size-medium" src="https://blog.cyplo.net/wp-content/uploads/2015/05/IMG_1289-e1430570843289-225x300.jpg" style="width: 225px; height: 300px;"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2015/05/IMG_1291.jpg"&gt;&lt;img alt="IMG_1291" class="alignleft size-medium wp-image-1955" src="https://blog.cyplo.net/wp-content/uploads/2015/05/IMG_1291-300x225.jpg" style="width: 300px; height: 225px;"&gt;&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>balcony</category><category>grafana</category><category>influxdb</category><category>raspberry pi</category><category>solar power</category><category>timeseries</category><guid>https://blog.cyplo.net/posts/2015/05/02/grafana-influx.html</guid><pubDate>Sat, 02 May 2015 14:54:05 GMT</pubDate></item><item><title>Backing up and restoring whole block devices</title><link>https://blog.cyplo.net/posts/2015/02/14/backing-restoring-whole-block-devices.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;SD cards are not really a reliable storage, especially when used
+constantly e.g. while sitting in always powered-on Raspberry Pi. Because
+of that I've recently needed to perform lots of backup/restore
+operations ;) I wrote this script for backing up:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-3"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -z &lt;span class="nv"&gt;$1&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-4"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; device_to_clone"&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-5"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;exit&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-6"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-7"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-8"&gt;&lt;/a&gt;&lt;span class="nv"&gt;device&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;timestamp&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;date +%Y%m%d&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;dest_file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/tmp/&lt;/span&gt;&lt;span class="nv"&gt;$timestamp&lt;/span&gt;&lt;span class="s2"&gt;.dd.xz"&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-12"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-13"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"about to clone &lt;/span&gt;&lt;span class="nv"&gt;$device&lt;/span&gt;&lt;span class="s2"&gt; to &lt;/span&gt;&lt;span class="nv"&gt;$dest_file&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-14"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"ctrl-c or [enter]"&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-15"&gt;&lt;/a&gt;&lt;span class="nb"&gt;read&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-16"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-17"&gt;&lt;/a&gt;sudo umount &lt;span class="nv"&gt;$device&lt;/span&gt;?
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-18"&gt;&lt;/a&gt;sudo umount &lt;span class="nv"&gt;$device&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-19"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-20"&gt;&lt;/a&gt;sudo sync
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-21"&gt;&lt;/a&gt;sudo pv -tpreb &lt;span class="nv"&gt;$device&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; dd &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;4M &lt;span class="p"&gt;|&lt;/span&gt; pixz &amp;gt; &lt;span class="nv"&gt;$dest_file&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-22"&gt;&lt;/a&gt;sudo sync
+&lt;/pre&gt;&lt;p&gt;And this one for restoring:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-3"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -z &lt;span class="nv"&gt;$1&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -z &lt;span class="nv"&gt;$2&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-4"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; restore_file.xz device_to_restore_to"&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-5"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;exit&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-6"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-7"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-8"&gt;&lt;/a&gt;&lt;span class="nv"&gt;source_file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-9"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; ! -f &lt;span class="nv"&gt;$source_file&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-10"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"cannot open &lt;/span&gt;&lt;span class="nv"&gt;$source_file&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-11"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;exit&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-12"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-13"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;device&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-15"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-16"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"about to restore &lt;/span&gt;&lt;span class="nv"&gt;$source_file&lt;/span&gt;&lt;span class="s2"&gt; onto &lt;/span&gt;&lt;span class="nv"&gt;$device&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"ctrl-c or [enter]"&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;read&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-19"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-20"&gt;&lt;/a&gt;sudo umount &lt;span class="nv"&gt;$device&lt;/span&gt;?
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-21"&gt;&lt;/a&gt;sudo umount &lt;span class="nv"&gt;$device&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-22"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-23"&gt;&lt;/a&gt;pv -tpreb &lt;span class="nv"&gt;$source_file&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; pixz -d &lt;span class="p"&gt;|&lt;/span&gt; sudo dd &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;4M &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$device&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-24"&gt;&lt;/a&gt;sudo sync
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-25"&gt;&lt;/a&gt;sudo eject &lt;span class="nv"&gt;$device&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Some of the more fun features include progressbars and making sure you've unmounted the
+device properly before ;) This also uses parallel threads to deflate the
+data, so the XZ compression should not be a bottleneck on any modern
+machine. The scripts above were used to backup and restore SD cards but
+will work for any block device, be it an external or internal disk
+drive, etc. usage example [remember to use the whole device, not just
+its partition as an argument]:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;./backup_sdcard /dev/sdc&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;about to clone /dev/sdc to /tmp/20150214.dd.xz&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;ctrl-c or [enter]&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;[sudo] password for cyryl:&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;umount: /dev/sdc1: not mounted&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;umount: /dev/sdc2: not mounted&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;umount: /dev/sdc: not mounted&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;19,6MiB 0:00:02 [9,72MiB/s] [&amp;gt;                       ]  0% ETA 0:52:26&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>backup</category><category>raspberry pi</category><category>restore</category><category>sd</category><category>sdcard</category><guid>https://blog.cyplo.net/posts/2015/02/14/backing-restoring-whole-block-devices.html</guid><pubDate>Sat, 14 Feb 2015 08:30:51 GMT</pubDate></item><item><title>Adding voltage and current measurements to the sunpowered Pi</title><link>https://blog.cyplo.net/posts/2014/04/21/adding-voltage-current-measurements-sunpowered-pi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Remember my &lt;a class="reference external" href="https://blog.cyplo.net/2014/02/16/sunpowered-server-setup/"&gt;sunpowered
+Pi&lt;/a&gt;
+installation on the balcony ? The only indication I had, since recently,
+on how well the system is doing was an LED blinking red when battery was
+low. Not really helpful in making predictions or making measurements
+over the time. I've searched for simple ADC solution to hook up into Pi
+and allow for some voltage and power measurements. I've decided on &lt;a class="reference external" href="http://www.abelectronics.co.uk/products/3/Raspberry-Pi/17/ADC-Pi-V2---Raspberry-Pi-Analogue-to-Digital-converter"&gt;ADC
+Pi&lt;/a&gt;,
+as it seemed very straightforward in its design and also comes with
+example python code. Did I say Python ?! I must admit that it is not at
+the top of my favourite languages list. But then I had fun. It turned
+out that Python has excellent&lt;a class="reference external" href="http://matplotlib.org/"&gt;graph plotting
+library&lt;/a&gt; as well as it is very well equipped
+with general purpose functions and hardware specific stuff support, like
+i2c. But back to the system design. The panel itself can generate up to
+about 30V under no load. Battery is 12V nominal but can get to 14.5V
+when charging, the specs say. ADC Pi however, can measure up to 5V. You
+have some resistors laying around you say ? Voltage divider it is. For
+current measurement I've used &lt;a class="reference external" href="http://www.pololu.com/product/1185"&gt;hall effect sensor
+module&lt;/a&gt; from Pololu. Summarising,
+I have 8 measurement lines, hooked up as follows:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;unused :D&lt;/li&gt;
+&lt;li&gt;voltage of the power line from Pi to current sensor&lt;/li&gt;
+&lt;li&gt;panel voltage&lt;/li&gt;
+&lt;li&gt;battery voltage&lt;/li&gt;
+&lt;li&gt;load voltage&lt;/li&gt;
+&lt;li&gt;regulated 12V rail voltage&lt;/li&gt;
+&lt;li&gt;regulated 5V rail voltage&lt;/li&gt;
+&lt;li&gt;current sensor reading voltage&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;It turned out that for the current measurement to be accurate I can't
+trust the voltage coming from the Pi to be stable. I actually measure
+that and use that to calculate the real reading. The docs round the hall
+sensor are not that obvious at the first sight, so here's the formula I
+came up with, for the greater good:&lt;/p&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;current = (measured_sensor_voltage - &lt;span class="pre"&gt;(voltage_powering_sensor/2))/0.185&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;Finally, sprinkle all of the above with &lt;a class="reference external" href="https://github.com/cyplo/sunpowered"&gt;some
+python&lt;/a&gt; and get the following:
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/voltages1.png"&gt;&lt;img alt="voltages1" src="https://blog.cyplo.net/wp-content/uploads/2014/04/voltages1-1024x480.png"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Looking at this you can spot 2 things. One - April the 5th
+was supercloudy superrainy and the battery did not get much charge. And
+the second being that on the average day the battery gets to the full
+capacity near the half of the sunny period. This is the data I was after
+! I think this means that I can add more batteries to the system and on
+a sunny day they will get filled up and this should suffice for couple
+of rainy days in a row. Here, get some photos as the bonus, also:&lt;/p&gt;
+&lt;p&gt;TODOs, for me, and everyone else, to remember that nothing is ever finished in the
+realm of hobby stuff:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;add graph for power usage&lt;/li&gt;
+&lt;li&gt;would be super cool to add the weather data to the graphs&lt;/li&gt;
+&lt;li&gt;clean up python stuff, add more unit tests there&lt;/li&gt;
+&lt;li&gt;write next post on the above ;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0947.jpg"&gt;&lt;img alt="image1" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0947-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0948.jpg"&gt;&lt;img alt="image2" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0948-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0949.jpg"&gt;&lt;img alt="image3" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0949-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0950.jpg"&gt;&lt;img alt="image4" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0950-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0951.jpg"&gt;&lt;img alt="image5" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0951-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0952.jpg"&gt;&lt;img alt="image6" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0952-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0953.jpg"&gt;&lt;img alt="image7" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0953-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0954.jpg"&gt;&lt;img alt="image8" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0954-150x150.jpg"&gt;&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0955.jpg"&gt;&lt;img alt="image9" src="https://blog.cyplo.net/wp-content/uploads/2014/04/IMG_0955-150x150.jpg"&gt;&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>adc pi</category><category>current</category><category>measurement</category><category>pi</category><category>python</category><category>raspberry pi</category><category>sensor</category><category>sun</category><category>sunpowered</category><category>voltage</category><guid>https://blog.cyplo.net/posts/2014/04/21/adding-voltage-current-measurements-sunpowered-pi.html</guid><pubDate>Mon, 21 Apr 2014 14:39:13 GMT</pubDate></item><item><title>Sunpowered server setup</title><link>https://blog.cyplo.net/posts/2014/02/16/sunpowered-server-setup.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Remember my &lt;a class="reference external" href="https://blog.cyplo.net/2013/03/31/building-nas/"&gt;NAS&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/2013/05/26/building-nas-software/"&gt;stuff&lt;/a&gt; ? It
+turned out great ! Very reliable storage, I had a disk failure once and
+haven't noticed for some time because all the files were just there.
+Hardware enhanced virtualization is another great stuff. I ended up
+migrating  all my of infrastructure there, each service in separate
+virtual machine; email, calendar, contacts, tor node and such. Only
+caveat ? Power consumption. This setup just eats Watts. About 50W
+constant power usage is not something you want to have turned on
+24h/day. One such day I had a realization that this giant ball of plasma
+that is hanging out there might be of some use. One side of my balcony
+is to the south somewhat, gets lots of sunshine no matter whether it's
+morning or evening. Why not exploit that ? That's how my first
+solarpowered server setup was born. Enjoy the photos ! Also please find
+upgrade options and general notes after the break ! There's a &lt;a class="reference external" href="https://blog.cyplo.net/2014/04/21/adding-voltage-current-measurements-sunpowered-pi/"&gt;part
+2&lt;/a&gt;of
+this post you might be interested in as well.&lt;/p&gt;
+&lt;p&gt;Setup itself consists of:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;144W solar panel&lt;/li&gt;
+&lt;li&gt;33Ah 12V battery&lt;/li&gt;
+&lt;li&gt;trusty old WRT54GL&lt;/li&gt;
+&lt;li&gt;Raspberry Pi model B&lt;/li&gt;
+&lt;li&gt;charging controller&lt;/li&gt;
+&lt;li&gt;12V and 5V step up/step down converters. Don't use linear converters,
+especially for the 5V rail. As these will give you the 5V by
+dissipating the difference from 12V directly onto their heatsinks,
+huge power loses.&lt;/li&gt;
+&lt;li&gt;around one hundred M3 hexhead screws with nuts and washers. yup.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The router acts as wireless bridge to my home WiFi network, there are no
+cables running from inside the house to the balcony. Router and raspi
+use about 8W total. It is winter in here now and  this seems to be
+holding nicely, panel being able to charge the battery for the night
+during relatively short day, even if the weather is bad. However, I want
+more computing power there and this setup does not seem to be very
+scalable. Another raspi model B means another 4W constant power usage. I
+estimate the whole thing will start loosing power during the night with
+about 15W constant consumption. Which is okay for stuff like email
+server, but not really for blog or other sites. Hence my first idea for
+improvement: discard router and change for the separate raspis, model A,
+with wireless network cards each. Should be much better. Some general
+notes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Use equipment specifically designed for DC. You want to disconnect
+the solar panel or battery sometimes. To be able to to that without
+that fancy sparks show you need proper DC switch able to handle high
+currents. AC switches as any other equipment dragged from AC land are
+not really a choice. If you use AC mains switch to switch high
+current DC you might end up with nice weld in place of your switch.
+Same for fuses.&lt;/li&gt;
+&lt;li&gt;My ability to cut acrylic to line is nonexistent. Probably maybe use
+better tools ? Or even, since I now know how the box should be cut -
+just order pieces for box 2.0 cut to size already.&lt;/li&gt;
+&lt;li&gt;Same for my ability to make stuff look nice and clean&lt;/li&gt;
+&lt;li&gt;I like the look of bare PCBs inside of transparent box though&lt;/li&gt;
+&lt;li&gt;The box itself seems to be holding up nicely against below zero
+temperatures as well as rain.&lt;/li&gt;
+&lt;li&gt;Air flow is nice, nothing is heating up. Air enters from the bottom,
+heats up a bit and moves up. Goes through the holes on the left, into
+the funnel and exist on the right. Water does not enter as there is
+pretty steep slope there.&lt;/li&gt;
+&lt;li&gt;Watch for SD card corruption. Most often, the cause is having 5V not
+really being 5V. Raspi does not really like lower voltages. One
+preventive measure would be not to use some cheap voltage converters.
+Another is to mount SD card with very conservative options. I use&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;/dev/mmcblk0p2 / ext4 defaults,rw,data=journal,journal_checksum,discard 0 1&lt;/tt&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Make sure your electronic components are rated for -40C to +80C&lt;/li&gt;
+&lt;li&gt;I'm a bit worried of battery being in such proximity to the airco
+unit. We'll see in the summer whether it needs relocation, for now
+the unit is completely powered off.&lt;/li&gt;
+&lt;li&gt;mountain climbing equipment comes in handy when hanging stuff from
+your balcony&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Future improvements:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;most pressing: get the power usage down by changing to model A + wifi
+card&lt;/li&gt;
+&lt;li&gt;add monitoring, something like ADC connected to raspi's GPIO ports,
+gathering voltages all across. I would like to get readings on: solar
+panel voltage, battery voltage, 5V rail actual voltage and the whole
+system power usage at least&lt;/li&gt;
+&lt;li&gt;more safety fuses and bypass diodes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0912.jpg"&gt;&lt;img alt="image0" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0912-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0913.jpg"&gt;&lt;img alt="image1" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0913-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0915.jpg"&gt;&lt;img alt="image2" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0915-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0916.jpg"&gt;&lt;img alt="image3" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0916-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0917.jpg"&gt;&lt;img alt="image4" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0917-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0918.jpg"&gt;&lt;img alt="image5" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0918-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0921.jpg"&gt;&lt;img alt="image6" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0921-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0922.jpg"&gt;&lt;img alt="image7" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0922-150x150.jpg"&gt;&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0923.jpg"&gt;&lt;img alt="image8" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0923-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0925.jpg"&gt;&lt;img alt="image9" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0925-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0927.jpg"&gt;&lt;img alt="image10" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0927-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0930.jpg"&gt;&lt;img alt="image11" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0930-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0932.jpg"&gt;&lt;img alt="image12" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0932-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0933.jpg"&gt;&lt;img alt="image13" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0933-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0934.jpg"&gt;&lt;img alt="image14" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0934-150x150.jpg"&gt;&lt;/a&gt;
+&lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0935.jpg"&gt;&lt;img alt="image15" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0935-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0937.jpg"&gt;&lt;img alt="image16" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0937-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0940.jpg"&gt;&lt;img alt="image17" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0940-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0941.jpg"&gt;&lt;img alt="image18" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0941-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0942.jpg"&gt;&lt;img alt="image19" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_0942-150x150.jpg"&gt;&lt;/a&gt; &lt;a class="reference external" href="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_09381.jpg"&gt;&lt;img alt="image20" src="https://blog.cyplo.net/wp-content/uploads/2014/02/IMG_09381-150x150.jpg"&gt;&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</description><category>photovoltaic</category><category>pi</category><category>pv</category><category>raspberry pi</category><category>raspberrypi</category><category>server</category><category>solar</category><category>sun</category><category>sunpowered</category><category>wrt54gl</category><guid>https://blog.cyplo.net/posts/2014/02/16/sunpowered-server-setup.html</guid><pubDate>Sun, 16 Feb 2014 21:13:46 GMT</pubDate></item></channel></rss>

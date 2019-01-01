@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about artificial intelligence)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/cat_artificial-intelligence.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Google AI Challenge</title><link>https://blog.cyplo.net/posts/2010/10/10/google-ai-challenge.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;It seems that being so much into other programming things I missed the
+&lt;a class="reference external" href="http://ai-contest.com/"&gt;Google AI Contest&lt;/a&gt; announcement. It's
+supercool that they sponsor such challenges but also it's really uncool
+[so like warm ?] that apparently I won't have time to participate.&lt;/p&gt;
+&lt;p&gt;About the challenge itself - it involves working with
+&lt;a class="reference external" href="http://www.galcon.com/fusion/"&gt;GalconFusion&lt;/a&gt;-like game. Easy to
+learn, difficult to master type. As they provide starter packs with a
+sample bot it's easy to start. However, getting some decent place would
+involve some really long time of good old hard work.&lt;/p&gt;
+&lt;p&gt;As a side note on .NET being spread around the unix world,  there's a C#
+starter pack. Good. After few secs I realised that the code will be run
+under antique &lt;a class="reference external" href="http://www.go-mono.com/archive/1.2.6/"&gt;Mono 1.2.6&lt;/a&gt;,
+therefore none of my young C# friends would be there. No type inference,
+no linq, no other fancy stuff.  Not good.&lt;/p&gt;&lt;/div&gt;</description><category>.net</category><category>ai</category><category>google</category><category>mono</category><guid>https://blog.cyplo.net/posts/2010/10/10/google-ai-challenge.html</guid><pubDate>Sun, 10 Oct 2010 20:37:09 GMT</pubDate></item></channel></rss>

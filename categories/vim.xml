@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about vim)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/vim.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:13 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>New dotfiles repository</title><link>https://blog.cyplo.net/posts/2013/10/26/new-dotfiles-repository.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;Hi ! Just letting you know that I've been working for some time on
+structuring my dotfiles and finally published them to
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles"&gt;github&lt;/a&gt;. These contain e.g. my
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles/blob/master/.vimrc"&gt;vimrc&lt;/a&gt; and
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles/tree/master/.local/share/fonts"&gt;font&lt;/a&gt;
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles/tree/master/.config/fontconfig/conf.d"&gt;configs&lt;/a&gt;.
+I've even &lt;a class="reference external" href="https://github.com/cyplo/vim-colors-solarized"&gt;patched&lt;/a&gt;
+the famous &lt;a class="reference external" href="http://ethanschoonover.com/solarized"&gt;solarized&lt;/a&gt; theme
+for vim to allow better
+&lt;a class="reference external" href="https://github.com/airblade/vim-gitgutter"&gt;gitgutter&lt;/a&gt; symbols
+display. Enjoy !&lt;/p&gt;</description><category>cygwin</category><category>dotfiles</category><category>fontconfig</category><category>linux</category><category>mac</category><category>vim</category><category>vimrc</category><guid>https://blog.cyplo.net/posts/2013/10/26/new-dotfiles-repository.html</guid><pubDate>Sat, 26 Oct 2013 10:35:52 GMT</pubDate></item></channel></rss>

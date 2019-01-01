@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about notebook)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/notebook.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>New laptop</title><link>https://blog.cyplo.net/posts/2013/08/10/new-laptop.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Hey, remember my &lt;a class="reference external" href="https://blog.cyplo.net/2013/01/15/laptop-would-love-to-buy/"&gt;search for the new
+laptop&lt;/a&gt; ?
+It's finally over ! I found that Clevo, Taiwanese custom laptop
+manufacturer, has recently added 13'3 FullHD laptop base to their
+offerings - W230ST. And to my surprise - there is a &lt;a class="reference external" href="http://www.bluemobility.pl/"&gt;Polish
+importer&lt;/a&gt; which allows pretty neat specs
+calibration for you. Game on you say ? Indeed. &lt;strong&gt;What do I like about
+it:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Haswell-based, so all the new tech is here, same as in the newest
+MacBooks&lt;/li&gt;
+&lt;li&gt;up to 16GB RAM, I have 8GB installed for now and it works pretty good&lt;/li&gt;
+&lt;li&gt;2x mPCIx mSATA capable slots&lt;/li&gt;
+&lt;li&gt;nice copper cooling inside&lt;/li&gt;
+&lt;li&gt;FullHD matte display&lt;/li&gt;
+&lt;li&gt;4x USB&lt;/li&gt;
+&lt;li&gt;HDMI&lt;/li&gt;
+&lt;li&gt;typing on its keyboard, just clicks with me&lt;/li&gt;
+&lt;li&gt;survived &lt;a class="reference external" href="https://ohm2013.org/site/"&gt;OHM2013&lt;/a&gt; camp - not scared of
+humidity and hot air&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;What I do not like so much:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Haswell-based, so Linux support is not that great yet, everything
+seems to be working okay, however power consumption is off the
+limits. 60Wh battery lasts for ~2h tops.&lt;/li&gt;
+&lt;li&gt;while the outer side of the case is of nice rubberrized plastic, the
+inside is cheap-looking grey one. There was no option to change it
+unfortunately, while I see that &lt;a class="reference external" href="http://www.xoticpc.com/"&gt;other&lt;/a&gt;
+importers/assemblers around the world have such mods avaiable.&lt;/li&gt;
+&lt;li&gt;the looks of the keyboard, purely visual stuff like the font used to
+print the characters, the layout is okay&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Running Linux on it:&lt;/strong&gt; Everything seems to be working by default on
+most of the distros. I've tested Gentoo, Arch, Fedora and Crunchbang.
+The only thing that needed some tweaking was that by default I was
+unable to control backlight brightness at all. adding&lt;/p&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;acpi_backlight=vendor&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;to the kernel boot parameters, as suggested
+on &lt;a class="reference external" href="https://wiki.archlinux.org/index.php/Intel_Graphics#Backlight_not_fully_adjusting.2C_or_adjusting_at_all_after_resume."&gt;Arch wiki&lt;/a&gt;,
+solved the problem. I haven't delved deeply into Optimus yet, so I don't
+know whether the graphics cards switching works correctly or not. The
+one thing I've noticed is that, after waking from deep sleep, so after
+leaving the lid closed for a long time, not for few minutes, there are
+some visual artifacts on screen. Also, as mentioned before, power
+consumption worries me a bit. Will keep you posted !&lt;/p&gt;&lt;/div&gt;</description><category>arch linux</category><category>clevo</category><category>laptop</category><category>notebook</category><guid>https://blog.cyplo.net/posts/2013/08/10/new-laptop.html</guid><pubDate>Sat, 10 Aug 2013 10:45:20 GMT</pubDate></item></channel></rss>

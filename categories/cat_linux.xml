@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about linux)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/cat_linux.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>When life gives you temp space - make lemonade !</title><link>https://blog.cyplo.net/posts/2015/09/02/swap-on-temp-disk.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Some VPS providers, e.g. Azure (I know..) provide you with 2 disks for
+your VPSes. One, of very limited size, system disk, and the other one,
+spacy but with not guarantees that the data survives reboot. Basically
+it means that you can have a small VPS, with a small amount of RAM but
+large temp disk space. Why this could be useful ? Imagine tasks with
+lots of mem requirements but that not need to be extra fast, where
+swapping is allowed. Like complex nightly builds. Here is a set of super
+simple scripts I've come up with to quickly boot up a system, and then
+in the background add a new swap file on the temp drive there. The temp
+drive is assumed to be under /mnt.&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-1"&gt;&lt;/a&gt;root@someazurehost:~# cat /etc/rc.local
+&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/sh -e&lt;/span&gt;
+&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-5"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# do not wait for swap to become online,&lt;/span&gt;
+&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-6"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# proceed with the boot further,&lt;/span&gt;
+&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-7"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# with swap being created in the background&lt;/span&gt;
+&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-8"&gt;&lt;/a&gt;/etc/make_and_enable_swap &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_09440fdf91274ab2ac4aeb6e3663610b-10"&gt;&lt;/a&gt;&lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;pre class="code bash"&gt;&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-1"&gt;&lt;/a&gt;root@someazurehost:~# cat /etc/make_and_enable_swap
+&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/sh&lt;/span&gt;
+&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-4"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-5"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# create new 2GB swap file&lt;/span&gt;
+&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-6"&gt;&lt;/a&gt;dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mnt/swap &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2048&lt;/span&gt;
+&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-7"&gt;&lt;/a&gt;chmod &lt;span class="m"&gt;0600&lt;/span&gt; /mnt/swap
+&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-8"&gt;&lt;/a&gt;mkswap /mnt/swap
+&lt;a name="rest_code_baadb8f7b287400389f39751ca521e53-9"&gt;&lt;/a&gt;swapon /mnt/swap
+&lt;/pre&gt;&lt;p&gt;Don't forget to make &lt;strong&gt;/etc/make_and_enable_swap&lt;/strong&gt; executable !
+Do not add this swap file to fstab, as it is being read before rc.local,
+and this may certainly result in a boot failure, as the swap file would
+not be ready yet.&lt;/p&gt;&lt;/div&gt;</description><category>azure</category><category>linux</category><category>swap</category><category>temp</category><guid>https://blog.cyplo.net/posts/2015/09/02/swap-on-temp-disk.html</guid><pubDate>Wed, 02 Sep 2015 20:00:24 GMT</pubDate></item><item><title>GUI Vagrant box</title><link>https://blog.cyplo.net/posts/2014/11/09/gui-vagrant-box.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Recently I've started working on changing my default development
+workflow. I'm evaluating vagrant as a main env manager, and then docker
+for extra speed. In short, my &lt;tt class="docutils literal"&gt;vagrant up&lt;/tt&gt; boots up new dev box and
+then couple of docker containers. What I've found is that there is not
+really a plethora of GUI-enabled vagrant boxes, so I've created one ! If
+you want to use it, go:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_bd7ab2df181c4e0e94e0b70737901bf0-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;vagrant init&lt;/span&gt;
+&lt;a name="rest_code_bd7ab2df181c4e0e94e0b70737901bf0-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;cyplo/ubuntu-gnome-utopic-gui vagrant up&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;I will write about the whole setup later, as I'm not yet sure what approach is best for me.&lt;/p&gt;&lt;/div&gt;</description><category>development</category><category>docker</category><category>programming</category><category>ubuntu</category><category>utopic</category><category>vagrant</category><guid>https://blog.cyplo.net/posts/2014/11/09/gui-vagrant-box.html</guid><pubDate>Sun, 09 Nov 2014 16:02:13 GMT</pubDate></item><item><title>Running Eagle on Ubuntu 14.10 64bit</title><link>https://blog.cyplo.net/posts/2014/11/01/running-eagle-ubuntu-14-10-64bit.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Eagle is still the first choice when it comes to Open Hardware
+electronics design. That's a bit unfortunate because the software itself
+is proprietary. Sometimes you need to run it though. For example to
+migrate projects over to non-proprietary software ! Say, you'd like to
+run new Eagle 7.1 under Ubuntu ? Try repos. Repos have the old major
+version 6 only. The harder to get proprietary software the better, I
+suppose. Download the blob then:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_a3b90bae1adc44068d3611e43bd6e151-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; wget -c http://web.cadsoft.de/ftp/eagle/program/7.1/eagle-lin-7.1.0.run
+&lt;a name="rest_code_a3b90bae1adc44068d3611e43bd6e151-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; chmod a+x eagle-lin-7.1.0.run
+&lt;/pre&gt;&lt;p&gt;Inspect and run the stuff:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; vim eagle-lin-7.1.0.run
+&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; ./eagle-lin-7.1.0.run
+&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;Ensure the following 32 bit libraries are available:&lt;/span&gt;
+&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXrender.so.1 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXrandr.so.2 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXcursor.so.1 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libfreetype.so.6 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libfontconfig.so.1 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXi.so.6 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libssl.so.1.0.0 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_771d03a385ff43de8c7f5dd01595b4ba-11"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libcrypto.so.1.0.0 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;32bit craziness, you say.
+New Ubuntu does not have ia32 libs prepackaged, you say ? Here, have
+this handy list of all of the dependencies then:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_67c8ff2989524b70aba6357d48ecd668-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo apt-get install libxrandr2:i386 libxrender1:i386 libxcursor1:i386 libfreetype6:i386 libfontconfig:i386 libxi6:i386 libssl1.0.0:i386 libcrypto++9:i386
+&lt;a name="rest_code_67c8ff2989524b70aba6357d48ecd668-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; should show you the installation wizard &lt;span class="o"&gt;[&lt;/span&gt;sic !&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;a name="rest_code_67c8ff2989524b70aba6357d48ecd668-3"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; ./eagle-lin-7.1.0.run
+&lt;/pre&gt;&lt;/div&gt;</description><category>32bit</category><category>64bit</category><category>cadsoft</category><category>eagle</category><category>linux</category><category>ubuntu</category><category>utopic</category><guid>https://blog.cyplo.net/posts/2014/11/01/running-eagle-ubuntu-14-10-64bit.html</guid><pubDate>Sat, 01 Nov 2014 11:08:10 GMT</pubDate></item><item><title>Changing Terminal preferences in Gnome 3</title><link>https://blog.cyplo.net/posts/2014/03/29/changing-terminal-preferences-gnome-3.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;It turns out this was not that obvious, at least for me, how to change
+various profile preferences for Gnome Terminal under Gnome 3. You can go
+and fetch the list of profiles this way:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_407e743fb40b46c595ddb563d10aca3b-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf list /org/gnome/terminal/legacy/profiles:/&lt;/span&gt;
+&lt;a name="rest_code_407e743fb40b46c595ddb563d10aca3b-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;And then you can use the profile id to list and change various settings:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf list /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;foreground-color&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;login-shell&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;palette&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;use-system-font&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;use-theme-colors&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;font&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;bold-color-same-as-fg&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;bold-color&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;background-color&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-11"&gt;&lt;/a&gt;&lt;span class="go"&gt;audible-bell&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-12"&gt;&lt;/a&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Inconsolata for Powerline Medium 18'"&lt;/span&gt;
+&lt;a name="rest_code_af27576deaa845bfb9a6d9307ecdd78a-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/login-shell true&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>commandline</category><category>dconf</category><category>font</category><category>gnome</category><category>gnome3</category><category>shell</category><category>terminal</category><guid>https://blog.cyplo.net/posts/2014/03/29/changing-terminal-preferences-gnome-3.html</guid><pubDate>Sat, 29 Mar 2014 22:34:21 GMT</pubDate></item><item><title>WiFi on RaspberryPi</title><link>https://blog.cyplo.net/posts/2014/02/24/wifi-raspberrypi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Easiest way I've found to configure wifi on RaspberryPi, not really
+being mentioned when you search for such. Not using separate
+wpa_supplicant configuration at all.&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;root@frontend:~#&lt;/span&gt; cat /etc/network/interfaces
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;auto lo&lt;/span&gt;
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface lo inet loopback&lt;/span&gt;
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface eth0 inet dhcp&lt;/span&gt;
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;allow-hotplug wlan0&lt;/span&gt;
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface wlan0 inet dhcp&lt;/span&gt;
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;wpa-ssid  NETWORK_NAME&lt;/span&gt;
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;wpa-psk NETWORK_KEY&lt;/span&gt;
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-11"&gt;&lt;/a&gt;
+&lt;a name="rest_code_97ff1dd1d8ae41f589d6b3663313b49c-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface default inet dhcp&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>debian</category><category>raspberry</category><category>raspberrypi</category><category>raspbian</category><category>wifi</category><guid>https://blog.cyplo.net/posts/2014/02/24/wifi-raspberrypi.html</guid><pubDate>Mon, 24 Feb 2014 20:45:32 GMT</pubDate></item><item><title>Compiling tarsnap on RaspberryPi</title><link>https://blog.cyplo.net/posts/2014/02/01/compiling-tarsnap-raspberrypi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Just a quickie for tarsnap 1.0.35. Featuring my new favourite, the
+download software called aria2.&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;aptitude install aria2 libssl-dev zlib1g-dev e2fslibs-dev&lt;/span&gt;
+&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;aria2c https://www.tarsnap.com/download/tarsnap-autoconf-1.0.35.tgz&lt;/span&gt;
+&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;aria2c https://www.tarsnap.com/download/tarsnap-sigs-1.0.35.asc&lt;/span&gt;
+&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;gpg --recv-key 2F102ABB&lt;/span&gt;
+&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;gpg --decrypt tarsnap-sigs-1.0.35.asc&lt;/span&gt;
+&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;sha256sum tarsnap-autoconf-1.0.35.tgz # should get the value from sig file, 6c9f67....9a&lt;/span&gt;
+&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;tar xf tarsnap-autoconf-1.0.35.tgz&lt;/span&gt;
+&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd tarsnap-autoconf-1.0.35/&lt;/span&gt;
+&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;./configure&lt;/span&gt;
+&lt;a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;time nice ionice make -j2&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;How do I know that -j2 really gives some advantage on raspi ? Well, here
+are the timings:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_b984b50834f84ab485293509900341a0-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;fresh, j1
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    14m7.129s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m30.790s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m21.640s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-5"&gt;&lt;/a&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-6"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j2
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    11m33.868s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m36.690s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m19.880s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-10"&gt;&lt;/a&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-11"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j1 again, caches warmed up
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    12m38.598s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m30.960s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m20.470s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-15"&gt;&lt;/a&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-16"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j2 again
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-17"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    10m14.975s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-18"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m34.980s&lt;/span&gt;
+&lt;a name="rest_code_b984b50834f84ab485293509900341a0-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m20.710s&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>raspberrypi</category><category>tarsnap</category><guid>https://blog.cyplo.net/posts/2014/02/01/compiling-tarsnap-raspberrypi.html</guid><pubDate>Sat, 01 Feb 2014 21:59:27 GMT</pubDate></item><item><title>Booting Gentoo with LUKS+LVM2+systemd</title><link>https://blog.cyplo.net/posts/2013/11/10/booting-gentoo-lukslvm2systemd.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I've spent quite some time recently trying to get a laptop running
+Gentoo boot from an encrypted partition with LVM. I thought that this
+might be useful for someone else, so here you are: First things first:
+I'm assuming you've followed Gentoo handbook and are operating from
+within livecd's shell. You've done the regular luksFormat + lvm stuff
+and you've come up with a layout similar to this one:&lt;/p&gt;
+&lt;pre class="code text"&gt;&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-1"&gt;&lt;/a&gt;dagrey ~ # lsblk
+&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-2"&gt;&lt;/a&gt;NAME                          SIZE TYPE  MOUNTPOINT
+&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-3"&gt;&lt;/a&gt;sda                           55.9G disk
+&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-4"&gt;&lt;/a&gt;└─sda1                        55.9G part
+&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-5"&gt;&lt;/a&gt;  └─crypthome (dm-3)          55.9G crypt /home
+&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-6"&gt;&lt;/a&gt;sdb                           29.8G disk
+&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-7"&gt;&lt;/a&gt;├─sdb1                       485.4M part  /boot
+&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-8"&gt;&lt;/a&gt;└─sdb2                        29.4G part
+&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-9"&gt;&lt;/a&gt;  └─root_sdb2-vg-root (dm-0)  29.3G crypt
+&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-10"&gt;&lt;/a&gt;    ├─vg-swap (dm-1)             8G lvm   [SWAP]
+&lt;a name="rest_code_9aa0a4019ba04f558074aa64f536e882-11"&gt;&lt;/a&gt;    └─vg-root (dm-2)          21.3G lvm   /
+&lt;/pre&gt;&lt;p&gt;You need a kernel to boot this, a kernel that understands crypto stuff as well as
+lvm.&lt;/p&gt;
+&lt;pre class="code text"&gt;&lt;a name="rest_code_bed2a400429742788df13a5d96541163-1"&gt;&lt;/a&gt;genkernel --symlink --save-config --no-mrproper --luks --lvm --udev --menuconfig all
+&lt;/pre&gt;&lt;p&gt;If you're using &lt;em&gt;gentoo-sources&lt;/em&gt; you'd notice the fancy gentoo-specific menu on top. Go there and check
+systemd. Apart from the usual stuff, please make sure to check stuff on
+&lt;a class="reference external" href="https://wiki.gentoo.org/wiki/Systemd"&gt;this list&lt;/a&gt;, and also this one:&lt;/p&gt;
+&lt;pre class="code text"&gt;&lt;a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-1"&gt;&lt;/a&gt;Device Drivers
+&lt;a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-2"&gt;&lt;/a&gt; Multi-device support (RAID and LVM)
+&lt;a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-3"&gt;&lt;/a&gt; [*] Multiple devices driver support (RAID and LVM)
+&lt;a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-4"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  Device mapper support
+&lt;a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-5"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  Crypt target support
+&lt;a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-7"&gt;&lt;/a&gt;Cryptographic API
+&lt;a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-8"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  SHA256 digest algorithm
+&lt;a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-9"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  AES cipher algorithms
+&lt;/pre&gt;&lt;p&gt;Your setup is so new that you need grub2. Grub2 is very picky about its configuration. Take this one and
+avoid hours of reading:&lt;/p&gt;
+&lt;pre class="code text"&gt;&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-1"&gt;&lt;/a&gt;dagrey ~ # cat /etc/default/grub
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-3"&gt;&lt;/a&gt;GRUB_DISTRIBUTOR="Gentoo"
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-5"&gt;&lt;/a&gt;GRUB_DEFAULT=0
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-6"&gt;&lt;/a&gt;GRUB_HIDDEN_TIMEOUT=0
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-7"&gt;&lt;/a&gt;GRUB_HIDDEN_TIMEOUT_QUIET=true
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-8"&gt;&lt;/a&gt;GRUB_TIMEOUT=3
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-10"&gt;&lt;/a&gt;GRUB_PRELOAD_MODULES=lvm
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-11"&gt;&lt;/a&gt;GRUB_CRYPTODISK_ENABLE=y
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-12"&gt;&lt;/a&gt;GRUB_DEVICE=/dev/ram0
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-13"&gt;&lt;/a&gt;
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-14"&gt;&lt;/a&gt;# Append parameters to the linux kernel command line
+&lt;a name="rest_code_543cdc1df814497e93a1d87953869b0b-15"&gt;&lt;/a&gt;GRUB_CMDLINE_LINUX="real_init=/usr/bin/systemd quiet real_root=/dev/mapper/vg-root crypt_root=/dev/sdb2 dolvm acpi_backlight=vendor"
+&lt;/pre&gt;&lt;p&gt;You're using initrd to set everything up for the kernel, so you need &lt;em&gt;real_root&lt;/em&gt; and &lt;em&gt;real_init&lt;/em&gt; instead of
+regular ones. &lt;em&gt;cryptdevice&lt;/em&gt; no longer works, use &lt;em&gt;crypt_root&lt;/em&gt; And
+&lt;em&gt;dolvm&lt;/em&gt; is essential, without it only the first part will work, leaving
+you with open crypt container and kernel panic just afterwards. Also
+notice GRUB_DEVICE, GRUB_CRYPTODISK_ENABLE and GRUB_PRELOAD_MODULES. Make sure the first partition on the disk you're
+installing grub onto is starting at 2048. If it's any earlier grub just
+won't be able to fit its magic in there. Finally, install grub&lt;/p&gt;
+&lt;pre class="code text"&gt;&lt;a name="rest_code_572f81d171d34d3099b976ce7b0f2b99-1"&gt;&lt;/a&gt;grub2-install --modules="configfile linux crypto search_fs_uuid luks lvm" --recheck /dev/sda
+&lt;a name="rest_code_572f81d171d34d3099b976ce7b0f2b99-2"&gt;&lt;/a&gt;grub2-mkconfig -o /boot/grub/grub.cfg
+&lt;/pre&gt;&lt;p&gt;That should be sufficient to boot the system and initialize root. What
+about those other encrypted partitions like /home though ? Well, init
+subsystem needs to initialize them, OpenRC did such by reading
+/etc/fstab and then /etc/dmcrypt/dmcrypt.conf accordingly. Systemd is a
+bit different here. You still need your /etc/fstab entries for it to
+know which partitions need to be initialized. The place where you say
+how to map and decrypt crypto containers, however, is in /etc/crypttab.&lt;/p&gt;
+&lt;pre class="code text"&gt;&lt;a name="rest_code_bdb330acca8044c990331b92a1173d37-1"&gt;&lt;/a&gt;dagrey ~ # cat /etc/fstab
+&lt;a name="rest_code_bdb330acca8044c990331b92a1173d37-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_bdb330acca8044c990331b92a1173d37-3"&gt;&lt;/a&gt;/dev/sdb1              /boot     ext2    defaults    1 2
+&lt;a name="rest_code_bdb330acca8044c990331b92a1173d37-4"&gt;&lt;/a&gt;/dev/mapper/vg-root    /         ext4    defaults    0 1
+&lt;a name="rest_code_bdb330acca8044c990331b92a1173d37-5"&gt;&lt;/a&gt;/dev/mapper/vg-swap    none      swap    sw          0 0
+&lt;a name="rest_code_bdb330acca8044c990331b92a1173d37-6"&gt;&lt;/a&gt;/dev/mapper/crypthome  /home     ext4    defaults    0 2
+&lt;a name="rest_code_bdb330acca8044c990331b92a1173d37-7"&gt;&lt;/a&gt;
+&lt;a name="rest_code_bdb330acca8044c990331b92a1173d37-8"&gt;&lt;/a&gt;dagrey ~ # cat /etc/crypttab
+&lt;a name="rest_code_bdb330acca8044c990331b92a1173d37-9"&gt;&lt;/a&gt;#crypthome /dev/sda1
+&lt;a name="rest_code_bdb330acca8044c990331b92a1173d37-10"&gt;&lt;/a&gt;crypthome /dev/sda1 /etc/conf.d/dmcrypt.key
+&lt;/pre&gt;&lt;p&gt;The keyfile is available from then already decrypted root partition. You can also skip the key and the
+you'll get a password prompt, sometimes hidden somewhere in systemd messages. Hit enter to reveal it once more.&lt;/p&gt;&lt;/div&gt;</description><category>cryptsetup</category><category>gentoo</category><category>linux</category><category>luks</category><category>lvm</category><category>lvm2</category><category>openrc</category><category>systemd</category><guid>https://blog.cyplo.net/posts/2013/11/10/booting-gentoo-lukslvm2systemd.html</guid><pubDate>Sun, 10 Nov 2013 21:20:26 GMT</pubDate></item><item><title>How to remove multiarch in debian 7</title><link>https://blog.cyplo.net/posts/2013/06/13/how-to-remove-multiarch-in-debian-7.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Just a quick one, for me to remember and for you to enjoy.&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_3fedc74a91914aff96d304c4edf0f9f9-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg -l | grep :i386 | cut -s -d ' ' -f3 | xargs apt-get remove -y&lt;/span&gt;
+&lt;a name="rest_code_3fedc74a91914aff96d304c4edf0f9f9-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove-architecture i386&lt;/span&gt;
+&lt;a name="rest_code_3fedc74a91914aff96d304c4edf0f9f9-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;apt-get update&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>debian</category><category>linux</category><category>multiarch</category><guid>https://blog.cyplo.net/posts/2013/06/13/how-to-remove-multiarch-in-debian-7.html</guid><pubDate>Thu, 13 Jun 2013 09:04:37 GMT</pubDate></item><item><title>Enabling wireless on Dell Latitude 2110 under CrunchBang Linux</title><link>https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Some time ago I got my hands on &lt;a class="reference external" href="http://crunchbanglinux.org/"&gt;CrunchBang
+Linux&lt;/a&gt; distro, which is great. Like
+really. Try it. The only annoying thing is missing proper wireless
+driver for my Broadcom BCM43224 WiFi card. But I'm used to it, as many
+Linux distros do not provide it. Or even worse, provide broken driver
+from somewhere in between b43/brcm80211 drivers snafu. As I happen to
+know from my Fedora experiences that it is resolved in kernel version
+3.4 . Also as that kernel tends to be generally faster on my machine, I
+decided to compile just this one. Here you are. &lt;a class="reference external" href="http://www.kernel.org/pub/linux/kernel/v3.0/linux-3.4.4.tar.bz2"&gt;Vanilla 3.4.4&lt;/a&gt;
+kernel, &lt;a class="reference external" href="http://crunchbanglinux.org/forums/topic/18060/how-to-compile-the-kernel-from-source/"&gt;compiled&lt;/a&gt;
+for Intel Atom and with BCM43224 support. This is a 64bit kernel.
+Download &lt;a href="https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html#id1"&gt;&lt;span class="problematic" id="id2"&gt;`crunchbanglinux-kernel-3.4.4-intel\_atom.tar.bz2 &amp;lt;&amp;gt;`__&lt;/span&gt;&lt;/a&gt;
+and:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove firmware-linux&lt;/span&gt;
+&lt;a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove firmware-linux-nonfree&lt;/span&gt;
+&lt;a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;tar jxf crunchbanglinux-kernel-3.4.4-intel_atom.tar.bz2&lt;/span&gt;
+&lt;a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd linux-3.4.4-intel_atom/&lt;/span&gt;
+&lt;a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg -i *.deb&lt;/span&gt;
+&lt;a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;reboot&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Should work for Debian Squeeze also but not tested on that system. Write me if you'd
+like it compiled any other way, e.g. for another processor.&lt;/p&gt;
+&lt;div class="system-messages section"&gt;
+&lt;h2&gt;Docutils System Messages&lt;/h2&gt;
+&lt;div class="system-message" id="id1"&gt;
+&lt;p class="system-message-title"&gt;System Message: ERROR/3 (&lt;tt class="docutils"&gt;&amp;lt;string&amp;gt;&lt;/tt&gt;); &lt;em&gt;&lt;a href="https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html#id2"&gt;backlink&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+Anonymous hyperlink mismatch: 1 references but 0 targets.
+See "backrefs" attribute for IDs.&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>BCM43224</category><category>crunchbang</category><category>dell</category><category>latitude</category><category>linux</category><guid>https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html</guid><pubDate>Sun, 08 Jul 2012 09:18:59 GMT</pubDate></item><item><title>Bitcoin wallet recovery using Photorec</title><link>https://blog.cyplo.net/posts/2012/04/01/bitcoin-wallet-recovery-photorec.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Ever cried over damaged disk holding your bitcoin wallet ? Ever
+formatted storage holding a perfectly valid and the only copy of your
+wallet.dat ? Yes, me too. Well, there's
+&lt;a class="reference external" href="http://www.cgsecurity.org/wiki/PhotoRec"&gt;Photorec&lt;/a&gt;, opensource file
+recovery software. It just skips the partition and filesystem info and
+scans for plain file signatures on the disk. Unfortunately it does not
+recognize Bitcoin's Wallet as a file format. Bitcoin wiki
+&lt;a class="reference external" href="https://en.bitcoin.it/wiki/Wallet"&gt;states&lt;/a&gt; that wallet.dat is just a
+good old BerkeleyDB. Just let me check that with the famous file
+command:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_62f085e076a84652b36220a3f3ce45de-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;[cyryl@uglybook ~]$&lt;/span&gt; file .bitcoin/wallet.dat
+&lt;a name="rest_code_62f085e076a84652b36220a3f3ce45de-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;.bitcoin/wallet.dat: Berkeley DB (Btree, version 9, native byte-order)&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;That is right. Photorec however, has its own file-type
+detection magic, for the reason unknown to me. Let's see whether it
+works on the wallet.&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_b2c21b82c0714a6da79a43bdf7c8fee7-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;[cyryl@uglybook ~]$&lt;/span&gt; fidentify .bitcoin/wallet.dat
+&lt;a name="rest_code_b2c21b82c0714a6da79a43bdf7c8fee7-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;.bitcoin/wallet.dat: unknown&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Uhoh. Do not abandon hope for not all is lost ! Photorec &lt;a class="reference external" href="http://www.cgsecurity.org/wiki/Add_your_own_extension_to_PhotoRec"&gt;provides a
+way&lt;/a&gt;
+for you to add custom signatures. The only missing ingredient appears to
+be the knowledge of &lt;strong&gt;file&lt;/strong&gt;. Just check your linux installation for
+&lt;strong&gt;file&lt;/strong&gt;'s detection signatures. On my system these are to be found
+under &lt;strong&gt;/usr/share/misc/magic&lt;/strong&gt; We need file extensions, offset and some
+magic number for Photorec to work. Well, extension is &lt;strong&gt;.dat&lt;/strong&gt;, magics
+and offsets are stored in the file mentioned above. Translate offsets
+from decimal-based to hexs and take care of endianess &lt;em&gt;et volia&lt;/em&gt;&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;[cyryl@uglybook ~]#&lt;/span&gt; cat .photorec.sig
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0x0 0x00061561&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0x0 0x61150600&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0x0 0x00053162&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0x0 0x62310500&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x00061561&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x61150600&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x00053162&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x62310500&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x00042253&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-11"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x53220400&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x00040988&lt;/span&gt;
+&lt;a name="rest_code_706ef4ffd22043339a50e12831d3da0c-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;dat 0xc 0x88090400&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;That is it. Happy wallet recovery.&lt;/p&gt;&lt;/div&gt;</description><category>bitcoin</category><category>photorec</category><category>recovery</category><category>signature</category><category>wallet</category><category>wallet.dat</category><guid>https://blog.cyplo.net/posts/2012/04/01/bitcoin-wallet-recovery-photorec.html</guid><pubDate>Sun, 01 Apr 2012 21:06:01 GMT</pubDate></item></channel></rss>

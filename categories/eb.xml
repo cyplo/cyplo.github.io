@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about eb)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/eb.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Configure AWS Elastic Beanstalk Docker environment variables</title><link>https://blog.cyplo.net/posts/2018/04/configure-docker-env-vars-on-beanstalk.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;AWS Beanstalk is a good 'intermediate' level hosting for Docker containers. It gives you load balancing and scalability pretty much out of the box in exchange for being a bit more opaque to configure. The Docker bits are a bit more hidden away there. 
+In a typical production setup you would want to have Docker images not containing anything environment related, e.g. to be able to run them both in production and locally. An easy way to achieve that with Docker is via environment variables. On the local environment it's &lt;code&gt;docker run --env NAME=VALUE&lt;/code&gt; - what would be a Beanstalk equivalent though ?&lt;/p&gt;
+&lt;p&gt;It turns out that Beanstalk has a magical configuration directory structure that you can pass to an environment. 
+It goes like this:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;configuration.zip
+   Dockerrun.aws.json 
+   .ebextensions/
+       environmentvariables.config
+&lt;/pre&gt;
+
+
+&lt;p&gt;Where &lt;code&gt;Dockerrun.aws.json&lt;/code&gt; is your regular Docker definition file for Beanstalk, can look like this:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;{
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+        "Name": "image:latest",
+        "Update": "true"
+    },
+    "Ports": [
+        {
+        "ContainerPort": "1234"
+        }
+    ]
+}
+&lt;/pre&gt;
+
+
+&lt;p&gt;While &lt;code&gt;.ebextensions/environmentvariables.config&lt;/code&gt; is where, well, you set the environment variables that will be defined in the container. Example:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;option_settings:
+  - option_name: ENV_VAR1
+    value: "some value"
+  - option_name: ENV_VAR2
+    value: "some other value"
+&lt;/pre&gt;
+
+
+&lt;p&gt;But wait, there's more ! Get the zip file and upload it to some S3 bucket, I'm going to assume that the file is at &lt;code&gt;BUCKET_NAME/CONFIG_PATH&lt;/code&gt; in the example below.
+Then you need to tell Beanstalk where the file is located. This can be achieved by creating a new application version:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;aws elasticbeanstalk create-application-version --application-name APPLICATION_NAME --version-label VERSION --source-bundle S3Bucket=BUCKET_NAME,S3Key=CONFIG_PATH
+aws elasticbeanstalk update-environment --environment-name ENVIRONMENT_NAME --version-label VERSION
+&lt;/pre&gt;&lt;/div&gt;</description><category>amazon</category><category>aws</category><category>docker</category><category>eb</category><category>elastic beanstalk</category><guid>https://blog.cyplo.net/posts/2018/04/configure-docker-env-vars-on-beanstalk.html</guid><pubDate>Mon, 23 Apr 2018 12:00:00 GMT</pubDate></item><item><title>Waiting for AWS Elastic Beanstalk environment to become ready</title><link>https://blog.cyplo.net/posts/2018/04/wait-for-beanstalk.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Elastic Beanstalk on AWS seems to be one of those services that are pretty cool but it's hard to get to know them.
+One of the tasks you may encounter while working with it is that after making some change to its configuration you would like to wait for it to be finished before proceeding further. The change may be setting an environment variable but can also be deploying a new version of the application. I created a small bash script to help with that, can be useful when you try to run this process unattended, e.g. from CI.&lt;/p&gt;
+&lt;table class="codehilitetable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;span class="nb"&gt;set&lt;/span&gt; -o pipefail
+
+&lt;span class="nv"&gt;application_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;
+&lt;span class="nv"&gt;environment_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;
+&lt;span class="nv"&gt;timeout_seconds&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$3&lt;/span&gt;
+
+&lt;span class="k"&gt;function&lt;/span&gt; getStatus&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="sb"&gt;`&lt;/span&gt;aws elasticbeanstalk describe-environments &lt;span class="se"&gt;\&lt;/span&gt;
+    --application-name &lt;span class="nv"&gt;$application_name&lt;/span&gt; --environment-name &lt;span class="nv"&gt;$environment_name&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+    jq -r &lt;span class="s1"&gt;'.Environments | .[]?'&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; jq -r &lt;span class="s1"&gt;'.Status'&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="nv"&gt;sleep_time_seconds&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;
+&lt;span class="nv"&gt;max_iterations_count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="nv"&gt;$timeout_seconds&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;$sleep_time_seconds&lt;/span&gt;&lt;span class="k"&gt;))&lt;/span&gt;
+&lt;span class="nv"&gt;iterations&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Waiting for a maximum of &lt;/span&gt;&lt;span class="nv"&gt;$timeout_seconds&lt;/span&gt;&lt;span class="s2"&gt; seconds for &lt;/span&gt;&lt;span class="nv"&gt;$environment_name&lt;/span&gt;&lt;span class="s2"&gt; to become ready"&lt;/span&gt;
+&lt;span class="nv"&gt;status&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;getStatus&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt; &lt;span class="nv"&gt;$status&lt;/span&gt; !&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"Ready"&lt;/span&gt; &lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt; &lt;span class="nv"&gt;$iterations&lt;/span&gt; -lt &lt;span class="nv"&gt;$max_iterations_count&lt;/span&gt; &lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="nv"&gt;status&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;getStatus&lt;span class="k"&gt;)&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$status&lt;/span&gt;
+    sleep &lt;span class="nv"&gt;$sleep_time_seconds&lt;/span&gt;
+    &lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="nv"&gt;iterations&lt;/span&gt;&lt;span class="o"&gt;+=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Happy coding !&lt;/p&gt;&lt;/div&gt;</description><category>amazon</category><category>aws</category><category>eb</category><category>elastic beanstalk</category><guid>https://blog.cyplo.net/posts/2018/04/wait-for-beanstalk.html</guid><pubDate>Mon, 23 Apr 2018 00:00:00 GMT</pubDate></item></channel></rss>

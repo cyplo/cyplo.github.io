@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Rust: controlling side effects from the test. | Adventurous Computing</title>
+<link href="../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2018/07/rust-injection.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="Rust: controlling side effects from the test.">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2018/07/rust-injection.html">
+<meta property="og:description" content="Rust: controlling side effects from the test.
+Hello and welcome to the newest episode on testing in Rust.
+Imagine you want to write a timestamping repository of some sorts, that will associate the tim">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-07-30T00:00:00Z">
+<meta property="article:tag" content="dependency injection">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="tdd">
+<meta property="article:tag" content="testing">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">Rust: controlling side effects from the test.</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2018-07-30T00:00:00+00:00">2018-07-30 00:00</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../categories/dependency-injection.html" rel="tag">dependency injection</a></li>
+           <li><a class="tag p-category" href="../../../categories/programming.html" rel="tag">programming</a></li>
+           <li><a class="tag p-category" href="../../../categories/rust.html" rel="tag">rust</a></li>
+           <li><a class="tag p-category" href="../../../categories/tdd.html" rel="tag">tdd</a></li>
+           <li><a class="tag p-category" href="../../../categories/testing.html" rel="tag">testing</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<h2>Rust: controlling side effects from the test.</h2>
+<p>Hello and welcome to the newest episode on testing in Rust.<br>
+Imagine you want to write a timestamping repository of some sorts, that will associate the timestamp of when the storage operation was invoked with the stored value.
+How to write it in Rust ? And more importantly - how to test it ?
+I would like to share a solution I found and talk a bit about how it works.</p>
+<p>Please note that this solution can be used anywhere where you need to pass a handle that is remembered by the production code, and that thing it points to - you then want to change from the test.</p>
+<pre class="code literal-block"><span></span><span class="k">trait</span><span class="w"> </span><span class="n">Clock</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">fn</span> <span class="nf">now</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nc">Instant</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">struct</span> <span class="nc">SystemClock</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">impl</span><span class="w"> </span><span class="n">SystemClock</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">fn</span> <span class="nf">new</span><span class="p">()</span><span class="w"> </span>-&gt; <span class="nc">Self</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">SystemClock</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">impl</span><span class="w"> </span><span class="n">Clock</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">SystemClock</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">fn</span> <span class="nf">now</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nc">Instant</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">Instant</span>::<span class="n">now</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">struct</span> <span class="nc">TimestampingRepository</span><span class="o">&lt;</span><span class="na">'a</span><span class="p">,</span><span class="w"> </span><span class="n">ClockType</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">where</span><span class="w"></span>
+<span class="w">    </span><span class="n">ClockType</span>: <span class="nc">Clock</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="na">'a</span><span class="p">,</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">clock</span>: <span class="kp">&amp;</span><span class="na">'a</span><span class="w"> </span><span class="n">ClockType</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">storage</span>: <span class="nb">Vec</span><span class="o">&lt;</span><span class="p">(</span><span class="n">Instant</span><span class="p">,</span><span class="w"> </span><span class="kt">u32</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="c1">// (timestamp, value)</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">impl</span><span class="o">&lt;</span><span class="na">'a</span><span class="p">,</span><span class="w"> </span><span class="n">ClockType</span><span class="o">&gt;</span><span class="w"> </span><span class="n">TimestampingRepository</span><span class="o">&lt;</span><span class="na">'a</span><span class="p">,</span><span class="w"> </span><span class="n">ClockType</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">where</span><span class="w"></span>
+<span class="w">    </span><span class="n">ClockType</span>: <span class="nc">Clock</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="na">'a</span><span class="p">,</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">fn</span> <span class="nf">with_clock</span><span class="p">(</span><span class="n">clock</span>: <span class="kp">&amp;</span><span class="na">'a</span><span class="w"> </span><span class="n">ClockType</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nc">Self</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">TimestampingRepository</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">clock</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">storage</span>: <span class="nc">vec</span><span class="o">!</span><span class="p">[],</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">fn</span> <span class="nf">store</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">value</span>: <span class="kt">u32</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="bp">self</span><span class="p">.</span><span class="n">storage</span><span class="p">.</span><span class="n">push</span><span class="p">((</span><span class="bp">self</span><span class="p">.</span><span class="n">clock</span><span class="p">.</span><span class="n">now</span><span class="p">(),</span><span class="w"> </span><span class="n">value</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">fn</span> <span class="nf">all_stored</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Vec</span><span class="o">&lt;</span><span class="p">(</span><span class="n">Instant</span><span class="p">,</span><span class="w"> </span><span class="kt">u32</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="bp">self</span><span class="p">.</span><span class="n">storage</span><span class="p">.</span><span class="n">clone</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="cp">#[cfg(test)]</span><span class="w"></span>
+<span class="k">mod</span> <span class="nn">should</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="cp">#[test]</span><span class="w"></span>
+<span class="w">    </span><span class="k">fn</span> <span class="nf">handle_seconds</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FakeClock</span>::<span class="n">with_time</span><span class="p">(</span><span class="n">Instant</span>::<span class="n">now</span><span class="p">());</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">repository</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TimestampingRepository</span>::<span class="n">with_clock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">clock</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">repository</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">clock</span><span class="p">.</span><span class="n">move_by</span><span class="p">(</span><span class="n">Duration</span>::<span class="n">from_secs</span><span class="p">(</span><span class="mi">32</span><span class="p">));</span><span class="w"></span>
+<span class="w">        </span><span class="n">repository</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">time_difference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">time_difference_between_two_stored</span><span class="p">(</span><span class="n">repository</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">assert_eq</span><span class="o">!</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="n">time_difference</span><span class="p">.</span><span class="n">as_secs</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">struct</span> <span class="nc">FakeClock</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">now</span>: <span class="nc">Instant</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">move_by_secs</span>: <span class="nc">AtomicUsize</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">impl</span><span class="w"> </span><span class="n">FakeClock</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">fn</span> <span class="nf">with_time</span><span class="p">(</span><span class="n">now</span>: <span class="nc">Instant</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nc">Self</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">FakeClock</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="n">now</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="n">move_by_secs</span>: <span class="nc">AtomicUsize</span>::<span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// WAT no `mut`</span>
+<span class="w">        </span><span class="k">fn</span> <span class="nf">move_by</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">duration</span>: <span class="nc">Duration</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="bp">self</span><span class="p">.</span><span class="n">move_by_secs</span><span class="w"></span>
+<span class="w">                </span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="n">duration</span><span class="p">.</span><span class="n">as_secs</span><span class="p">()</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">usize</span><span class="p">,</span><span class="w"> </span><span class="n">Ordering</span>::<span class="n">SeqCst</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">impl</span><span class="w"> </span><span class="n">Clock</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">FakeClock</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">fn</span> <span class="nf">now</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nc">Instant</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="n">move_by_secs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">move_by_secs</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">Ordering</span>::<span class="n">SeqCst</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">u64</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="bp">self</span><span class="p">.</span><span class="n">now</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Duration</span>::<span class="n">from_secs</span><span class="p">(</span><span class="n">move_by_secs</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"></span>
+</pre>
+
+
+<p>That's a lot of code. And I already skipped <code>use</code>s and some definitions to make it less.<br>
+If you want to get the full source code that to follow along - try this <a href="https://play.rust-lang.org/?gist=7f47c441732b543a918cb491487196d4&amp;version=stable&amp;mode=debug&amp;edition=2015">playground</a> or <a href="https://github.com/cyplo/rust-dependency-injection">this repo</a> for the full project including production code usage.  </p>
+<p>Let's start with the test itself.<br>
+The clock appears to be immutable (immovable) in the test, yet we call <code>move_by</code> on it and the whole thing appears to be working somehow.
+First question: can't we just make the clock mutable and skip all this ?
+It appears that sadly (but fortunately) Rust prevents us from doing so.
+We <a href="https://doc.rust-lang.org/book/second-edition/ch04-02-references-and-borrowing.html">cannot</a> both have a immutable and mutable borrow of the clock in the same scope.
+For the full example with an error go <a href="https://play.rust-lang.org/?gist=3e496f857f1e016c596ec7c4060538df&amp;version=stable&amp;mode=debug&amp;edition=2015">here</a>.  </p>
+<p>What is this sorcery then ?<br>
+We use a type that provides <a href="https://doc.rust-lang.org/book/second-edition/ch15-05-interior-mutability.html"><code>Interior Mutability</code></a>, namely <a href="https://rust-lang-ja.github.io/the-rust-programming-language-ja/1.6/std/sync/atomic/struct.AtomicUsize.html"><code>AtomicUsize</code></a>.<br>
+On the outside - it look immutable, yet it provides a thread-safe and very narrow method of mutating the underlying state.
+As we trust <code>AtomicUsize</code> to be written correctly, we can then proceed and write our Rust code as usual, relying fully on the borrow checker. Rust compiler is happy and our test code is happy.  </p>
+<p>I wouldn't use this as a pattern in production code - the borrow checker rules are there for a reason.<br>
+Please treat it as an escape hatch to be used in specific situations, situations like this.  </p>
+<p>Happy Rusting !</p>
+<p>p.s. if you'd like to chat about Rust - <a href="https://calendly.com/cyplo/pair-programming/">book some time with me</a> !</p>
+</div>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../05/rust-resources.html" rel="prev" title="Resources for starting your adventure with Rust">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../09/rust-testing-tricks.html" rel="next" title="Testing tricks in Rust">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2018/07/rust-injection.html",
+        disqus_title="Rust: controlling side effects from the test.",
+        disqus_identifier="cache/posts/2018/07/rust-injection.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

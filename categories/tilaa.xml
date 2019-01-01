@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about tilaa)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/tilaa.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>VPS Adventures part two</title><link>https://blog.cyplo.net/posts/2010/11/01/vps-adventures-part-two.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;After some not so pleasurable experiences with the previous VPS hosting
+provider I started my search for some other one. This time not only
+google was involved but also &lt;a class="reference external" href="http://vark.com/"&gt;aardvark&lt;/a&gt; and some of
+the "top XX best hosting providers" sites. Two results kept showing up.
+&lt;a class="reference external" href="http://www.server4you.com/"&gt;server4you&lt;/a&gt; and
+&lt;a class="reference external" href="https://www.tilaa.nl/"&gt;tilaa&lt;/a&gt;. Which one to choose then ? I wanted
+to give both of them a chance.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.server4you.com/"&gt;server4you&lt;/a&gt;. I really tried to buy a VPS
+there and I failed. Lots of forms to fill and no instant money
+transfer available. I entered my credit card details only to receive the
+email after a day or so stating that they were unable to process my
+payment.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://www.tilaa.nl/"&gt;tilaa&lt;/a&gt;. What caught my attention there was
+that clean website of them. I like such a design style, as you can also
+see it here. Not so cheap, I must admit, but definitely easy to buy.
+Payment transfered and after about a minute I had a full access to the
+VPS. That's how I like things to work. I am using tilaa's the most
+simple VPS plan since then and I am pretty happy with it. Here gathered
+are some things I like or don't about its services.&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;friendly, responsive staff&lt;/li&gt;
+&lt;li&gt;2x RAM amount of swap space - seems great compared to no swap on
+other VPSes&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.linux-kvm.org/page/Main_Page"&gt;KVM&lt;/a&gt;+&lt;a class="reference external" href="http://en.wikipedia.org/wiki/QEMU"&gt;qemu&lt;/a&gt;
+based, you get full control of your system&lt;/li&gt;
+&lt;li&gt;good overall system responsiveness - I experienced occasional lags
+when using &lt;a class="reference external" href="http://wiki.openvz.org/Main_Page"&gt;OpenVZ&lt;/a&gt;
+virtualization before, there's no such thing here&lt;/li&gt;
+&lt;li&gt;they work fast - the day the new Ubuntu 10.10 was released, they had
+the VPS image ready !&lt;/li&gt;
+&lt;li&gt;their motto "We try to be good open source citizens" just convinces
+me&lt;/li&gt;
+&lt;li&gt;the only disadvantage is the price, it's 8.95 euro net montly, it's
+also easy to miss that info on the site&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As I already have a safe place to tinker with my system the real work on
+the server configuration begins. Stay tuned for the next episode.&lt;/p&gt;&lt;/div&gt;</description><category>server</category><category>tilaa</category><category>ubuntu</category><category>virtualization</category><category>vps</category><guid>https://blog.cyplo.net/posts/2010/11/01/vps-adventures-part-two.html</guid><pubDate>Mon, 01 Nov 2010 14:23:18 GMT</pubDate></item></channel></rss>

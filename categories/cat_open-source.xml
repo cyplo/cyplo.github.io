@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about open source)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/cat_open-source.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>New dotfiles repository</title><link>https://blog.cyplo.net/posts/2013/10/26/new-dotfiles-repository.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;Hi ! Just letting you know that I've been working for some time on
+structuring my dotfiles and finally published them to
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles"&gt;github&lt;/a&gt;. These contain e.g. my
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles/blob/master/.vimrc"&gt;vimrc&lt;/a&gt; and
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles/tree/master/.local/share/fonts"&gt;font&lt;/a&gt;
+&lt;a class="reference external" href="https://github.com/cyplo/dotfiles/tree/master/.config/fontconfig/conf.d"&gt;configs&lt;/a&gt;.
+I've even &lt;a class="reference external" href="https://github.com/cyplo/vim-colors-solarized"&gt;patched&lt;/a&gt;
+the famous &lt;a class="reference external" href="http://ethanschoonover.com/solarized"&gt;solarized&lt;/a&gt; theme
+for vim to allow better
+&lt;a class="reference external" href="https://github.com/airblade/vim-gitgutter"&gt;gitgutter&lt;/a&gt; symbols
+display. Enjoy !&lt;/p&gt;</description><category>cygwin</category><category>dotfiles</category><category>fontconfig</category><category>linux</category><category>mac</category><category>vim</category><category>vimrc</category><guid>https://blog.cyplo.net/posts/2013/10/26/new-dotfiles-repository.html</guid><pubDate>Sat, 26 Oct 2013 10:35:52 GMT</pubDate></item><item><title>Speeding up Eclipse/Aptana</title><link>https://blog.cyplo.net/posts/2011/05/23/speeding-up-eclipse-aptana.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;As some of you know Aptana is Eclipse. And Eclipse is a Java-based IDE
+which means it's not particularly a speedy one. However if you have a
+decent amount of ram, like 4gb, it's fairly easy to speed the Eclipse
+up. Go ahead and find &lt;strong&gt;eclipse.ini&lt;/strong&gt; or &lt;strong&gt;aptana.ini&lt;/strong&gt; or other file which
+contents look similar. These settings are from my Linux box, I know that
+MacOS might be kinda scared by so high values, try lowering the Xmx
+and/or others in such a case.&lt;/p&gt;
+&lt;pre class="code text"&gt;&lt;a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-1"&gt;&lt;/a&gt;--launcher.XXMaxPermSize
+&lt;a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-2"&gt;&lt;/a&gt;512m
+&lt;a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-3"&gt;&lt;/a&gt;--launcher.defaultAction
+&lt;a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-4"&gt;&lt;/a&gt;openFile
+&lt;a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-5"&gt;&lt;/a&gt;-vmargs
+&lt;a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-6"&gt;&lt;/a&gt;-Xms128m
+&lt;a name="rest_code_b5af50be527d490f9e2a58e2d738c1ac-7"&gt;&lt;/a&gt;-Xmx2048m
+&lt;/pre&gt;&lt;p&gt;These settings are for the 4gb ram box, try to find the ones which suit you best. MaxPermSize
+stands for the maximum amount of the memory to be used by the Java
+internals, Xms gives the amount of heap allocated on the VM start and
+Xmx is the heap size limit. Start with upping Xms value as it's often
+too small which causes the Java VM to make lots of heap resizes on the
+app start.&lt;/p&gt;&lt;/div&gt;</description><category>aptana</category><category>eclipse</category><category>java</category><category>memory</category><category>settings</category><category>speed</category><category>speedup</category><guid>https://blog.cyplo.net/posts/2011/05/23/speeding-up-eclipse-aptana.html</guid><pubDate>Mon, 23 May 2011 12:29:49 GMT</pubDate></item><item><title>Hello Sharpdevelop</title><link>https://blog.cyplo.net/posts/2010/11/14/sharpdevelop.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;For years I've been involved in the open source community. I encouraged
+company managers to use open source solutions, I reported bugs, I did
+tests. Since this Monday I am officially a part of
+&lt;a class="reference external" href="http://www.icsharpcode.net/opensource/sd/"&gt;Sharpdevelop&lt;/a&gt; team,
+pursuing the goal of better
+&lt;a class="reference external" href="http://en.wikipedia.org/wiki/F_Sharp_(programming_language)"&gt;F#&lt;/a&gt;
+support within the IDE. The project itself made has made a impressive
+progress last years, had &lt;a class="reference external" href="http://monodevelop.com/"&gt;MonoDevelop&lt;/a&gt;
+forked from it and has some pretty good people working on it right now.
+What more can I say.&lt;/p&gt;</description><guid>https://blog.cyplo.net/posts/2010/11/14/sharpdevelop.html</guid><pubDate>Sun, 14 Nov 2010 13:38:02 GMT</pubDate></item></channel></rss>

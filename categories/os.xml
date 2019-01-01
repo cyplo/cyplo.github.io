@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about os)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/os.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Freakin debuggers - how do they work ?</title><link>https://blog.cyplo.net/posts/2013/09/18/anatomy-debugger.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;I gave a talk
+&lt;a class="reference external" href="http://www.meetup.com/wrocnet/events/138787702/"&gt;yesterday&lt;/a&gt;. It was
+on
+&lt;a class="reference external" href="https://prezi.com/hzvnsznfkgwj/anatomy-of-the-debugger/"&gt;debuggers&lt;/a&gt;.
+From VM-level debuggers to JTAG, quite a packed, high level overview. In
+fact I gave it
+&lt;a class="reference external" href="http://www.meetup.com/KGD-NET/events/113593522/"&gt;before,&lt;/a&gt; on another
+occasions. And this time was different, hence this post. The thing I am
+particularly proud of is that I was able to entertain the crowd for the
+first half of an hour despite not having any computer launched and
+connected. You know, like, interacting with actual people ! We had some
+difficulties connecting to a beamer so I thought it'd be good to have an
+open discussion first. We've started with "unit tests vs debuggers". Is
+having a rock solid unit tests suite enough for you to never touch a
+debugger ? After some time I've transitioned to my presentation, talked
+a bit about the history of debugging, then what are the features of
+modern debuggers and finally how all of these work. And while we're at
+it I would like to give a shout out to the organizers of these 2 events.
+Thanks !&lt;/p&gt;</description><category>debugger</category><category>gdb</category><category>jtag</category><category>os</category><category>processor</category><guid>https://blog.cyplo.net/posts/2013/09/18/anatomy-debugger.html</guid><pubDate>Wed, 18 Sep 2013 17:26:26 GMT</pubDate></item></channel></rss>

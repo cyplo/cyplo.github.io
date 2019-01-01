@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about restore)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/restore.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Backing up and restoring whole block devices</title><link>https://blog.cyplo.net/posts/2015/02/14/backing-restoring-whole-block-devices.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;SD cards are not really a reliable storage, especially when used
+constantly e.g. while sitting in always powered-on Raspberry Pi. Because
+of that I've recently needed to perform lots of backup/restore
+operations ;) I wrote this script for backing up:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-3"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -z &lt;span class="nv"&gt;$1&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-4"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; device_to_clone"&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-5"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;exit&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-6"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-7"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-8"&gt;&lt;/a&gt;&lt;span class="nv"&gt;device&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;timestamp&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;date +%Y%m%d&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;dest_file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/tmp/&lt;/span&gt;&lt;span class="nv"&gt;$timestamp&lt;/span&gt;&lt;span class="s2"&gt;.dd.xz"&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-12"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-13"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"about to clone &lt;/span&gt;&lt;span class="nv"&gt;$device&lt;/span&gt;&lt;span class="s2"&gt; to &lt;/span&gt;&lt;span class="nv"&gt;$dest_file&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-14"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"ctrl-c or [enter]"&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-15"&gt;&lt;/a&gt;&lt;span class="nb"&gt;read&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-16"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-17"&gt;&lt;/a&gt;sudo umount &lt;span class="nv"&gt;$device&lt;/span&gt;?
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-18"&gt;&lt;/a&gt;sudo umount &lt;span class="nv"&gt;$device&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-19"&gt;&lt;/a&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-20"&gt;&lt;/a&gt;sudo sync
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-21"&gt;&lt;/a&gt;sudo pv -tpreb &lt;span class="nv"&gt;$device&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; dd &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;4M &lt;span class="p"&gt;|&lt;/span&gt; pixz &amp;gt; &lt;span class="nv"&gt;$dest_file&lt;/span&gt;
+&lt;a name="rest_code_55faa46d405e4b36b43b209e5521b0bb-22"&gt;&lt;/a&gt;sudo sync
+&lt;/pre&gt;&lt;p&gt;And this one for restoring:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-3"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -z &lt;span class="nv"&gt;$1&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -z &lt;span class="nv"&gt;$2&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-4"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; restore_file.xz device_to_restore_to"&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-5"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;exit&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-6"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-7"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-8"&gt;&lt;/a&gt;&lt;span class="nv"&gt;source_file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-9"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; ! -f &lt;span class="nv"&gt;$source_file&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-10"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"cannot open &lt;/span&gt;&lt;span class="nv"&gt;$source_file&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-11"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;exit&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-12"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-13"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;device&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-15"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-16"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"about to restore &lt;/span&gt;&lt;span class="nv"&gt;$source_file&lt;/span&gt;&lt;span class="s2"&gt; onto &lt;/span&gt;&lt;span class="nv"&gt;$device&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"ctrl-c or [enter]"&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;read&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-19"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-20"&gt;&lt;/a&gt;sudo umount &lt;span class="nv"&gt;$device&lt;/span&gt;?
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-21"&gt;&lt;/a&gt;sudo umount &lt;span class="nv"&gt;$device&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-22"&gt;&lt;/a&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-23"&gt;&lt;/a&gt;pv -tpreb &lt;span class="nv"&gt;$source_file&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; pixz -d &lt;span class="p"&gt;|&lt;/span&gt; sudo dd &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;4M &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$device&lt;/span&gt;
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-24"&gt;&lt;/a&gt;sudo sync
+&lt;a name="rest_code_659086bb63b74ad7b0bdf8a5c855a40e-25"&gt;&lt;/a&gt;sudo eject &lt;span class="nv"&gt;$device&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;Some of the more fun features include progressbars and making sure you've unmounted the
+device properly before ;) This also uses parallel threads to deflate the
+data, so the XZ compression should not be a bottleneck on any modern
+machine. The scripts above were used to backup and restore SD cards but
+will work for any block device, be it an external or internal disk
+drive, etc. usage example [remember to use the whole device, not just
+its partition as an argument]:&lt;/p&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;./backup_sdcard /dev/sdc&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;about to clone /dev/sdc to /tmp/20150214.dd.xz&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;ctrl-c or [enter]&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;[sudo] password for cyryl:&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;umount: /dev/sdc1: not mounted&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;umount: /dev/sdc2: not mounted&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;umount: /dev/sdc: not mounted&lt;/span&gt;
+&lt;a name="rest_code_20e646e09107453b8804df39dbf46a24-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;19,6MiB 0:00:02 [9,72MiB/s] [&amp;gt;                       ]  0% ETA 0:52:26&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><category>backup</category><category>raspberry pi</category><category>restore</category><category>sd</category><category>sdcard</category><guid>https://blog.cyplo.net/posts/2015/02/14/backing-restoring-whole-block-devices.html</guid><pubDate>Sat, 14 Feb 2015 08:30:51 GMT</pubDate></item></channel></rss>

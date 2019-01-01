@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Enabling wireless on Dell Latitude 2110 under CrunchBang Linux | Adventurous Computing</title>
+<link href="../../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="Enabling wireless on Dell Latitude 2110 under CrunchBang Linux">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html">
+<meta property="og:description" content="Some time ago I got my hands on CrunchBang
+Linux distro, which is great. Like
+really. Try it. The only annoying thing is missing proper wireless
+driver for my Broadcom BCM43224 WiFi card. But I'm used">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2012-07-08T09:18:59Z">
+<meta property="article:tag" content="BCM43224">
+<meta property="article:tag" content="crunchbang">
+<meta property="article:tag" content="dell">
+<meta property="article:tag" content="latitude">
+<meta property="article:tag" content="linux">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">Enabling wireless on Dell Latitude 2110 under CrunchBang Linux</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2012-07-08T09:18:59+00:00">2012-07-08 09:18</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../../categories/bcm43224.html" rel="tag">BCM43224</a></li>
+           <li><a class="tag p-category" href="../../../../categories/crunchbang.html" rel="tag">crunchbang</a></li>
+           <li><a class="tag p-category" href="../../../../categories/dell.html" rel="tag">dell</a></li>
+           <li><a class="tag p-category" href="../../../../categories/latitude.html" rel="tag">latitude</a></li>
+           <li><a class="tag p-category" href="../../../../categories/linux.html" rel="tag">linux</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<p>Some time ago I got my hands on <a class="reference external" href="http://crunchbanglinux.org/">CrunchBang
+Linux</a> distro, which is great. Like
+really. Try it. The only annoying thing is missing proper wireless
+driver for my Broadcom BCM43224 WiFi card. But I'm used to it, as many
+Linux distros do not provide it. Or even worse, provide broken driver
+from somewhere in between b43/brcm80211 drivers snafu. As I happen to
+know from my Fedora experiences that it is resolved in kernel version
+3.4 . Also as that kernel tends to be generally faster on my machine, I
+decided to compile just this one. Here you are. <a class="reference external" href="http://www.kernel.org/pub/linux/kernel/v3.0/linux-3.4.4.tar.bz2">Vanilla 3.4.4</a>
+kernel, <a class="reference external" href="http://crunchbanglinux.org/forums/topic/18060/how-to-compile-the-kernel-from-source/">compiled</a>
+for Intel Atom and with BCM43224 support. This is a 64bit kernel.
+Download <a href="enabling-wireless-latitude-2110-crunchbang-linux.html#id1"><span class="problematic" id="id2">`crunchbanglinux-kernel-3.4.4-intel\_atom.tar.bz2 &lt;&gt;`__</span></a>
+and:</p>
+<pre class="code console"><a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-1"></a><span class="go">dpkg --remove firmware-linux</span>
+<a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-2"></a><span class="go">dpkg --remove firmware-linux-nonfree</span>
+<a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-3"></a><span class="go">tar jxf crunchbanglinux-kernel-3.4.4-intel_atom.tar.bz2</span>
+<a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-4"></a><span class="go">cd linux-3.4.4-intel_atom/</span>
+<a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-5"></a><span class="go">dpkg -i *.deb</span>
+<a name="rest_code_4f053146a99342209c5b8ccfe2b7ec42-6"></a><span class="go">reboot</span>
+</pre>
+<p>Should work for Debian Squeeze also but not tested on that system. Write me if you'd
+like it compiled any other way, e.g. for another processor.</p>
+<div class="system-messages section">
+<h2>Docutils System Messages</h2>
+<div class="system-message" id="id1">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">&lt;string&gt;</tt>); <em><a href="enabling-wireless-latitude-2110-crunchbang-linux.html#id2">backlink</a></em></p>
+Anonymous hyperlink mismatch: 1 references but 0 targets.
+See "backrefs" attribute for IDs.</div>
+</div>
+</div>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../../04/01/bitcoin-wallet-recovery-photorec.html" rel="prev" title="Bitcoin wallet recovery using Photorec">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../../08/01/boosting-your-wifi-signal.html" rel="next" title="Boosting your WiFi signal with cooking utensils">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html",
+        disqus_title="Enabling wireless on Dell Latitude 2110 under CrunchBang Linux",
+        disqus_identifier="cache/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

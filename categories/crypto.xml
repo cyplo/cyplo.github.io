@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about crypto)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/crypto.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Better crypto initiative</title><link>https://blog.cyplo.net/posts/2014/06/19/better-crypto-initiative.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;It's not common for me to put just one link here as the resource for the
+article. Today, however, is one of these days. The
+&lt;a class="reference external" href="https://bettercrypto.org/"&gt;bettercrypto&lt;/a&gt; gals and guys came up with
+really excellent practical guide to securing your servers. Here it is:
+&lt;a class="reference external" href="https://bettercrypto.org/static/applied-crypto-hardening.pdf"&gt;https://bettercrypto.org/static/applied-crypto-hardening.pdf&lt;/a&gt; A draft for
+now, but already sporting a high concentration of knowledge. BTW - it
+being a draft means that you should read it and contribute to it as
+well.&lt;/p&gt;</description><category>apache</category><category>crypto</category><category>nginx</category><category>openssl</category><category>server</category><category>ssh</category><guid>https://blog.cyplo.net/posts/2014/06/19/better-crypto-initiative.html</guid><pubDate>Thu, 19 Jun 2014 12:38:07 GMT</pubDate></item></channel></rss>

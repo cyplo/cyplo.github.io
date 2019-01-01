@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Boldly go where no programmer has gone before.">
+<meta name="viewport" content="width=device-width">
+<title>Adventurous Computing (old posts, page 4) | Adventurous Computing</title>
+<link href="assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/index-4.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="assets/css/mermaid.forest.css">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+        <div class="post">
+            <h1 class="title"><a href="posts/2014/02/11/today-fight-back.html">Today we fight back</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2014-02-11T15:47:54+00:00">2014-02-11 15:47</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2014/02/11/today-fight-back.html#disqus_thread" data-disqus-identifier="cache/posts/2014/02/11/today-fight-back.html">Comments</a>
+
+
+                </div>
+            
+
+            </div>
+            <div class="body">
+                <p>If you don't have JS disabled you might have noticed the huge black
+banner on the bottom of this blog. Stop mass surveillance. This is the
+day we fight back. <a class="reference external" href="https://thedaywefightback.org/international/">https://thedaywefightback.org/international/</a></p>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2014/02/01/compiling-tarsnap-raspberrypi.html">Compiling tarsnap on RaspberryPi</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2014-02-01T21:59:27+00:00">2014-02-01 21:59</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2014/02/01/compiling-tarsnap-raspberrypi.html#disqus_thread" data-disqus-identifier="cache/posts/2014/02/01/compiling-tarsnap-raspberrypi.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/raspberrypi.html" rel="tag">raspberrypi</a></li>
+           <li><a class="tag p-category" href="categories/tarsnap.html" rel="tag">tarsnap</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>Just a quickie for tarsnap 1.0.35. Featuring my new favourite, the
+download software called aria2.</p>
+<pre class="code console"><a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-1"></a><span class="go">aptitude install aria2 libssl-dev zlib1g-dev e2fslibs-dev</span>
+<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-2"></a><span class="go">aria2c https://www.tarsnap.com/download/tarsnap-autoconf-1.0.35.tgz</span>
+<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-3"></a><span class="go">aria2c https://www.tarsnap.com/download/tarsnap-sigs-1.0.35.asc</span>
+<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-4"></a><span class="go">gpg --recv-key 2F102ABB</span>
+<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-5"></a><span class="go">gpg --decrypt tarsnap-sigs-1.0.35.asc</span>
+<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-6"></a><span class="go">sha256sum tarsnap-autoconf-1.0.35.tgz # should get the value from sig file, 6c9f67....9a</span>
+<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-7"></a><span class="go">tar xf tarsnap-autoconf-1.0.35.tgz</span>
+<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-8"></a><span class="go">cd tarsnap-autoconf-1.0.35/</span>
+<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-9"></a><span class="go">./configure</span>
+<a name="rest_code_55381d41be354bc1ba714e6c9f85a98d-10"></a><span class="go">time nice ionice make -j2</span>
+</pre>
+<p>How do I know that -j2 really gives some advantage on raspi ? Well, here
+are the timings:</p>
+<pre class="code console"><a name="rest_code_b984b50834f84ab485293509900341a0-1"></a><span class="gp">#</span>fresh, j1
+<a name="rest_code_b984b50834f84ab485293509900341a0-2"></a><span class="go">real    14m7.129s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-3"></a><span class="go">user    6m30.790s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-4"></a><span class="go">sys 0m21.640s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-5"></a>
+<a name="rest_code_b984b50834f84ab485293509900341a0-6"></a><span class="gp">#</span>-j2
+<a name="rest_code_b984b50834f84ab485293509900341a0-7"></a><span class="go">real    11m33.868s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-8"></a><span class="go">user    6m36.690s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-9"></a><span class="go">sys 0m19.880s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-10"></a>
+<a name="rest_code_b984b50834f84ab485293509900341a0-11"></a><span class="gp">#</span>-j1 again, caches warmed up
+<a name="rest_code_b984b50834f84ab485293509900341a0-12"></a><span class="go">real    12m38.598s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-13"></a><span class="go">user    6m30.960s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-14"></a><span class="go">sys 0m20.470s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-15"></a>
+<a name="rest_code_b984b50834f84ab485293509900341a0-16"></a><span class="gp">#</span>-j2 again
+<a name="rest_code_b984b50834f84ab485293509900341a0-17"></a><span class="go">real    10m14.975s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-18"></a><span class="go">user    6m34.980s</span>
+<a name="rest_code_b984b50834f84ab485293509900341a0-19"></a><span class="go">sys 0m20.710s</span>
+</pre>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2014/01/21/meetings.html">Meetings</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2014-01-21T20:13:05+00:00">2014-01-21 20:13</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2014/01/21/meetings.html#disqus_thread" data-disqus-identifier="cache/posts/2014/01/21/meetings.html">Comments</a>
+
+
+                </div>
+            
+
+            </div>
+            <div class="body">
+                <div>
+<div class="section" id="decisions">
+<h2>Decisions</h2>
+<p>Most of the meetings come from the desire to have a decision made. The
+problem is in most cases is that these are not decisions to be made now.
+Software prototyping is cheap. We should just try to build a working
+solution and iterate around. Let's prototype. Get someone most annoyed
+by the problem and leave them to build it. Of course, the clearer
+communication of what they are actually doing the better. It should be
+something like ‘hey I’m gonna build this – okay’ or even ‘hey, I”ve
+build that, let’s see how it behaves’ Not like “we should now spend
+multiple meetings on discussing how this should be done’. Just make it
+work, instead of talking about it.</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation</h2>
+<p>There are people that like those meetings around decision making. And
+those decisions, that should not be made now, of course, need proper
+documentation around to prove the point. And document the
+decision-making process. Oh, and office software and document versions
+of course. That's what everyone uses. What, you developers have text
+files and this git stuff ?! The thing is if the need for some
+documentation for something comes from the team then the team will make
+it when needed. If not then probably not.</p>
+</div>
+<div class="section" id="sharing-the-knowledge">
+<h2>Sharing the knowledge</h2>
+<p>Other possible reasoning behind having a meeting can be that of some
+knowledge needs to be shared. And that's a noble cause. Just don't make
+a meeting out of it. Make a lecture. A presentation. No audience members
+interacting with each other. Speaker talking and maybe sometimes
+allowing questions. The knowledge sharing sessions are oftentimes a
+prelude to the decisionmaking meetings. See above.</p>
+</div>
+<div class="section" id="confirming-your-ideas">
+<h2>Confirming your ideas</h2>
+<p>Sometimes however somebody just wants some confirmation on their idea,
+maybe before building a prototype. Then, there is a good chance that
+they already know who they should ask. No meeting then. Just ask the
+people you know you should ask. 1-on-1 interaction. Maybe somebody will
+overhear and start listening. Notice that the social dynamic is very
+different from the meeting then, two people having a conversation and
+another one politely listening, maybe being invited to the conversation
+after some while. Just look how it works in between talks on
+conferences. Very different from “everybody says everything” meetings.</p>
+</div>
+<div class="section" id="the-meetings-that-are-left">
+<h2>The meetings that are left</h2>
+<p>Also, if for some cosmic reason you really need to have a meeting – make
+it opt-in. Just the people who are interested coming. Set the timer.
+There is one I particularly like - a clock showing amount of money
+wasted so far by this meeting.</p>
+</div>
+<div class="section" id="post-scriptum">
+<h2>Post scriptum</h2>
+<p>37 signals on meetings:
+<a class="reference external" href="https://emeamail.infusion.com/owa/redir.aspx?C=GHIP5YF7-Ue3AtGX8FaxkQmR1qki6NAI6jelfyclFt3i89MSQOQacIq26I2scmQ0qi3zcPAGWZQ.&amp;URL=http%3a%2f%2fgettingreal.37signals.com%2fch07_Meetings_Are_Toxic.php">http://gettingreal.37signals.com/ch07_Meetings_Are_Toxic.php</a>
+These guys have the idea of every communication should be async and read
+when convenient, hence their emphasis on email. That gets you to really
+think of your proposal and really describe it and stuff, which is
+sometimes good. To stop and think, RFC-style. However, as mentioned
+above, imho most of the times it’s quicker to just write the software.
+Possibly, also, I just like ‘hey, got a second?’ approach better.</p>
+</div>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2014/01/01/wordpress-https-nonstandard-port.html">Wordpress and nonstandard ports and protocols</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2014-01-01T11:32:36+00:00">2014-01-01 11:32</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2014/01/01/wordpress-https-nonstandard-port.html#disqus_thread" data-disqus-identifier="cache/posts/2014/01/01/wordpress-https-nonstandard-port.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/https.html" rel="tag">https</a></li>
+           <li><a class="tag p-category" href="categories/port.html" rel="tag">port</a></li>
+           <li><a class="tag p-category" href="categories/tcpip.html" rel="tag">tcpip</a></li>
+           <li><a class="tag p-category" href="categories/wordpress.html" rel="tag">wordpress</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>I needed to set up a Wordpress installation where https is on
+nonstandard port and the admin interface lives in that land, while the
+site itself is using plain http.</p>
+<p>In wp-config.php:</p>
+<pre class="code php"><a name="rest_code_85167a6764dc4fd8acf2462623f3f807-1"></a><span class="x">if (!empty($_SERVER['HTTPS'])) {</span>
+<a name="rest_code_85167a6764dc4fd8acf2462623f3f807-2"></a><span class="x">    define('WP_SITEURL', 'https://example.com:12345');</span>
+<a name="rest_code_85167a6764dc4fd8acf2462623f3f807-3"></a><span class="x">    define('WP_HOME', 'https://example.com:12345');</span>
+<a name="rest_code_85167a6764dc4fd8acf2462623f3f807-4"></a><span class="x">}</span>
+<a name="rest_code_85167a6764dc4fd8acf2462623f3f807-5"></a><span class="x">else {</span>
+<a name="rest_code_85167a6764dc4fd8acf2462623f3f807-6"></a><span class="x">    define('WP_SITEURL', 'http://example.com');</span>
+<a name="rest_code_85167a6764dc4fd8acf2462623f3f807-7"></a><span class="x">    define('WP_HOME', 'http://example.com');</span>
+<a name="rest_code_85167a6764dc4fd8acf2462623f3f807-8"></a><span class="x">}</span>
+</pre>
+<p>This allows the installation to properly see resources like
+images and css if accessed via nonstandard port. So if you don't see
+image previews in the admin panel, your styles look weird, or you just
+don't see new posts' previewes - this might be it.</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/12/28/30c3-day-1.html">30C3 day 1</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-12-28T12:08:16+00:00">2013-12-28 12:08</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/12/28/30c3-day-1.html#disqus_thread" data-disqus-identifier="cache/posts/2013/12/28/30c3-day-1.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/30c3.html" rel="tag">30C3</a></li>
+           <li><a class="tag p-category" href="categories/photos.html" rel="tag">photos</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <p>I'm writing this on the beginning of the day 2 of 30C3, as day 1 was so
+packed with action that I was not able to sit down and type, not even
+for a little while. First of all - Glen Greenwald. Yep. <a class="reference external" href="https://www.youtube.com/watch?v=gyA6NZ9C9pM">Glen
+Greenwald's keynote</a> was
+moving the crowd, making the audience interrupt him with rounds of
+applause every few minutes. Lots of mobile phone network exploitation
+talks along with general anti-buffer-overflow techniques. <a class="reference external" href="https://www.youtube.com/watch?v=CJNxbpbHA-I">Tor guys
+talking about the interesting
+times</a> we live in. Quite
+a day. <a class="reference external" href="galleries/30C3/">Here</a>  are some photos, with no Congress people, except for me, in
+them, as the tradition goes.</p>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/11/10/booting-gentoo-lukslvm2systemd.html">Booting Gentoo with LUKS+LVM2+systemd</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-11-10T21:20:26+00:00">2013-11-10 21:20</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/11/10/booting-gentoo-lukslvm2systemd.html#disqus_thread" data-disqus-identifier="cache/posts/2013/11/10/booting-gentoo-lukslvm2systemd.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/cryptsetup.html" rel="tag">cryptsetup</a></li>
+           <li><a class="tag p-category" href="categories/gentoo.html" rel="tag">gentoo</a></li>
+           <li><a class="tag p-category" href="categories/linux.html" rel="tag">linux</a></li>
+           <li><a class="tag p-category" href="categories/luks.html" rel="tag">luks</a></li>
+           <li><a class="tag p-category" href="categories/lvm.html" rel="tag">lvm</a></li>
+           <li><a class="tag p-category" href="categories/lvm2.html" rel="tag">lvm2</a></li>
+           <li><a class="tag p-category" href="categories/openrc.html" rel="tag">openrc</a></li>
+           <li><a class="tag p-category" href="categories/systemd.html" rel="tag">systemd</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>I've spent quite some time recently trying to get a laptop running
+Gentoo boot from an encrypted partition with LVM. I thought that this
+might be useful for someone else, so here you are: First things first:
+I'm assuming you've followed Gentoo handbook and are operating from
+within livecd's shell. You've done the regular luksFormat + lvm stuff
+and you've come up with a layout similar to this one:</p>
+<pre class="code text"><a name="rest_code_9aa0a4019ba04f558074aa64f536e882-1"></a>dagrey ~ # lsblk
+<a name="rest_code_9aa0a4019ba04f558074aa64f536e882-2"></a>NAME                          SIZE TYPE  MOUNTPOINT
+<a name="rest_code_9aa0a4019ba04f558074aa64f536e882-3"></a>sda                           55.9G disk
+<a name="rest_code_9aa0a4019ba04f558074aa64f536e882-4"></a>└─sda1                        55.9G part
+<a name="rest_code_9aa0a4019ba04f558074aa64f536e882-5"></a>  └─crypthome (dm-3)          55.9G crypt /home
+<a name="rest_code_9aa0a4019ba04f558074aa64f536e882-6"></a>sdb                           29.8G disk
+<a name="rest_code_9aa0a4019ba04f558074aa64f536e882-7"></a>├─sdb1                       485.4M part  /boot
+<a name="rest_code_9aa0a4019ba04f558074aa64f536e882-8"></a>└─sdb2                        29.4G part
+<a name="rest_code_9aa0a4019ba04f558074aa64f536e882-9"></a>  └─root_sdb2-vg-root (dm-0)  29.3G crypt
+<a name="rest_code_9aa0a4019ba04f558074aa64f536e882-10"></a>    ├─vg-swap (dm-1)             8G lvm   [SWAP]
+<a name="rest_code_9aa0a4019ba04f558074aa64f536e882-11"></a>    └─vg-root (dm-2)          21.3G lvm   /
+</pre>
+<p>You need a kernel to boot this, a kernel that understands crypto stuff as well as
+lvm.</p>
+<pre class="code text"><a name="rest_code_bed2a400429742788df13a5d96541163-1"></a>genkernel --symlink --save-config --no-mrproper --luks --lvm --udev --menuconfig all
+</pre>
+<p>If you're using <em>gentoo-sources</em> you'd notice the fancy gentoo-specific menu on top. Go there and check
+systemd. Apart from the usual stuff, please make sure to check stuff on
+<a class="reference external" href="https://wiki.gentoo.org/wiki/Systemd">this list</a>, and also this one:</p>
+<pre class="code text"><a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-1"></a>Device Drivers
+<a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-2"></a> Multi-device support (RAID and LVM)
+<a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-3"></a> [*] Multiple devices driver support (RAID and LVM)
+<a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-4"></a> &lt;*&gt;  Device mapper support
+<a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-5"></a> &lt;*&gt;  Crypt target support
+<a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-6"></a>
+<a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-7"></a>Cryptographic API
+<a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-8"></a> &lt;*&gt;  SHA256 digest algorithm
+<a name="rest_code_ca1981febfe34c63ad41e0dafc10b055-9"></a> &lt;*&gt;  AES cipher algorithms
+</pre>
+<p>Your setup is so new that you need grub2. Grub2 is very picky about its configuration. Take this one and
+avoid hours of reading:</p>
+<pre class="code text"><a name="rest_code_543cdc1df814497e93a1d87953869b0b-1"></a>dagrey ~ # cat /etc/default/grub
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-2"></a>
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-3"></a>GRUB_DISTRIBUTOR="Gentoo"
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-4"></a>
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-5"></a>GRUB_DEFAULT=0
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-6"></a>GRUB_HIDDEN_TIMEOUT=0
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-7"></a>GRUB_HIDDEN_TIMEOUT_QUIET=true
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-8"></a>GRUB_TIMEOUT=3
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-9"></a>
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-10"></a>GRUB_PRELOAD_MODULES=lvm
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-11"></a>GRUB_CRYPTODISK_ENABLE=y
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-12"></a>GRUB_DEVICE=/dev/ram0
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-13"></a>
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-14"></a># Append parameters to the linux kernel command line
+<a name="rest_code_543cdc1df814497e93a1d87953869b0b-15"></a>GRUB_CMDLINE_LINUX="real_init=/usr/bin/systemd quiet real_root=/dev/mapper/vg-root crypt_root=/dev/sdb2 dolvm acpi_backlight=vendor"
+</pre>
+<p>You're using initrd to set everything up for the kernel, so you need <em>real_root</em> and <em>real_init</em> instead of
+regular ones. <em>cryptdevice</em> no longer works, use <em>crypt_root</em> And
+<em>dolvm</em> is essential, without it only the first part will work, leaving
+you with open crypt container and kernel panic just afterwards. Also
+notice GRUB_DEVICE, GRUB_CRYPTODISK_ENABLE and GRUB_PRELOAD_MODULES. Make sure the first partition on the disk you're
+installing grub onto is starting at 2048. If it's any earlier grub just
+won't be able to fit its magic in there. Finally, install grub</p>
+<pre class="code text"><a name="rest_code_572f81d171d34d3099b976ce7b0f2b99-1"></a>grub2-install --modules="configfile linux crypto search_fs_uuid luks lvm" --recheck /dev/sda
+<a name="rest_code_572f81d171d34d3099b976ce7b0f2b99-2"></a>grub2-mkconfig -o /boot/grub/grub.cfg
+</pre>
+<p>That should be sufficient to boot the system and initialize root. What
+about those other encrypted partitions like /home though ? Well, init
+subsystem needs to initialize them, OpenRC did such by reading
+/etc/fstab and then /etc/dmcrypt/dmcrypt.conf accordingly. Systemd is a
+bit different here. You still need your /etc/fstab entries for it to
+know which partitions need to be initialized. The place where you say
+how to map and decrypt crypto containers, however, is in /etc/crypttab.</p>
+<pre class="code text"><a name="rest_code_bdb330acca8044c990331b92a1173d37-1"></a>dagrey ~ # cat /etc/fstab
+<a name="rest_code_bdb330acca8044c990331b92a1173d37-2"></a>
+<a name="rest_code_bdb330acca8044c990331b92a1173d37-3"></a>/dev/sdb1              /boot     ext2    defaults    1 2
+<a name="rest_code_bdb330acca8044c990331b92a1173d37-4"></a>/dev/mapper/vg-root    /         ext4    defaults    0 1
+<a name="rest_code_bdb330acca8044c990331b92a1173d37-5"></a>/dev/mapper/vg-swap    none      swap    sw          0 0
+<a name="rest_code_bdb330acca8044c990331b92a1173d37-6"></a>/dev/mapper/crypthome  /home     ext4    defaults    0 2
+<a name="rest_code_bdb330acca8044c990331b92a1173d37-7"></a>
+<a name="rest_code_bdb330acca8044c990331b92a1173d37-8"></a>dagrey ~ # cat /etc/crypttab
+<a name="rest_code_bdb330acca8044c990331b92a1173d37-9"></a>#crypthome /dev/sda1
+<a name="rest_code_bdb330acca8044c990331b92a1173d37-10"></a>crypthome /dev/sda1 /etc/conf.d/dmcrypt.key
+</pre>
+<p>The keyfile is available from then already decrypted root partition. You can also skip the key and the
+you'll get a password prompt, sometimes hidden somewhere in systemd messages. Hit enter to reveal it once more.</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/10/26/new-dotfiles-repository.html">New dotfiles repository</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-10-26T10:35:52+00:00">2013-10-26 10:35</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/10/26/new-dotfiles-repository.html#disqus_thread" data-disqus-identifier="cache/posts/2013/10/26/new-dotfiles-repository.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/cygwin.html" rel="tag">cygwin</a></li>
+           <li><a class="tag p-category" href="categories/dotfiles.html" rel="tag">dotfiles</a></li>
+           <li><a class="tag p-category" href="categories/fontconfig.html" rel="tag">fontconfig</a></li>
+           <li><a class="tag p-category" href="categories/linux.html" rel="tag">linux</a></li>
+           <li><a class="tag p-category" href="categories/mac.html" rel="tag">mac</a></li>
+           <li><a class="tag p-category" href="categories/vim.html" rel="tag">vim</a></li>
+           <li><a class="tag p-category" href="categories/vimrc.html" rel="tag">vimrc</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <p>Hi ! Just letting you know that I've been working for some time on
+structuring my dotfiles and finally published them to
+<a class="reference external" href="https://github.com/cyplo/dotfiles">github</a>. These contain e.g. my
+<a class="reference external" href="https://github.com/cyplo/dotfiles/blob/master/.vimrc">vimrc</a> and
+<a class="reference external" href="https://github.com/cyplo/dotfiles/tree/master/.local/share/fonts">font</a>
+<a class="reference external" href="https://github.com/cyplo/dotfiles/tree/master/.config/fontconfig/conf.d">configs</a>.
+I've even <a class="reference external" href="https://github.com/cyplo/vim-colors-solarized">patched</a>
+the famous <a class="reference external" href="http://ethanschoonover.com/solarized">solarized</a> theme
+for vim to allow better
+<a class="reference external" href="https://github.com/airblade/vim-gitgutter">gitgutter</a> symbols
+display. Enjoy !</p>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/09/18/anatomy-debugger.html">Freakin debuggers - how do they work ?</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-09-18T17:26:26+00:00">2013-09-18 17:26</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/09/18/anatomy-debugger.html#disqus_thread" data-disqus-identifier="cache/posts/2013/09/18/anatomy-debugger.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/debugger.html" rel="tag">debugger</a></li>
+           <li><a class="tag p-category" href="categories/gdb.html" rel="tag">gdb</a></li>
+           <li><a class="tag p-category" href="categories/jtag.html" rel="tag">jtag</a></li>
+           <li><a class="tag p-category" href="categories/os.html" rel="tag">os</a></li>
+           <li><a class="tag p-category" href="categories/processor.html" rel="tag">processor</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <p>I gave a talk
+<a class="reference external" href="http://www.meetup.com/wrocnet/events/138787702/">yesterday</a>. It was
+on
+<a class="reference external" href="https://prezi.com/hzvnsznfkgwj/anatomy-of-the-debugger/">debuggers</a>.
+From VM-level debuggers to JTAG, quite a packed, high level overview. In
+fact I gave it
+<a class="reference external" href="http://www.meetup.com/KGD-NET/events/113593522/">before,</a> on another
+occasions. And this time was different, hence this post. The thing I am
+particularly proud of is that I was able to entertain the crowd for the
+first half of an hour despite not having any computer launched and
+connected. You know, like, interacting with actual people ! We had some
+difficulties connecting to a beamer so I thought it'd be good to have an
+open discussion first. We've started with "unit tests vs debuggers". Is
+having a rock solid unit tests suite enough for you to never touch a
+debugger ? After some time I've transitioned to my presentation, talked
+a bit about the history of debugging, then what are the features of
+modern debuggers and finally how all of these work. And while we're at
+it I would like to give a shout out to the organizers of these 2 events.
+Thanks !</p>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/09/02/links-directory.html">Idea for a curated links directory</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-09-02T18:47:15+00:00">2013-09-02 18:47</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/09/02/links-directory.html#disqus_thread" data-disqus-identifier="cache/posts/2013/09/02/links-directory.html">Comments</a>
+
+
+                </div>
+            
+
+            </div>
+            <div class="body">
+                <p>I read a lot. Of books and news alike. Oh, and whitepapers too. And some
+recipes maybe. Some of them I find by my RSS reader. Some are given to
+me by colleagues at work, some arrive by mail, sometimes even in
+somewhat curated, described form. I read through most of them. And
+resend. Often I want to share a particular piece with friends of mine
+and possibly some other people too. Most often I do this by pasting the
+link into the IM window or email it to a particular person I know might
+be interested. Then I recall the other person who would also love to
+hear about this. Then I need to search the IM logs or my Delicious. And
+all of this only to hear that the people mentioned did not have the time
+to read the article referred but would love to in the future. Just not
+right now. I need a system for this. I read something, I archive it in
+the system. People sign up or I do sign them up. People receive my
+curated links list in a more or less regular email. But there is also a
+public, searchable web directory for all the previous editions. Is there
+anything like it around ? Open source please. Selfhosted please. If not
+- I'm just gonna write it.</p>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2013/08/10/new-laptop.html">New laptop</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2013-08-10T10:45:20+00:00">2013-08-10 10:45</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2013/08/10/new-laptop.html#disqus_thread" data-disqus-identifier="cache/posts/2013/08/10/new-laptop.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/arch-linux.html" rel="tag">arch linux</a></li>
+           <li><a class="tag p-category" href="categories/clevo.html" rel="tag">clevo</a></li>
+           <li><a class="tag p-category" href="categories/laptop.html" rel="tag">laptop</a></li>
+           <li><a class="tag p-category" href="categories/notebook.html" rel="tag">notebook</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>Hey, remember my <a class="reference external" href="https://blog.cyplo.net/2013/01/15/laptop-would-love-to-buy/">search for the new
+laptop</a> ?
+It's finally over ! I found that Clevo, Taiwanese custom laptop
+manufacturer, has recently added 13'3 FullHD laptop base to their
+offerings - W230ST. And to my surprise - there is a <a class="reference external" href="http://www.bluemobility.pl/">Polish
+importer</a> which allows pretty neat specs
+calibration for you. Game on you say ? Indeed. <strong>What do I like about
+it:</strong></p>
+<ul class="simple">
+<li>Haswell-based, so all the new tech is here, same as in the newest
+MacBooks</li>
+<li>up to 16GB RAM, I have 8GB installed for now and it works pretty good</li>
+<li>2x mPCIx mSATA capable slots</li>
+<li>nice copper cooling inside</li>
+<li>FullHD matte display</li>
+<li>4x USB</li>
+<li>HDMI</li>
+<li>typing on its keyboard, just clicks with me</li>
+<li>survived <a class="reference external" href="https://ohm2013.org/site/">OHM2013</a> camp - not scared of
+humidity and hot air</li>
+</ul>
+<p><strong>What I do not like so much:</strong></p>
+<ul class="simple">
+<li>Haswell-based, so Linux support is not that great yet, everything
+seems to be working okay, however power consumption is off the
+limits. 60Wh battery lasts for ~2h tops.</li>
+<li>while the outer side of the case is of nice rubberrized plastic, the
+inside is cheap-looking grey one. There was no option to change it
+unfortunately, while I see that <a class="reference external" href="http://www.xoticpc.com/">other</a>
+importers/assemblers around the world have such mods avaiable.</li>
+<li>the looks of the keyboard, purely visual stuff like the font used to
+print the characters, the layout is okay</li>
+</ul>
+<p><strong>Running Linux on it:</strong> Everything seems to be working by default on
+most of the distros. I've tested Gentoo, Arch, Fedora and Crunchbang.
+The only thing that needed some tweaking was that by default I was
+unable to control backlight brightness at all. adding</p>
+<p><tt class="docutils literal">acpi_backlight=vendor</tt></p>
+<p>to the kernel boot parameters, as suggested
+on <a class="reference external" href="https://wiki.archlinux.org/index.php/Intel_Graphics#Backlight_not_fully_adjusting.2C_or_adjusting_at_all_after_resume.">Arch wiki</a>,
+solved the problem. I haven't delved deeply into Optimus yet, so I don't
+know whether the graphics cards switching works correctly or not. The
+one thing I've noticed is that, after waking from deep sleep, so after
+leaving the lid closed for a long time, not for few minutes, there are
+some visual artifacts on screen. Also, as mentioned before, power
+consumption worries me a bit. Will keep you posted !</p>
+</div>
+            </div>
+        </div>
+    
+        <nav class="postindexpager"><ul class="pager">
+<li class="previous">
+                <a href="index-5.html" rel="prev">Newer posts</a>
+            </li>
+            <li class="next">
+                <a href="index-3.html" rel="next">Older posts</a>
+            </li>
+        </ul></nav><script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

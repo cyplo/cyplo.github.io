@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Boldly go where no programmer has gone before.">
+<meta name="viewport" content="width=device-width">
+<title>Adventurous Computing (old posts, page 8) | Adventurous Computing</title>
+<link href="assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/index-8.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="assets/css/mermaid.forest.css">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+        <div class="post">
+            <h1 class="title"><a href="posts/2017/02/one-off-docker-runjessie.html">Running host programs in isolation inside one-off Docker containers</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2017-02-17T22:08:46+00:00">2017-02-17 22:08</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2017/02/one-off-docker-runjessie.html#disqus_thread" data-disqus-identifier="cache/posts/2017/02/testing-local-scripts-in-isolation-inside-one-off-docker-containers.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/container.html" rel="tag">container</a></li>
+           <li><a class="tag p-category" href="categories/docker.html" rel="tag">docker</a></li>
+           <li><a class="tag p-category" href="categories/jessie.html" rel="tag">jessie</a></li>
+           <li><a class="tag p-category" href="categories/linux.html" rel="tag">linux</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>I am quite bad at remembering how to launch docker to have everything set up correctly. Hence the following - a script that launches any commandline specified in its arguments inside a new docker container. Current directory is mounted inside the container automatically, so the thing you are executing can have its local dependencies satisfied.</p>
+<pre class="code bash"><a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-2"></a><span class="nv">USERNAME</span><span class="o">=</span><span class="sb">`</span>whoami<span class="sb">`</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-3"></a><span class="nv">MOUNT_PATH</span><span class="o">=</span><span class="s2">"/mnt"</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-4"></a><span class="nv">CURRENT_DIRECTORY</span><span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span> -P<span class="sb">`</span> <span class="c1"># untangle symbolic links if needed - SELinux needs the real path</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-5"></a><span class="nv">IMAGE</span><span class="o">=</span><span class="s2">"debian:jessie"</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-6"></a>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-7"></a><span class="k">if</span> <span class="o">[[</span> -z <span class="nv">$1</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-8"></a>    <span class="nb">echo</span> <span class="s2">"usage: `basename </span><span class="nv">$0</span><span class="s2">` command_to_run_inside_a_container"</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-9"></a>    <span class="nb">exit</span> <span class="m">1</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-10"></a><span class="k">fi</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-11"></a>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-12"></a><span class="nv">RESOLVED_ARGUMENTS</span><span class="o">=</span><span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-13"></a>docker run -i -t -v <span class="s2">"</span><span class="nv">$CURRENT_DIRECTORY</span><span class="s2">"</span>:<span class="s2">"</span><span class="nv">$MOUNT_PATH</span><span class="s2">"</span>:Z <span class="nv">$IMAGE</span> bash -c <span class="s2">"useradd -M -d '</span><span class="nv">$MOUNT_PATH</span><span class="s2">' </span><span class="nv">$USERNAME</span><span class="s2"> &amp;&amp; cd '</span><span class="nv">$MOUNT_PATH</span><span class="s2">' &amp;&amp; bash -c '</span><span class="nv">$RESOLVED_ARGUMENTS</span><span class="s2">'"</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-14"></a>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-15"></a><span class="c1"># restore SELinux context for the current directory</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-16"></a><span class="nv">restorecon_path</span><span class="o">=</span><span class="sb">`</span>which restorecon<span class="sb">`</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-17"></a><span class="k">if</span> <span class="o">[[</span> -x <span class="s2">"</span><span class="nv">$restorecon_path</span><span class="s2">"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-18"></a>    restorecon -R <span class="s2">"</span><span class="nv">$CURRENT_DIRECTORY</span><span class="s2">"</span>
+<a name="rest_code_0394443268a6404d9eb4aed142c8e5d5-19"></a><span class="k">fi</span>
+</pre>
+<p>I use vanilla Debian Jessie as a run platform there, mostly because this is what most of my servers run.
+The script covers setting up SELinux and mounting the directory from which it is run as <tt class="docutils literal">/mnt</tt> inside the container while also having the default non-root user added.</p>
+<p>Run Jessie, run !</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2016/12/ad-hoc-docker-volumes-selinux.html">Using ad hoc Docker volumes on SELinux systems</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2016-12-30T18:28:50+00:00">2016-12-30 18:28</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2016/12/ad-hoc-docker-volumes-selinux.html#disqus_thread" data-disqus-identifier="cache/posts/2016/12/using-ad-hoc-docker-volumes-on-selinux-enabled-systems.html">Comments</a>
+
+
+                </div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="categories/container.html" rel="tag">container</a></li>
+           <li><a class="tag p-category" href="categories/data.html" rel="tag">data</a></li>
+           <li><a class="tag p-category" href="categories/docker.html" rel="tag">docker</a></li>
+           <li><a class="tag p-category" href="categories/permissions.html" rel="tag">permissions</a></li>
+           <li><a class="tag p-category" href="categories/selinux.html" rel="tag">selinux</a></li>
+           <li><a class="tag p-category" href="categories/volume.html" rel="tag">volume</a></li>
+        </ul>
+</div>
+
+            </div>
+            <div class="body">
+                <div>
+<p>I've recently tried running some quick Docker commands using host's directory as a volume:</p>
+<pre class="code console"><a name="rest_code_64a63fdb4c02497cb58cf03fc10dcb25-1"></a><span class="go">docker run -i -t -v `pwd`:/mnt debian:jessie bash -c "ls -hal /mnt"</span>
+<a name="rest_code_64a63fdb4c02497cb58cf03fc10dcb25-2"></a><span class="go">ls: cannot open directory /mnt: Permission denied</span>
+</pre>
+<p>I use Fedora as my main OS, which, it turns out, has some pretty nice SELinux settings. These deny access from inside the container to the outside.
+Said Fedora consists mostly of almost-newest-but-stable everything though, which makes Docker to be in a fairly recent version.
+A version that understands how to change a SELinux context for the directory we're mounting, by itself !
+You need at least Docker v1.7 for this.</p>
+<pre class="code console"><a name="rest_code_fa2093e35fa84df98b717ba7cf51cc36-1"></a><span class="go">docker run -i -t -v `pwd`:/mnt:Z debian:jessie bash -c "ls -hal /mnt"</span>
+<a name="rest_code_fa2093e35fa84df98b717ba7cf51cc36-2"></a><span class="go">total 8.0K</span>
+<a name="rest_code_fa2093e35fa84df98b717ba7cf51cc36-3"></a><span class="go">drwxrwxr-x.  2 1000 1000 4.0K Dec 30 18:34 .</span>
+<a name="rest_code_fa2093e35fa84df98b717ba7cf51cc36-4"></a><span class="go">drwxr-xr-x. 21 root root  242 Dec 30 19:07 ..</span>
+</pre>
+<p>Please notice the capital <cite>Z</cite> as a mount parameter.
+And that is it. Mostly. Some cleanup remains, as docker leaves the host's directory with a changed SELinux context.
+To restore it you need to</p>
+<pre class="code console"><a name="rest_code_60bf0948cf6d4ad383ac2de172df0ebb-1"></a><span class="go">restorecon -R `pwd`</span>
+</pre>
+<p>Or use any other path you'd like instead of <cite>`pwd`</cite> in the examples above.
+Happy dockerizing !</p>
+</div>
+            </div>
+        </div>
+        <div class="post">
+            <h1 class="title"><a href="posts/2016/09/rustfest-organization-was-the-best.html">RustFest - organization was the best. Also rhymes.</a></h1>
+            <div class="meta">
+                <div class="authordate">
+                    <time class="timeago" datetime="2016-09-18T18:43:47+00:00">2016-09-18 18:43</time>
+</div>
+                <div class="stats">
+                    
+        
+    <a href="posts/2016/09/rustfest-organization-was-the-best.html#disqus_thread" data-disqus-identifier="cache/posts/2016/09/rustfest-organization-was-the-best.html">Comments</a>
+
+
+                </div>
+            
+
+            </div>
+            <div class="body">
+                <div>
+<div class="section" id="i-went-to-rustfest-and-it-was-amazing">
+<h2>I went to RustFest and it was amazing !</h2>
+<p>It was clearly the best conference organizational-wise I've been to so far.
+It made me think of what I really liked there. What made it so awesome and welcomy ?
+To me this was a large number of small things just coming together. I listing them here for me to remember and for others to use.
+Let's make conferences at least this friendly, together !</p>
+</div>
+<div class="section" id="before-the-event">
+<h2>Before the event:</h2>
+<ul class="simple">
+<li>very clear emails, repeating messages couple of times in different emails for the important stuff</li>
+<li>maps of the popular routes provided, e.g. from the airport and bus station</li>
+<li>supporter ticket sale - two times the price - you pay for another person that wouldn't be able to get a ticket otherwise</li>
+<li>survey on dietary requirements/allergies</li>
+<li>survey on childcare needs</li>
+<li>clear statement of the code of conduct for the conference</li>
+</ul>
+</div>
+<div class="section" id="during-the-event">
+<h2>During the event:</h2>
+<ul>
+<li>
+<p class="first">very good MC person</p>
+<blockquote>
+<ul class="simple">
+<li>keeping people entertained through the tech breaks</li>
+<li>keeping tabs on the talk length, allowing appropriate amount of questions if the time allowed</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p class="first">live captioning of all talks - small screen outside of the view of the main screen with the text live</p>
+</li>
+<li>
+<p class="first">getting the next speaker prepared and mic-tested before the end of the current talk</p>
+</li>
+<li>
+<p class="first">quiet room to rest with clear rules on no talking and interrupting there</p>
+</li>
+<li>
+<p class="first">clear signage for the different parts of the venue (washrooms, quiet room, party space etc)</p>
+</li>
+<li>
+<p class="first">washrooms</p>
+<blockquote>
+<ul>
+<li>
+<p class="first">all same, ungendered</p>
+</li>
+<li>
+<p class="first">basic items for free in said washrooms</p>
+<blockquote>
+<ul class="simple">
+<li>chewing gum</li>
+<li>tooth paste</li>
+<li>tampons, pads</li>
+<li>baby wipes</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p class="first">info desk/registration</p>
+<blockquote>
+<ul class="simple">
+<li>clear info during registration, handing out programme</li>
+<li>asking people if they want to be on the photos - giving out lanyards accordingly - flashy red lanyards for people who do not want photos of them taken</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p class="first">emergency number to call with stated purpose</p>
+<blockquote>
+<ul class="simple">
+<li>code of conduct violation</li>
+<li>if you are lost in the city</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</div>
+</div>
+            </div>
+        </div>
+    
+        <nav class="postindexpager"><ul class="pager">
+<li class="previous">
+                <a href="index.html" rel="prev">Newer posts</a>
+            </li>
+            <li class="next">
+                <a href="index-7.html" rel="next">Older posts</a>
+            </li>
+        </ul></nav><script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

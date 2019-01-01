@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Update on the sunpowered server | Adventurous Computing</title>
+<link href="../../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2015/05/02/grafana-influx.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="Update on the sunpowered server">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2015/05/02/grafana-influx.html">
+<meta property="og:description" content="TL;DR - go to data.cyplo.net
+Some, rather long, time ago I've added a custom
+python-driven
+data acquisition and graphing to my sunpowered RaspberryPi installation
+on the balcony. Since then I've upgra">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2015-05-02T14:54:05Z">
+<meta property="article:tag" content="balcony">
+<meta property="article:tag" content="grafana">
+<meta property="article:tag" content="influxdb">
+<meta property="article:tag" content="raspberry pi">
+<meta property="article:tag" content="solar power">
+<meta property="article:tag" content="timeseries">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">Update on the sunpowered server</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2015-05-02T14:54:05+00:00">2015-05-02 14:54</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../../categories/balcony.html" rel="tag">balcony</a></li>
+           <li><a class="tag p-category" href="../../../../categories/grafana.html" rel="tag">grafana</a></li>
+           <li><a class="tag p-category" href="../../../../categories/influxdb.html" rel="tag">influxdb</a></li>
+           <li><a class="tag p-category" href="../../../../categories/raspberry-pi.html" rel="tag">raspberry pi</a></li>
+           <li><a class="tag p-category" href="../../../../categories/solar-power.html" rel="tag">solar power</a></li>
+           <li><a class="tag p-category" href="../../../../categories/timeseries.html" rel="tag">timeseries</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<p>TL;DR - go to <a class="reference external" href="http://data.cyplo.net/dashboard/db/sunpowered">data.cyplo.net</a></p>
+<p>Some, rather long, time ago I've <a class="reference external" href="https://blog.cyplo.net/2014/04/21/adding-voltage-current-measurements-sunpowered-pi/">added a custom
+python-driven</a>
+data acquisition and graphing to my sunpowered RaspberryPi installation
+on the balcony. Since then I've upgraded it to Raspi2 and ported the
+data thingy to influxdb + grafana. All 3 of those things I am very
+positively surprised by.</p>
+<p>RaspberryPi2 - definitely worth the upgrade - it's a speed daemon now.  Small caveat - I recommend
+installing raspbian from scratch, especially if you had some custom
+overclocking config, as these do not seem to be compatible between 1 and
+2. Also RasPi2 needs a microsd card instead of full-sized one. As for
+the software - since everything went suprisingly smoothly this post is
+not much of a tutorial. Just go to <a class="reference external" href="http://influxdb.com/">influxdb</a>
+and <a class="reference external" href="http://grafana.org/">Grafana</a> and go through the respective
+installation documentation. You need x86 64bit server to host this, so
+unfortunately no self-hosting on RaspberryPi - at least I wasn't able to
+compile the software there. I've <a class="reference external" href="https://github.com/cyplo/sunpowered/tree/master/software">changed the original python scripts
+slightly</a>,
+to upload the data to influxdb instead of graphing directly via
+matplotlib. Then configured grafana to display some cool graphs and that
+was pretty much it - you can see the result at
+<a class="reference external" href="http://data.cyplo.net/dashboard/db/sunpowered">data.cyplo.net</a>.</p>
+<p>Right now I'm testing 2 different sizes of solar panels and
+batteries, hooked at the same time. The ADC is connected as it was
+before though, so a TODO is to add more measurements, to see how the
+individual  panels' output change during the data and how does it affect
+each of the batteries.</p>
+<p><a class="reference external" href="../../../../wp-content/uploads/2015/05/IMG_1289-e1430570843289.jpg"><img alt="IMG_1289" class="alignleft wp-image-1952 size-medium" src="../../../../wp-content/uploads/2015/05/IMG_1289-e1430570843289-225x300.jpg" style="width: 225px; height: 300px;"></a> <a class="reference external" href="../../../../wp-content/uploads/2015/05/IMG_1291.jpg"><img alt="IMG_1291" class="alignleft size-medium wp-image-1955" src="../../../../wp-content/uploads/2015/05/IMG_1291-300x225.jpg" style="width: 300px; height: 225px;"></a></p>
+</div>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../../04/26/cnc-router-arrives.html" rel="prev" title="CNC router arrives">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../28/cnc-workflow.html" rel="next" title="My CNC machining workflow">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2015/05/02/grafana-influx.html",
+        disqus_title="Update on the sunpowered server",
+        disqus_identifier="cache/posts/2015/05/02/grafana-influx.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>

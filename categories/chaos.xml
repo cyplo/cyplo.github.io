@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Adventurous Computing (Posts about chaos)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/chaos.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 12:49:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Conferences you did not know existed and now you know you just need to go to</title><link>https://blog.cyplo.net/posts/2016/03/13/conferences.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;div class="section" id="go-to-conferences-it-s-good-for-you"&gt;
+&lt;h2&gt;Go to conferences. It's good for you.&lt;/h2&gt;
+&lt;p&gt;Ever wondered why to go to conferences ? Is it worth it, especially if
+you &lt;a class="reference external" href="http://sarah.thesharps.us/2016/02/02/first-timers-guide-to-foss-conferences/"&gt;do not feel
+confident&lt;/a&gt;
+that the conference is on something that would be in an immediate realm
+of your day-to-day interests ? Just go ! You might end up learning
+something and meeting new people. And new people mean more variables to
+mix up your life. A bit scary, I know. Still worth it though. Wondered
+what conference in &lt;strong&gt;Europe&lt;/strong&gt; are weird enough so people wouldn't mind
+having another misfit ? Here you go.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="nucl-ai"&gt;
+&lt;h2&gt;nucl.ai&lt;/h2&gt;
+&lt;p&gt;Now imagine something niche within the industry. To me, AI comes to
+mind. Mages in robes in their towers, sending out autonomous robot
+armies against each other. Right ? There's a conference for that ! At
+&lt;a class="reference external" href="http://nucl.ai/"&gt;nucl.ai&lt;/a&gt;, in July, in Vienna, you can meet AI
+professionals from academia and industry alike, most of them coming from
+game development background. The atmosphere is very newcomer-friendly,
+the only requirement is that you're interested in AI, not necessarily
+having anything to do with it professionally. Petra and Alex, the
+organizers, are wonderful people that make this conference quite unique.
+It's happy fun to see ideas floating from academia to the industry and
+vice versa. Don't forget the presentations on work-in-progress major AAA
+games ! I've learned there that the everyday programming in the games
+industry is quite different than the one I do in terms of best practices
+and patterns. Definitely worth a try !&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="erlang-user-conference"&gt;
+&lt;h2&gt;Erlang User Conference&lt;/h2&gt;
+&lt;p&gt;Speaking of something completely different. Erlang ! Was functional
+before being functional was &lt;a class="reference external" href="https://www.youtube.com/watch?v=xrIjfIjssLE"&gt;considered
+cool&lt;/a&gt;. Very practical,
+very fast, parallelize everything ! Processes everywhere ! Message
+passing ! Want to feel the groove as well ? Visit Stockholm in September
+for &lt;a class="reference external" href="http://www.erlang-factory.com/"&gt;Erlang User Conference&lt;/a&gt;. Meet
+creators of the language, talk about massive scale deployments. Other FP
+languages are welcome. I would even say, the more strange the better.
+&lt;a class="reference external" href="http://www.idris-lang.org/"&gt;Idris&lt;/a&gt; seems to be the topic of interest
+as well.  Eat good food, walk the city of dynamite. Erlang has a quite
+close-knit community which gives you this warm family feeling.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="socrates"&gt;
+&lt;h2&gt;SoCraTes&lt;/h2&gt;
+&lt;p&gt;Speaking of family. There's a family of conferences known as
+&lt;a class="reference external" href="https://www.socrates-conference.de/"&gt;SoCraTes&lt;/a&gt;. Software
+Crafstmanship and Testing. SoCraTes. Get it ? :D As it's more than one
+conference a year, it's harder to go to all of them. I only went to
+&lt;a class="reference external" href="http://www.codefreeze.fi/"&gt;Codefreeze&lt;/a&gt;, in Finland, in January, and
+only once, but loved it already. Codefreeze, Finland, in January. Get it
+?! :D First thing is that you don't know what will happen there. You
+just go, meet the people and then you sit down and everyone talks about
+what they would like to learn and what they can share. This way you come
+up with some loose agenda you follow more or less. One track, very
+intense. Talking, swimming in ice water, learning, sauna going. Very
+intimate feel, not many people, lots of things to learn.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="chaos-communication-congress"&gt;
+&lt;h2&gt;Chaos Communication Congress&lt;/h2&gt;
+&lt;p&gt;Speaking of lots of people and intimate feel. &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Chaos_Communication_Congress"&gt;Chaos Communication
+Congress&lt;/a&gt;
+is, I think, the biggest gathering of all nerds and freaks in Europe,
+yet being there feels quite at home. The best organized conference I've
+been to. Friendly people showing their wares on their humble tables, 4
+simultaneous tracks, huge building with intricate hallways. It's
+cyberpunk, it's inclusive, it's about hardcore infosec topics, it's
+about politics. Everything's there, everyone's there. 4 days of data
+being constantly uploaded to your brain, on the waves of &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Club-Mate"&gt;Club
+Mate&lt;/a&gt;. Feels like an
+extended holiday present, as it's happening in the last week of
+December.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-camps"&gt;
+&lt;h2&gt;The Camps&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Chaos_Communication_Camp"&gt;Chaos Communication
+Camp&lt;/a&gt; and
+&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Observe._Hack._Make."&gt;The Dutch Camp&lt;/a&gt;.
+Imagine CCC, the Congress, but in the woods. Middle of nowhere,
+multigigabit internet connection. sleeping in the tent, then going to a
+world-class lecture. Both CCC, the camp, and The Dutch Camp, the camp,
+are happening every 4 years, each of them taking alternating slots. So
+every 2 years there is a camp somewhere. Did I mention that the location
+changes every event ? Happy camping !&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="summary"&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;So go out there. Explore. Meet people. Learn. Have fun. None of the
+above are much expensive and most of the events have a policy of "write
+to us if you want to go but can't afford the ticket". Friendly people
+fixing problems together.&lt;/p&gt;
+&lt;div class="line-block"&gt;
+&lt;div class="line"&gt;nucl.ai: July, tickets around 250EUR&lt;/div&gt;
+&lt;div class="line"&gt;EUC: September, tickets around 350EUR&lt;/div&gt;
+&lt;div class="line"&gt;SoCraTes: the cost and the time depend on the event&lt;/div&gt;
+&lt;div class="line"&gt;CCC: last week of December, tickets around 100EUR&lt;/div&gt;
+&lt;div class="line"&gt;The Camps: summer, tickets around 125EUR&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>artificial intelligence</category><category>camping</category><category>ccc</category><category>chaos</category><category>codefreeze</category><category>conferences</category><category>erlang</category><category>functional programming</category><category>killer segways</category><category>nuclai</category><category>socrates</category><category>talks</category><category>travel</category><guid>https://blog.cyplo.net/posts/2016/03/13/conferences.html</guid><pubDate>Sun, 13 Mar 2016 11:43:03 GMT</pubDate></item></channel></rss>

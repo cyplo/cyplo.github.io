@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="A guide to setting up VSCode as the central point of your Rust development experience">
+<meta name="viewport" content="width=device-width">
+<title>Setting up Rust development environment using VSCode on a Mac | Adventurous Computing</title>
+<link href="../../../assets/css/bitter.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../../assets/css/custom.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="canonical" href="https://blog.cyplo.net/posts/2017/11/rust-vscode-mac.html">
+<!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../assets/css/fontawesome.css">
+<link rel="stylesheet" type="text/css" href="../../../assets/css/titillium.css">
+<link rel="stylesheet" type="text/css" href="../../../assets/css/mermaid.forest.css">
+<meta name="author" content="Cyryl Płotnicki">
+<meta property="og:site_name" content="Adventurous Computing">
+<meta property="og:title" content="Setting up Rust development environment using VSCode on a Mac">
+<meta property="og:url" content="https://blog.cyplo.net/posts/2017/11/rust-vscode-mac.html">
+<meta property="og:description" content="A guide to setting up VSCode as the central point of your Rust development experience">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-11-25T13:50:27Z">
+<meta property="article:tag" content="ide">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="vscode">
+</head>
+<body>
+    <div class="social">
+        <ul>
+<li><a href="../../../index.html" title="Home"><i class="fa-home fa-4x fa"></i></a></li>
+            <li><a href="../../../archive.html" title="Archives"><i class="fa-folder-open fa-3x fa"></i></a></li>
+            <li><a href="../../../files.html" title="Files"><i class="fa-files-o fa-3x fa"></i></a></li>
+            <li><a href="../../../about.html" title="About me"><i class="fa-user fa-3x fa"></i></a></li>
+            <li><a href="https://twitter.com/cyplo" title="My Twitter"><i class="fa-twitter fa-3x fa"></i></a></li>
+            <li><a href="https://github.com/cyplo" title="My Github"><i class="fa-github fa-3x fa"></i></a></li>
+            <li><a href="../../../rss.xml" title="RSS"><i class="fa-rss fa-3x fa"></i></a></li>
+
+        </ul>
+</div>
+    <div class="page-content">
+        <div class="content" rel="main">
+            
+    <div class="post">
+    
+    <h1 class="p-name entry-title" itemprop="headline name">Setting up Rust development environment using VSCode on a Mac</h1>
+
+        <div class="meta">
+            <div class="authordate">
+                <time class="timeago" datetime="2017-11-25T13:50:27+00:00">2017-11-25 13:50</time>
+</div>
+            
+        <div itemprop="keywords" class="tags">
+        <ul>
+        Tags : 
+           <li><a class="tag p-category" href="../../../categories/ide.html" rel="tag">ide</a></li>
+           <li><a class="tag p-category" href="../../../categories/rust.html" rel="tag">rust</a></li>
+           <li><a class="tag p-category" href="../../../categories/vscode.html" rel="tag">vscode</a></li>
+        </ul>
+</div>
+
+        </div>
+        <div class="body">
+            <div>
+<p>This post is a part of the upcoming series on different ways of setting up your Rust development environment. It's time for VSCode.</p>
+<h3>Completion and highlighting</h3>
+<p>While on Linux VSCode with the Rust plugin seems to work more or less out of the box, on a Mac I needed to spend some time configuring it.</p>
+<p>First things first though, let's start by installing Rust version manager, rustup.</p>
+<pre class="code literal-block"><span></span>curl https://sh.rustup.rs -sSf | sh
+</pre>
+
+
+<p>We will be using nightly version of rust as to have one version that can compile all of our tools. This is mostly due to <a href="https://github.com/rust-lang-nursery/rust-clippy"><code>clippy</code></a> requiring a nightly compiler.</p>
+<pre class="code literal-block"><span></span>rustup install nightly
+rustup default nightly
+</pre>
+
+
+<p>We will need Rust Language Server to provide the code completion.</p>
+<pre class="code literal-block"><span></span>rustup component add rls-preview --toolchain nightly
+rustup component add rust-analysis --toolchain nightly
+rustup component add rust-src --toolchain nightly
+</pre>
+
+
+<p>For a more wholesome experience, please have some tools as well:</p>
+<pre class="code literal-block"><span></span>cargo install clippy rustfmt rustsym
+</pre>
+
+
+<p>Now finally, for the VSCode itself, press <code>cmd-p</code> and <code>ext install vscode-rust</code>. I'm using the new <code>Rust</code> extension as <code>Rusty Code</code> has been discontinued.</p>
+<p>If you're lucky - that's it, you should have working completion and highlighting in Rust files. Check this by opening any Rust source code file. 
+If you're greeted by this message: <code>You have chosen RLS mode but neither RLS executable path is specified nor rustup is installed</code> - then we need to get the extension to get to know your setup a bit:</p>
+<p>In VSCode go to <code>Settings</code> using <code>cmd-,</code> and put the following config elements there:</p>
+<pre class="code literal-block"><span></span>{
+    "rust.cargoPath": "/Users/yourusername/.cargo/bin/cargo",
+    "rust.cargoHomePath": "/Users/yourusername/.cargo",
+    "rust.rustfmtPath": "/Users/yourusername/.cargo/bin/rustfmt",
+    "rust.rustsymPath": "/Users/yourusername/.cargo/bin/rustsym",
+    "rust.rustLangSrcPath": "/Users/yourusername/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src",
+    "rust.mode": "rls",
+    "rust.rls": {
+        "executable": "/Users/yourusername/.cargo/bin/rls",
+        "useRustfmt": true
+    }
+}
+</pre>
+
+
+<p>As the paths in the config need to be absolute, remember to adjust to your situation (system username) accordingly.</p>
+<p>Now when you reload and start editing a Rust file you should see <code>RLS: Analysis finished</code> on the bottom bar and the completion and highlighting should all work. Yay !</p>
+<h3>Building and testing</h3>
+<p>VSCode has a system of tasks that we can leverage to run the build and test from within VSCode.
+If you go to <code>Tasks-&gt;Configure</code> tasks it will create an empty <code>tasks.json</code> file in your repository.
+Change it to the following to allow for <code>cargo</code> to be hooked up as your build tool and test runner.</p>
+<pre class="code literal-block"><span></span>{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "cargo build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "cargo test",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
+    ]
+}
+</pre>
+
+
+<p>You can use <code>cmd-shift-b</code> to run the build now.</p>
+<h3>Debugging</h3>
+<p>For the native debugger to work we need to install another extension to VSCode called <a href="https://github.com/vadimcn/vscode-lldb/blob/master/MANUAL.md">'LLDB Debugger'</a>. That would be <code>cmd-p</code> and <code>ext install vadimcn.vscode-lldb</code>.</p>
+<p>After reloading VSCode you should be able to set breakpoints on the side gutter and run the program using debugger by pressing <code>F5</code>. First time doing this will result in the debugger choice window. Choose <code>LLDB Debugger</code> as your debugger and you will be greeted with a JSON configuration file in which you need to tell the debugger a few details on your project. It may look like this:</p>
+<pre class="code literal-block"><span></span>{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug",
+            "program": "<span class="cp">${</span><span class="n">workspaceRoot</span><span class="cp">}</span>/target/debug/name_of_your_executable",
+            "args": [],
+            "cwd": "<span class="cp">${</span><span class="n">workspaceRoot</span><span class="cp">}</span>",
+            "preLaunchTask": "build"
+        }
+    ]
+}
+</pre>
+
+
+<p>And that should be it !</p>
+<p>Now you should be able to set breakpoints and debug through the code.</p>
+<p>Start the debugging session by pressing <code>F5</code> again - this should result in the build proceeding and then the debugger launching.</p>
+<h3>Questions ?</h3>
+<p>Any questions ? Ask on <a href="https://users.rust-lang.org/">https://users.rust-lang.org/</a> and ping me the link to the post on <a href="https://twitter.com/cyplo">Twitter</a> or email it to me at <a href="mailto:blog@cyplo.net">blog@cyplo.net</a>. This way the answer will be visible to everyone in the community.</p>
+<p>Keep on Rusting !</p>
+</div>
+        </div>
+        
+        <ul class="pager hidden-print">
+<li class="previous">
+                <a href="../07/adding-graphs-to-posts-in-nikola.html" rel="prev" title="Adding graphs to posts in Nikola">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../../2018/04/wait-for-beanstalk.html" rel="next" title="Waiting for AWS Elastic Beanstalk environment to become ready">Next post</a>
+            </li>
+        </ul>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="cyplo",
+            disqus_url="https://blog.cyplo.net/posts/2017/11/rust-vscode-mac.html",
+        disqus_title="Setting up Rust development environment using VSCode on a Mac",
+        disqus_identifier="cache/posts/2017/11/rust-vscode-mac.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        
+    
+
+
+    </div>
+
+        
+       <script>var disqus_shortname="cyplo";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><footer id="footer"><p><br>Contents on of this blog are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>. <br></p>
+            
+        </footer>
+</div>
+    </div>
+    
+<script src="../../../assets/js/mermaid.js"></script><script>mermaid.initialize({startOnLoad:true, cloneCssStyles: false});</script><script src="../../../assets/js/jquery-1.10.2.min.js" type="text/javascript"></script><script src="../../../assets/js/jquery.timeago.js" type="text/javascript"></script><script type="text/javascript">
+            $(function(){
+                $('.timeago').timeago();
+            });
+        </script>
+</body>
+</html>
