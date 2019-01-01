@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Adventurous Computing (Posts about windows 10)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/windows-10.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:25:27 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>The best terminal emulator for Windows 10's Bash or how to run X applications</title><link>https://blog.cyplo.net/posts/2016/07/06/terminal-emulator-windows-10-bash.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;div class="line-block"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Adventurous Computing (Posts about windows 10)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/windows-10.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:56:06 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>The best terminal emulator for Windows 10's Bash or how to run X applications</title><link>https://blog.cyplo.net/posts/2016/07/06/terminal-emulator-windows-10-bash.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;div class="line-block"&gt;
 &lt;div class="line"&gt;&lt;strong&gt;update as of 03/2017&lt;/strong&gt;&lt;/div&gt;
 &lt;div class="line"&gt;As this article is by far the most popular on my site right now I feel that an update is necessary, as the landscape evolved a bit since the original publish date.&lt;/div&gt;
 &lt;div class="line"&gt;&lt;a class="reference external" href="https://conemu.github.io/"&gt;Conemu&lt;/a&gt; started to support Bash on Windows properly now and this is what I settled on in the end.&lt;/div&gt;
@@ -27,8 +27,8 @@ would be possible to use it here as well. To my surprise the answer was - yes !&
 &lt;li&gt;run VcXsrv&lt;/li&gt;
 &lt;li&gt;invoke the following from the bash console:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_bc4c6592de4b44da9fbb083de3ec6aab-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;sudo apt-get install terminator&lt;/span&gt;
-&lt;a name="rest_code_bc4c6592de4b44da9fbb083de3ec6aab-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;DISPLAY=:0 terminator -u&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_6a92c329c25c4597b4083d35e523ea71-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;sudo apt-get install terminator&lt;/span&gt;
+&lt;a name="rest_code_6a92c329c25c4597b4083d35e523ea71-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;DISPLAY=:0 terminator -u&lt;/span&gt;
 &lt;/pre&gt;&lt;ul class="simple"&gt;
 &lt;li&gt;profit !&lt;/li&gt;
 &lt;/ul&gt;

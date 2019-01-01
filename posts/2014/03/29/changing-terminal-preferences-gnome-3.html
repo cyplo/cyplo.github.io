@@ -76,24 +76,24 @@ and fetch the list of profiles this way:
 <p>It turns out this was not that obvious, at least for me, how to change
 various profile preferences for Gnome Terminal under Gnome 3. You can go
 and fetch the list of profiles this way:</p>
-<pre class="code console"><a name="rest_code_0cb4d06eb0fe4293977de44dfcd93517-1"></a><span class="go">~# dconf list /org/gnome/terminal/legacy/profiles:/</span>
-<a name="rest_code_0cb4d06eb0fe4293977de44dfcd93517-2"></a><span class="go">:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/</span>
+<pre class="code console"><a name="rest_code_e4af13f3d79d4e1ca4644f8265d0efe5-1"></a><span class="go">~# dconf list /org/gnome/terminal/legacy/profiles:/</span>
+<a name="rest_code_e4af13f3d79d4e1ca4644f8265d0efe5-2"></a><span class="go">:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/</span>
 </pre>
 <p>And then you can use the profile id to list and change various settings:</p>
-<pre class="code console"><a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-1"></a><span class="go">~# dconf list /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-2"></a><span class="go">foreground-color</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-3"></a><span class="go">login-shell</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-4"></a><span class="go">palette</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-5"></a><span class="go">use-system-font</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-6"></a><span class="go">use-theme-colors</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-7"></a><span class="go">font</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-8"></a><span class="go">bold-color-same-as-fg</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-9"></a><span class="go">bold-color</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-10"></a><span class="go">background-color</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-11"></a><span class="go">audible-bell</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-12"></a>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-13"></a><span class="go">~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Inconsolata for Powerline Medium 18'"</span>
-<a name="rest_code_96aa6c462aea4755bd5fe649d825ca36-14"></a><span class="go">~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/login-shell true</span>
+<pre class="code console"><a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-1"></a><span class="go">~# dconf list /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-2"></a><span class="go">foreground-color</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-3"></a><span class="go">login-shell</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-4"></a><span class="go">palette</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-5"></a><span class="go">use-system-font</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-6"></a><span class="go">use-theme-colors</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-7"></a><span class="go">font</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-8"></a><span class="go">bold-color-same-as-fg</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-9"></a><span class="go">bold-color</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-10"></a><span class="go">background-color</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-11"></a><span class="go">audible-bell</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-12"></a>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-13"></a><span class="go">~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Inconsolata for Powerline Medium 18'"</span>
+<a name="rest_code_9e7eb93e32f24b7eb22dac87a1ff52bc-14"></a><span class="go">~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/login-shell true</span>
 </pre>
 </div>
         </div>

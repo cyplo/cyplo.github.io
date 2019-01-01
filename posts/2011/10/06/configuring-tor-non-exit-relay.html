@@ -62,23 +62,23 @@ bandwidth quota applied. I wanted the Tor traffic to be easily
 recognizable from outside as different from the 'normal' traffic coming
 from my server. Second requirement was to make Tor not use my whole
 traffic quota up. Here's my config, with some notes</p>
-<pre class="code text"><a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-1"></a>cyryl@serv:~$ cat /etc/tor/torrc
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-2"></a>SocksPort 0 # what port to open for local application connections
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-3"></a>SocksListenAddress 127.0.0.1 # accept connections only from localhost
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-4"></a>RunAsDaemon 1
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-5"></a>
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-6"></a>DataDirectory /var/lib/tor
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-7"></a>
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-8"></a>ORPort 9001 #switches Tor to server mode
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-9"></a>ORListenAddress tor.cyplo.net
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-10"></a>OutboundBindAddress 91.213.195.28 #what IP address use to direct the outbound traffic
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-11"></a>Nickname cyplonet
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-12"></a>Address tor.cyplo.net
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-13"></a>ExitPolicy reject *:* # no exits allowed
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-14"></a>AccountingStart day 09:00
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-15"></a>AccountingMax 2 GB
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-16"></a>
-<a name="rest_code_f2afa6ef3e194e7089c46d47ef88185d-17"></a>MyFamily cyplonethome, cyplonet
+<pre class="code text"><a name="rest_code_6eaea4d338394221b8603b0ed2530a80-1"></a>cyryl@serv:~$ cat /etc/tor/torrc
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-2"></a>SocksPort 0 # what port to open for local application connections
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-3"></a>SocksListenAddress 127.0.0.1 # accept connections only from localhost
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-4"></a>RunAsDaemon 1
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-5"></a>
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-6"></a>DataDirectory /var/lib/tor
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-7"></a>
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-8"></a>ORPort 9001 #switches Tor to server mode
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-9"></a>ORListenAddress tor.cyplo.net
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-10"></a>OutboundBindAddress 91.213.195.28 #what IP address use to direct the outbound traffic
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-11"></a>Nickname cyplonet
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-12"></a>Address tor.cyplo.net
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-13"></a>ExitPolicy reject *:* # no exits allowed
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-14"></a>AccountingStart day 09:00
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-15"></a>AccountingMax 2 GB
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-16"></a>
+<a name="rest_code_6eaea4d338394221b8603b0ed2530a80-17"></a>MyFamily cyplonethome, cyplonet
 </pre>
 </div>
         </div>

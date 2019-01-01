@@ -76,26 +76,26 @@ swapping is allowed. Like complex nightly builds. Here is a set of super
 simple scripts I've come up with to quickly boot up a system, and then
 in the background add a new swap file on the temp drive there. The temp
 drive is assumed to be under /mnt.</p>
-<pre class="code bash"><a name="rest_code_1e54769e8b834cb5a145bb640959c614-1"></a>root@someazurehost:~# cat /etc/rc.local
-<a name="rest_code_1e54769e8b834cb5a145bb640959c614-2"></a><span class="c1">#!/bin/sh -e</span>
-<a name="rest_code_1e54769e8b834cb5a145bb640959c614-3"></a><span class="nb">set</span> -v
-<a name="rest_code_1e54769e8b834cb5a145bb640959c614-4"></a>
-<a name="rest_code_1e54769e8b834cb5a145bb640959c614-5"></a><span class="c1"># do not wait for swap to become online,</span>
-<a name="rest_code_1e54769e8b834cb5a145bb640959c614-6"></a><span class="c1"># proceed with the boot further,</span>
-<a name="rest_code_1e54769e8b834cb5a145bb640959c614-7"></a><span class="c1"># with swap being created in the background</span>
-<a name="rest_code_1e54769e8b834cb5a145bb640959c614-8"></a>/etc/make_and_enable_swap <span class="p">&amp;</span>
-<a name="rest_code_1e54769e8b834cb5a145bb640959c614-9"></a>
-<a name="rest_code_1e54769e8b834cb5a145bb640959c614-10"></a><span class="nb">exit</span> <span class="m">0</span>
+<pre class="code bash"><a name="rest_code_f85bbb01212f456e992d445ce5fb605b-1"></a>root@someazurehost:~# cat /etc/rc.local
+<a name="rest_code_f85bbb01212f456e992d445ce5fb605b-2"></a><span class="c1">#!/bin/sh -e</span>
+<a name="rest_code_f85bbb01212f456e992d445ce5fb605b-3"></a><span class="nb">set</span> -v
+<a name="rest_code_f85bbb01212f456e992d445ce5fb605b-4"></a>
+<a name="rest_code_f85bbb01212f456e992d445ce5fb605b-5"></a><span class="c1"># do not wait for swap to become online,</span>
+<a name="rest_code_f85bbb01212f456e992d445ce5fb605b-6"></a><span class="c1"># proceed with the boot further,</span>
+<a name="rest_code_f85bbb01212f456e992d445ce5fb605b-7"></a><span class="c1"># with swap being created in the background</span>
+<a name="rest_code_f85bbb01212f456e992d445ce5fb605b-8"></a>/etc/make_and_enable_swap <span class="p">&amp;</span>
+<a name="rest_code_f85bbb01212f456e992d445ce5fb605b-9"></a>
+<a name="rest_code_f85bbb01212f456e992d445ce5fb605b-10"></a><span class="nb">exit</span> <span class="m">0</span>
 </pre>
-<pre class="code bash"><a name="rest_code_748c3e7e63c14faf85a408a6045691f8-1"></a>root@someazurehost:~# cat /etc/make_and_enable_swap
-<a name="rest_code_748c3e7e63c14faf85a408a6045691f8-2"></a><span class="c1">#!/bin/sh</span>
-<a name="rest_code_748c3e7e63c14faf85a408a6045691f8-3"></a><span class="nb">set</span> -e
-<a name="rest_code_748c3e7e63c14faf85a408a6045691f8-4"></a><span class="nb">set</span> -v
-<a name="rest_code_748c3e7e63c14faf85a408a6045691f8-5"></a><span class="c1"># create new 2GB swap file</span>
-<a name="rest_code_748c3e7e63c14faf85a408a6045691f8-6"></a>dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/mnt/swap <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">2048</span>
-<a name="rest_code_748c3e7e63c14faf85a408a6045691f8-7"></a>chmod <span class="m">0600</span> /mnt/swap
-<a name="rest_code_748c3e7e63c14faf85a408a6045691f8-8"></a>mkswap /mnt/swap
-<a name="rest_code_748c3e7e63c14faf85a408a6045691f8-9"></a>swapon /mnt/swap
+<pre class="code bash"><a name="rest_code_d873af7f5f6d4cf082944034e123aed2-1"></a>root@someazurehost:~# cat /etc/make_and_enable_swap
+<a name="rest_code_d873af7f5f6d4cf082944034e123aed2-2"></a><span class="c1">#!/bin/sh</span>
+<a name="rest_code_d873af7f5f6d4cf082944034e123aed2-3"></a><span class="nb">set</span> -e
+<a name="rest_code_d873af7f5f6d4cf082944034e123aed2-4"></a><span class="nb">set</span> -v
+<a name="rest_code_d873af7f5f6d4cf082944034e123aed2-5"></a><span class="c1"># create new 2GB swap file</span>
+<a name="rest_code_d873af7f5f6d4cf082944034e123aed2-6"></a>dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/mnt/swap <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">2048</span>
+<a name="rest_code_d873af7f5f6d4cf082944034e123aed2-7"></a>chmod <span class="m">0600</span> /mnt/swap
+<a name="rest_code_d873af7f5f6d4cf082944034e123aed2-8"></a>mkswap /mnt/swap
+<a name="rest_code_d873af7f5f6d4cf082944034e123aed2-9"></a>swapon /mnt/swap
 </pre>
 <p>Don't forget to make <strong>/etc/make_and_enable_swap</strong> executable !
 Do not add this swap file to fstab, as it is being read before rc.local,

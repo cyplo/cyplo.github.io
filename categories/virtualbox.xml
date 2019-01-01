@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Adventurous Computing (Posts about virtualbox)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/virtualbox.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:25:28 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Enabling USB 3.0 in already existing Virtualbox VMs</title><link>https://blog.cyplo.net/posts/2015/09/27/usb-3-0-virtualbox-vms.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Just a quick note on how to get USB 3.0 in Virtualbox for VMs that were
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Adventurous Computing (Posts about virtualbox)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/virtualbox.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:56:06 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Enabling USB 3.0 in already existing Virtualbox VMs</title><link>https://blog.cyplo.net/posts/2015/09/27/usb-3-0-virtualbox-vms.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Just a quick note on how to get USB 3.0 in Virtualbox for VMs that were
 created with USB 1.1 support only. First, download VirtualBox Extension
 Pack from &lt;a class="reference external" href="https://www.virtualbox.org/wiki/Downloads"&gt;here&lt;/a&gt;. Install
 it. Then quit Virtualbox completely. Go to your directory that contains
 your virtual machine and edit &lt;strong&gt;.vbox&lt;/strong&gt; file. Replace the whole
 &lt;strong&gt;&amp;lt;USBController&amp;gt;&lt;/strong&gt; section with the following:&lt;/p&gt;
-&lt;pre class="code xml"&gt;&lt;a name="rest_code_0dfe3edcbb204483918d564bced2ea29-1"&gt;&lt;/a&gt;&lt;span class="nt"&gt;&amp;lt;USB&amp;gt;&lt;/span&gt;
-&lt;a name="rest_code_0dfe3edcbb204483918d564bced2ea29-2"&gt;&lt;/a&gt;    &lt;span class="nt"&gt;&amp;lt;Controllers&amp;gt;&lt;/span&gt;
-&lt;a name="rest_code_0dfe3edcbb204483918d564bced2ea29-3"&gt;&lt;/a&gt;        &lt;span class="nt"&gt;&amp;lt;Controller&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;"xHCI"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;"XHCI"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-&lt;a name="rest_code_0dfe3edcbb204483918d564bced2ea29-4"&gt;&lt;/a&gt;    &lt;span class="nt"&gt;&amp;lt;/Controllers&amp;gt;&lt;/span&gt;
-&lt;a name="rest_code_0dfe3edcbb204483918d564bced2ea29-5"&gt;&lt;/a&gt;    &lt;span class="nt"&gt;&amp;lt;DeviceFilters/&amp;gt;&lt;/span&gt;
-&lt;a name="rest_code_0dfe3edcbb204483918d564bced2ea29-6"&gt;&lt;/a&gt;&lt;span class="nt"&gt;&amp;lt;/USB&amp;gt;&lt;/span&gt;
+&lt;pre class="code xml"&gt;&lt;a name="rest_code_34068313928d450bbb311f50a6dfcfca-1"&gt;&lt;/a&gt;&lt;span class="nt"&gt;&amp;lt;USB&amp;gt;&lt;/span&gt;
+&lt;a name="rest_code_34068313928d450bbb311f50a6dfcfca-2"&gt;&lt;/a&gt;    &lt;span class="nt"&gt;&amp;lt;Controllers&amp;gt;&lt;/span&gt;
+&lt;a name="rest_code_34068313928d450bbb311f50a6dfcfca-3"&gt;&lt;/a&gt;        &lt;span class="nt"&gt;&amp;lt;Controller&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;"xHCI"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;"XHCI"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+&lt;a name="rest_code_34068313928d450bbb311f50a6dfcfca-4"&gt;&lt;/a&gt;    &lt;span class="nt"&gt;&amp;lt;/Controllers&amp;gt;&lt;/span&gt;
+&lt;a name="rest_code_34068313928d450bbb311f50a6dfcfca-5"&gt;&lt;/a&gt;    &lt;span class="nt"&gt;&amp;lt;DeviceFilters/&amp;gt;&lt;/span&gt;
+&lt;a name="rest_code_34068313928d450bbb311f50a6dfcfca-6"&gt;&lt;/a&gt;&lt;span class="nt"&gt;&amp;lt;/USB&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;That's it, let me know if it works for you !&lt;/p&gt;&lt;/div&gt;</description><category>usb</category><category>vbox</category><category>virtualbox</category><category>vm</category><guid>https://blog.cyplo.net/posts/2015/09/27/usb-3-0-virtualbox-vms.html</guid><pubDate>Sun, 27 Sep 2015 12:09:05 GMT</pubDate></item><item><title>Automating running Debian in VirtualBox</title><link>https://blog.cyplo.net/posts/2013/07/16/automating-running-debian-in-virtualbox.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I'm experimenting with service separation by having each service run in
 its own operating system, all of the sharing hardware though. Why ?
 Separation seems to be the only secure approach to running any software.
@@ -21,65 +21,65 @@ with install. Then I tried spawning some clones of that, but having it
 done manually takes quite some time  and is error prone. Did somebody
 say automation ? Yes ! First, clone a VM, regenerating MAC addresses and
 making sure the resource caps are good:&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat prepare_vm
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/bash&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; vm_name vm_number"&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-8"&gt;&lt;/a&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RAM_AMOUNT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"128"&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;DISK_SIZE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"2000"&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-12"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NUMBER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-13"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RDP_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="m"&gt;3389&lt;/span&gt;&lt;span class="k"&gt;))&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;EXECUTION_CAP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"50"&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-15"&gt;&lt;/a&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-16"&gt;&lt;/a&gt;VBoxManage clonevm fresh.cyplo.net --name &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --mode machine --register
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-17"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrde on
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"setting RDP listening port to &lt;/span&gt;&lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-19"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --memory &lt;span class="nv"&gt;$RAM_AMOUNT&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-20"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrdeport &lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-21"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --nic1 bridged --bridgeadapter1 eth0
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-22"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pae on
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-23"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --cpuexecutioncap &lt;span class="nv"&gt;$EXECUTION_CAP&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-24"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hpet on
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-25"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hwvirtex on
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-26"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pagefusion on
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-27"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --dvd none
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-28"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --autostart-enabled on
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-29"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress1 auto
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-30"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress2 auto
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-31"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"vm set up, listing all VMs:"&lt;/span&gt;
-&lt;a name="rest_code_3b30db0b2bee471aaa3bd09f813abef6-32"&gt;&lt;/a&gt;VBoxManage list vms
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat prepare_vm
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; vm_name vm_number"&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RAM_AMOUNT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"128"&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;DISK_SIZE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"2000"&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-12"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NUMBER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-13"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RDP_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="m"&gt;3389&lt;/span&gt;&lt;span class="k"&gt;))&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;EXECUTION_CAP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"50"&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-15"&gt;&lt;/a&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-16"&gt;&lt;/a&gt;VBoxManage clonevm fresh.cyplo.net --name &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --mode machine --register
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-17"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrde on
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"setting RDP listening port to &lt;/span&gt;&lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-19"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --memory &lt;span class="nv"&gt;$RAM_AMOUNT&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-20"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrdeport &lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-21"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --nic1 bridged --bridgeadapter1 eth0
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-22"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pae on
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-23"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --cpuexecutioncap &lt;span class="nv"&gt;$EXECUTION_CAP&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-24"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hpet on
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-25"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hwvirtex on
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-26"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pagefusion on
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-27"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --dvd none
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-28"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --autostart-enabled on
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-29"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress1 auto
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-30"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress2 auto
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-31"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"vm set up, listing all VMs:"&lt;/span&gt;
+&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-32"&gt;&lt;/a&gt;VBoxManage list vms
 &lt;/pre&gt;&lt;p&gt;Then run the VM and change it into Debian
 service host with new name and some software:&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat kickstart_debian
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#/bin/bash&lt;/span&gt;
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; new_hostname new_domainname"&lt;/span&gt;
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-8"&gt;&lt;/a&gt;
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_HOSTNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_DOMAINNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_FQDN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;$NEW_DOMAINNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-12"&gt;&lt;/a&gt;aptitude update
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-13"&gt;&lt;/a&gt;aptitude dist-upgrade -y
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-14"&gt;&lt;/a&gt;aptitude install vim atop sudo -y
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-15"&gt;&lt;/a&gt;hostname
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-16"&gt;&lt;/a&gt;ifconfig
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/mailname
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-19"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/hostname
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-20"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/dc_other_hostnames\='.*'/dc_other_hostnames='&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;'/g"&lt;/span&gt; /etc/exim4/update-exim4.conf.conf
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-21"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/127\.0\.1\.1.*/127.0.1.1 &lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;/g"&lt;/span&gt; /etc/hosts
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-22"&gt;&lt;/a&gt;
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-23"&gt;&lt;/a&gt;rm /etc/ssh/ssh_host_*
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-24"&gt;&lt;/a&gt;dpkg-reconfigure openssh-server
-&lt;a name="rest_code_ef9bbd11efa24ae5aa0f5d6459b5a9ae-25"&gt;&lt;/a&gt;reboot
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat kickstart_debian
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; new_hostname new_domainname"&lt;/span&gt;
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_HOSTNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_DOMAINNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_FQDN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;$NEW_DOMAINNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-12"&gt;&lt;/a&gt;aptitude update
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-13"&gt;&lt;/a&gt;aptitude dist-upgrade -y
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-14"&gt;&lt;/a&gt;aptitude install vim atop sudo -y
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-15"&gt;&lt;/a&gt;hostname
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-16"&gt;&lt;/a&gt;ifconfig
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/mailname
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-19"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/hostname
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-20"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/dc_other_hostnames\='.*'/dc_other_hostnames='&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;'/g"&lt;/span&gt; /etc/exim4/update-exim4.conf.conf
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-21"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/127\.0\.1\.1.*/127.0.1.1 &lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;/g"&lt;/span&gt; /etc/hosts
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-22"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-23"&gt;&lt;/a&gt;rm /etc/ssh/ssh_host_*
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-24"&gt;&lt;/a&gt;dpkg-reconfigure openssh-server
+&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-25"&gt;&lt;/a&gt;reboot
 &lt;/pre&gt;&lt;p&gt;The script above needs to be run on guest, I'm using scp with known ssh keys to upload it and
 then run via ssh. This step is to be automated in the future. Points to
 improve:&lt;/p&gt;

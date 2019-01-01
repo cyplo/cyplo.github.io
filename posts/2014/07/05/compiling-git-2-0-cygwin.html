@@ -64,46 +64,46 @@ mention that the hack is dirty and will make your hands burn">
 very dirty hack to do so. Proper patch will probably follow. Did I
 mention that the hack is dirty and will make your hands burn if you're
 gonna type it in ?</p>
-<pre class="code console"><a name="rest_code_c76622a8d5f14ac09b108b623f137d36-1"></a><span class="go">git clone https://github.com/git/git.git</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-2"></a><span class="go">cd git</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-3"></a><span class="go">git checkout v2.0.1</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-4"></a><span class="go">autoconf</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-5"></a><span class="go">./configure</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-6"></a><span class="gp">#</span> so far so good...
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-7"></a><span class="go">make</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-8"></a>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-9"></a><span class="gp">#</span> oops
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-10"></a><span class="gp">#</span> ....
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-11"></a>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-12"></a><span class="go">SUBDIR perl</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-13"></a><span class="go">make[2]: /home/cplotnicki/dev/git/perl/0: Command not found</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-14"></a><span class="go">perl.mak:375: recipe for target 'blib/lib/.exists' failed</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-15"></a><span class="go">make[2]: *** [blib/lib/.exists] Error 127</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-16"></a><span class="go">Makefile:16: recipe for target 'all' failed</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-17"></a><span class="go">make[1]: *** [all] Error 2</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-18"></a><span class="go">Makefile:1653: recipe for target 'all' failed</span>
-<a name="rest_code_c76622a8d5f14ac09b108b623f137d36-19"></a><span class="go">make: *** [all] Error 2</span>
+<pre class="code console"><a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-1"></a><span class="go">git clone https://github.com/git/git.git</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-2"></a><span class="go">cd git</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-3"></a><span class="go">git checkout v2.0.1</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-4"></a><span class="go">autoconf</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-5"></a><span class="go">./configure</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-6"></a><span class="gp">#</span> so far so good...
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-7"></a><span class="go">make</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-8"></a>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-9"></a><span class="gp">#</span> oops
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-10"></a><span class="gp">#</span> ....
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-11"></a>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-12"></a><span class="go">SUBDIR perl</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-13"></a><span class="go">make[2]: /home/cplotnicki/dev/git/perl/0: Command not found</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-14"></a><span class="go">perl.mak:375: recipe for target 'blib/lib/.exists' failed</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-15"></a><span class="go">make[2]: *** [blib/lib/.exists] Error 127</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-16"></a><span class="go">Makefile:16: recipe for target 'all' failed</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-17"></a><span class="go">make[1]: *** [all] Error 2</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-18"></a><span class="go">Makefile:1653: recipe for target 'all' failed</span>
+<a name="rest_code_0b71a56151c1495bbeeb378ba3f26f5c-19"></a><span class="go">make: *** [all] Error 2</span>
 </pre>
 <p>Want perl as '0' ? Well, why not. Here you are:</p>
-<pre class="code console"><a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-1"></a><span class="gp">#</span> link perl as <span class="m">0</span> to some directory that is in your path
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-2"></a><span class="go">ln -s /usr/bin/perl ~/tools/0</span>
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-3"></a><span class="gp">#</span> also link here, obviously.
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-4"></a><span class="gp">#</span> <span class="s1">'perl'</span> is a direct subdir <span class="k">for</span> your git checkout
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-5"></a><span class="go">ln -s /usr/bin/perl perl/0</span>
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-6"></a>
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-7"></a><span class="go">make # should now compile</span>
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-8"></a>
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-9"></a><span class="gp">#</span> cygwin<span class="err">'</span>s permission scheme is very peculiar
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-10"></a><span class="gp">#</span> here, have a dirty hack <span class="k">for</span> your default install
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-11"></a><span class="gp">#</span> where there is no su or sudo
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-12"></a><span class="go">chmod a+rwX -R /usr/local/share/man/man3</span>
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-13"></a><span class="go">chmod a+rwX -R /usr/local/lib/perl5/site_perl</span>
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-14"></a>
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-15"></a><span class="go">make install</span>
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-16"></a><span class="go">git --version</span>
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-17"></a><span class="gp">#</span> should display <span class="m">2</span>.0.1.
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-18"></a><span class="gp">#</span> update man pages<span class="err">'</span> cache manually
-<a name="rest_code_4c2d9ef42b174694bb1d1993557ec30e-19"></a><span class="go">/etc/postinstall/man-db.sh</span>
+<pre class="code console"><a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-1"></a><span class="gp">#</span> link perl as <span class="m">0</span> to some directory that is in your path
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-2"></a><span class="go">ln -s /usr/bin/perl ~/tools/0</span>
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-3"></a><span class="gp">#</span> also link here, obviously.
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-4"></a><span class="gp">#</span> <span class="s1">'perl'</span> is a direct subdir <span class="k">for</span> your git checkout
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-5"></a><span class="go">ln -s /usr/bin/perl perl/0</span>
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-6"></a>
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-7"></a><span class="go">make # should now compile</span>
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-8"></a>
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-9"></a><span class="gp">#</span> cygwin<span class="err">'</span>s permission scheme is very peculiar
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-10"></a><span class="gp">#</span> here, have a dirty hack <span class="k">for</span> your default install
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-11"></a><span class="gp">#</span> where there is no su or sudo
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-12"></a><span class="go">chmod a+rwX -R /usr/local/share/man/man3</span>
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-13"></a><span class="go">chmod a+rwX -R /usr/local/lib/perl5/site_perl</span>
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-14"></a>
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-15"></a><span class="go">make install</span>
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-16"></a><span class="go">git --version</span>
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-17"></a><span class="gp">#</span> should display <span class="m">2</span>.0.1.
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-18"></a><span class="gp">#</span> update man pages<span class="err">'</span> cache manually
+<a name="rest_code_21d51e8e0e9046598ae0cac8685b33a3-19"></a><span class="go">/etc/postinstall/man-db.sh</span>
 </pre>
 </div>
         </div>
