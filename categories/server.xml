@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Adventurous Computing (Posts about server)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/server.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:56:08 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Better crypto initiative</title><link>https://blog.cyplo.net/posts/2014/06/19/better-crypto-initiative.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;It's not common for me to put just one link here as the resource for the
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about server)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/server.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Thu, 21 Feb 2019 19:02:33 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Better crypto initiative</title><link>https://blog.cyplo.net/posts/2014/06/19/better-crypto-initiative.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;It's not common for me to put just one link here as the resource for the
 article. Today, however, is one of these days. The
 &lt;a class="reference external" href="https://bettercrypto.org/"&gt;bettercrypto&lt;/a&gt; gals and guys came up with
 really excellent practical guide to securing your servers. Here it is:
@@ -104,65 +104,65 @@ with install. Then I tried spawning some clones of that, but having it
 done manually takes quite some time  and is error prone. Did somebody
 say automation ? Yes ! First, clone a VM, regenerating MAC addresses and
 making sure the resource caps are good:&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat prepare_vm
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/bash&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; vm_name vm_number"&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-8"&gt;&lt;/a&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RAM_AMOUNT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"128"&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;DISK_SIZE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"2000"&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-12"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NUMBER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-13"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RDP_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="m"&gt;3389&lt;/span&gt;&lt;span class="k"&gt;))&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;EXECUTION_CAP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"50"&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-15"&gt;&lt;/a&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-16"&gt;&lt;/a&gt;VBoxManage clonevm fresh.cyplo.net --name &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --mode machine --register
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-17"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrde on
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"setting RDP listening port to &lt;/span&gt;&lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-19"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --memory &lt;span class="nv"&gt;$RAM_AMOUNT&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-20"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrdeport &lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-21"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --nic1 bridged --bridgeadapter1 eth0
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-22"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pae on
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-23"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --cpuexecutioncap &lt;span class="nv"&gt;$EXECUTION_CAP&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-24"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hpet on
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-25"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hwvirtex on
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-26"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pagefusion on
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-27"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --dvd none
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-28"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --autostart-enabled on
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-29"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress1 auto
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-30"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress2 auto
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-31"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"vm set up, listing all VMs:"&lt;/span&gt;
-&lt;a name="rest_code_eb4bfa1ff18f4e9688586e0c0d55a8f2-32"&gt;&lt;/a&gt;VBoxManage list vms
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat prepare_vm
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; vm_name vm_number"&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RAM_AMOUNT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"128"&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;DISK_SIZE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"2000"&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-12"&gt;&lt;/a&gt;&lt;span class="nv"&gt;VM_NUMBER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-13"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RDP_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$((&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="m"&gt;3389&lt;/span&gt;&lt;span class="k"&gt;))&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-14"&gt;&lt;/a&gt;&lt;span class="nv"&gt;EXECUTION_CAP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"50"&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-15"&gt;&lt;/a&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-16"&gt;&lt;/a&gt;VBoxManage clonevm fresh.cyplo.net --name &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --mode machine --register
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-17"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrde on
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"setting RDP listening port to &lt;/span&gt;&lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-19"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --memory &lt;span class="nv"&gt;$RAM_AMOUNT&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-20"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --vrdeport &lt;span class="nv"&gt;$RDP_PORT&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-21"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --nic1 bridged --bridgeadapter1 eth0
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-22"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pae on
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-23"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --cpuexecutioncap &lt;span class="nv"&gt;$EXECUTION_CAP&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-24"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hpet on
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-25"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --hwvirtex on
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-26"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --pagefusion on
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-27"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --dvd none
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-28"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --autostart-enabled on
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-29"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress1 auto
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-30"&gt;&lt;/a&gt;VBoxManage modifyvm &lt;span class="nv"&gt;$VM_NAME&lt;/span&gt; --macaddress2 auto
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-31"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"vm set up, listing all VMs:"&lt;/span&gt;
+&lt;a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-32"&gt;&lt;/a&gt;VBoxManage list vms
 &lt;/pre&gt;&lt;p&gt;Then run the VM and change it into Debian
 service host with new name and some software:&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat kickstart_debian
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#/bin/bash&lt;/span&gt;
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; new_hostname new_domainname"&lt;/span&gt;
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-8"&gt;&lt;/a&gt;
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_HOSTNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_DOMAINNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_FQDN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;$NEW_DOMAINNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-12"&gt;&lt;/a&gt;aptitude update
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-13"&gt;&lt;/a&gt;aptitude dist-upgrade -y
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-14"&gt;&lt;/a&gt;aptitude install vim atop sudo -y
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-15"&gt;&lt;/a&gt;hostname
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-16"&gt;&lt;/a&gt;ifconfig
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/mailname
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-19"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/hostname
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-20"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/dc_other_hostnames\='.*'/dc_other_hostnames='&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;'/g"&lt;/span&gt; /etc/exim4/update-exim4.conf.conf
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-21"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/127\.0\.1\.1.*/127.0.1.1 &lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;/g"&lt;/span&gt; /etc/hosts
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-22"&gt;&lt;/a&gt;
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-23"&gt;&lt;/a&gt;rm /etc/ssh/ssh_host_*
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-24"&gt;&lt;/a&gt;dpkg-reconfigure openssh-server
-&lt;a name="rest_code_c0269a5c670046c7ab8aa7111b2543d4-25"&gt;&lt;/a&gt;reboot
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-1"&gt;&lt;/a&gt;vmrunner@storage:~$ cat kickstart_debian
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$#&lt;/span&gt; -ne &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-5"&gt;&lt;/a&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt; new_hostname new_domainname"&lt;/span&gt;
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-6"&gt;&lt;/a&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_HOSTNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-10"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_DOMAINNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-11"&gt;&lt;/a&gt;&lt;span class="nv"&gt;NEW_FQDN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;$NEW_DOMAINNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-12"&gt;&lt;/a&gt;aptitude update
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-13"&gt;&lt;/a&gt;aptitude dist-upgrade -y
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-14"&gt;&lt;/a&gt;aptitude install vim atop sudo -y
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-15"&gt;&lt;/a&gt;hostname
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-16"&gt;&lt;/a&gt;ifconfig
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/mailname
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-19"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &amp;gt; /etc/hostname
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-20"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/dc_other_hostnames\='.*'/dc_other_hostnames='&lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt;'/g"&lt;/span&gt; /etc/exim4/update-exim4.conf.conf
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-21"&gt;&lt;/a&gt;sed -i &lt;span class="s2"&gt;"s/127\.0\.1\.1.*/127.0.1.1 &lt;/span&gt;&lt;span class="nv"&gt;$NEW_FQDN&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$NEW_HOSTNAME&lt;/span&gt;&lt;span class="s2"&gt;/g"&lt;/span&gt; /etc/hosts
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-22"&gt;&lt;/a&gt;
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-23"&gt;&lt;/a&gt;rm /etc/ssh/ssh_host_*
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-24"&gt;&lt;/a&gt;dpkg-reconfigure openssh-server
+&lt;a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-25"&gt;&lt;/a&gt;reboot
 &lt;/pre&gt;&lt;p&gt;The script above needs to be run on guest, I'm using scp with known ssh keys to upload it and
 then run via ssh. This step is to be automated in the future. Points to
 improve:&lt;/p&gt;
@@ -177,66 +177,66 @@ server build check its
 &lt;a class="reference external" href="https://blog.cyplo.net/2013/03/31/building-nas/"&gt;hardware&lt;/a&gt; and basic
 &lt;a class="reference external" href="https://blog.cyplo.net/2013/05/26/building-nas-software/"&gt;software&lt;/a&gt;.&lt;/p&gt;&lt;/div&gt;</description><category>automation</category><category>debian</category><category>separation</category><category>server</category><category>virtualbox</category><guid>https://blog.cyplo.net/posts/2013/07/16/automating-running-debian-in-virtualbox.html</guid><pubDate>Tue, 16 Jul 2013 14:22:47 GMT</pubDate></item><item><title>How to build minimalistic REST server in .Net</title><link>https://blog.cyplo.net/posts/2012/11/01/minimalistic-rest-server-in-dotnet.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Install "Microsoft ASP.NET Web API Self Host" and all of its
 dependencies via NuGet.&lt;/p&gt;
-&lt;pre class="code csharp"&gt;&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-2"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Collections.Generic&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-3"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Linq&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Text&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-5"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Threading&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-6"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Threading.Tasks&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Web.Http&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-8"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Web.Http.SelfHost&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-9"&gt;&lt;/a&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-10"&gt;&lt;/a&gt;&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="nn"&gt;resttest&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-11"&gt;&lt;/a&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-12"&gt;&lt;/a&gt;    &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ExampleData&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;set&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-13"&gt;&lt;/a&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-14"&gt;&lt;/a&gt;    &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ExampleController&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ApiController&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-15"&gt;&lt;/a&gt;    &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-16"&gt;&lt;/a&gt;        &lt;span class="c1"&gt;// /api/job&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-17"&gt;&lt;/a&gt;        &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;IEnumerable&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-18"&gt;&lt;/a&gt;        &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-19"&gt;&lt;/a&gt;            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;List&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;()&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-20"&gt;&lt;/a&gt;            &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-21"&gt;&lt;/a&gt;                &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-22"&gt;&lt;/a&gt;                &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-23"&gt;&lt;/a&gt;            &lt;span class="p"&gt;};&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-24"&gt;&lt;/a&gt;        &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-25"&gt;&lt;/a&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-26"&gt;&lt;/a&gt;        &lt;span class="c1"&gt;// /api/job/3&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-27"&gt;&lt;/a&gt;        &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;ExampleData&lt;/span&gt; &lt;span class="nf"&gt;Get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-28"&gt;&lt;/a&gt;        &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-29"&gt;&lt;/a&gt;            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-30"&gt;&lt;/a&gt;        &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-31"&gt;&lt;/a&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-32"&gt;&lt;/a&gt;    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-33"&gt;&lt;/a&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-34"&gt;&lt;/a&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-35"&gt;&lt;/a&gt;    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Program&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-36"&gt;&lt;/a&gt;    &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-37"&gt;&lt;/a&gt;        &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;Main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-38"&gt;&lt;/a&gt;        &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-39"&gt;&lt;/a&gt;            &lt;span class="kt"&gt;var&lt;/span&gt; &lt;span class="n"&gt;configuration&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;HttpSelfHostConfiguration&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"http://localhost:1337"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-40"&gt;&lt;/a&gt;            &lt;span class="c1"&gt;//Setup the routes&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-41"&gt;&lt;/a&gt;            &lt;span class="n"&gt;configuration&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Routes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MapHttpRoute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-42"&gt;&lt;/a&gt;                &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;"DefaultApiRoute"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-43"&gt;&lt;/a&gt;                &lt;span class="n"&gt;routeTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;"api/{controller}/{id}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-44"&gt;&lt;/a&gt;                &lt;span class="n"&gt;defaults&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-45"&gt;&lt;/a&gt;                    &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;controller&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"ExampleController"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;RouteParameter&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Optional&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-46"&gt;&lt;/a&gt;                &lt;span class="p"&gt;);&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-47"&gt;&lt;/a&gt;            &lt;span class="kt"&gt;var&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;HttpSelfHostServer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;configuration&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-48"&gt;&lt;/a&gt;            &lt;span class="n"&gt;server&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OpenAsync&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;Wait&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-49"&gt;&lt;/a&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-50"&gt;&lt;/a&gt;            &lt;span class="n"&gt;Console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Out&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;WriteLine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Press ESC to quit"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-51"&gt;&lt;/a&gt;            &lt;span class="k"&gt;do&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-52"&gt;&lt;/a&gt;            &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-53"&gt;&lt;/a&gt;                &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(!&lt;/span&gt;&lt;span class="n"&gt;Console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;KeyAvailable&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-54"&gt;&lt;/a&gt;                &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-55"&gt;&lt;/a&gt;                    &lt;span class="n"&gt;Thread&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;256&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-56"&gt;&lt;/a&gt;                &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-57"&gt;&lt;/a&gt;            &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ReadKey&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;true&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;Key&lt;/span&gt; &lt;span class="p"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;ConsoleKey&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Escape&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-58"&gt;&lt;/a&gt;        &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-59"&gt;&lt;/a&gt;    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;a name="rest_code_287223e806ef4d978d533a3e55e935c1-60"&gt;&lt;/a&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;pre class="code csharp"&gt;&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-2"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Collections.Generic&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-3"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Linq&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Text&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-5"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Threading&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-6"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Threading.Tasks&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Web.Http&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-8"&gt;&lt;/a&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;System.Web.Http.SelfHost&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-10"&gt;&lt;/a&gt;&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="nn"&gt;resttest&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-11"&gt;&lt;/a&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-12"&gt;&lt;/a&gt;    &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ExampleData&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;get&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;set&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-13"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-14"&gt;&lt;/a&gt;    &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ExampleController&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ApiController&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-15"&gt;&lt;/a&gt;    &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-16"&gt;&lt;/a&gt;        &lt;span class="c1"&gt;// /api/job&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-17"&gt;&lt;/a&gt;        &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;IEnumerable&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-18"&gt;&lt;/a&gt;        &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-19"&gt;&lt;/a&gt;            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;List&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;()&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-20"&gt;&lt;/a&gt;            &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-21"&gt;&lt;/a&gt;                &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-22"&gt;&lt;/a&gt;                &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-23"&gt;&lt;/a&gt;            &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-24"&gt;&lt;/a&gt;        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-25"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-26"&gt;&lt;/a&gt;        &lt;span class="c1"&gt;// /api/job/3&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-27"&gt;&lt;/a&gt;        &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;ExampleData&lt;/span&gt; &lt;span class="nf"&gt;Get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-28"&gt;&lt;/a&gt;        &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-29"&gt;&lt;/a&gt;            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nf"&gt;ExampleData&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-30"&gt;&lt;/a&gt;        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-31"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-32"&gt;&lt;/a&gt;    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-33"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-34"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-35"&gt;&lt;/a&gt;    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Program&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-36"&gt;&lt;/a&gt;    &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-37"&gt;&lt;/a&gt;        &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;Main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-38"&gt;&lt;/a&gt;        &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-39"&gt;&lt;/a&gt;            &lt;span class="kt"&gt;var&lt;/span&gt; &lt;span class="n"&gt;configuration&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;HttpSelfHostConfiguration&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"http://localhost:1337"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-40"&gt;&lt;/a&gt;            &lt;span class="c1"&gt;//Setup the routes&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-41"&gt;&lt;/a&gt;            &lt;span class="n"&gt;configuration&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Routes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MapHttpRoute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-42"&gt;&lt;/a&gt;                &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;"DefaultApiRoute"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-43"&gt;&lt;/a&gt;                &lt;span class="n"&gt;routeTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;"api/{controller}/{id}"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-44"&gt;&lt;/a&gt;                &lt;span class="n"&gt;defaults&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-45"&gt;&lt;/a&gt;                    &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;controller&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"ExampleController"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;RouteParameter&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Optional&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-46"&gt;&lt;/a&gt;                &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-47"&gt;&lt;/a&gt;            &lt;span class="kt"&gt;var&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;HttpSelfHostServer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;configuration&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-48"&gt;&lt;/a&gt;            &lt;span class="n"&gt;server&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OpenAsync&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;Wait&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-49"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-50"&gt;&lt;/a&gt;            &lt;span class="n"&gt;Console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Out&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;WriteLine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Press ESC to quit"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-51"&gt;&lt;/a&gt;            &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-52"&gt;&lt;/a&gt;            &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-53"&gt;&lt;/a&gt;                &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(!&lt;/span&gt;&lt;span class="n"&gt;Console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;KeyAvailable&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-54"&gt;&lt;/a&gt;                &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-55"&gt;&lt;/a&gt;                    &lt;span class="n"&gt;Thread&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;256&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-56"&gt;&lt;/a&gt;                &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-57"&gt;&lt;/a&gt;            &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ReadKey&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;true&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;Key&lt;/span&gt; &lt;span class="p"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;ConsoleKey&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Escape&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-58"&gt;&lt;/a&gt;        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-59"&gt;&lt;/a&gt;    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_7eb3c71de790418180f829e2d4db298e-60"&gt;&lt;/a&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;We can launch it and query it using any http-enabled client:&lt;/p&gt;
 &lt;p&gt;&lt;tt class="docutils literal"&gt;$ curl &lt;span class="pre"&gt;http://localhost:1337/api/Example&lt;/span&gt; &lt;span class="pre"&gt;[{"Id":2},{"Id":4}]&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
 &lt;p&gt;C'est volia&lt;/p&gt;&lt;/div&gt;</description><category>.net</category><category>asp.net</category><category>c#</category><category>json</category><category>mvc</category><category>rest</category><category>server</category><guid>https://blog.cyplo.net/posts/2012/11/01/minimalistic-rest-server-in-dotnet.html</guid><pubDate>Thu, 01 Nov 2012 13:22:39 GMT</pubDate></item><item><title>Installing MacOSX Server 10.6 on VirtualBox</title><link>https://blog.cyplo.net/posts/2011/05/07/installing-macosx-server-on-virtualbox.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;It all started with my work assignment of installing MacOSX Server 10.6

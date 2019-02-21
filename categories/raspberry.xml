@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Adventurous Computing (Posts about raspberry)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/raspberry.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:56:08 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>WiFi on RaspberryPi</title><link>https://blog.cyplo.net/posts/2014/02/24/wifi-raspberrypi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Easiest way I've found to configure wifi on RaspberryPi, not really
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about raspberry)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/raspberry.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Thu, 21 Feb 2019 19:02:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>WiFi on RaspberryPi</title><link>https://blog.cyplo.net/posts/2014/02/24/wifi-raspberrypi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Easiest way I've found to configure wifi on RaspberryPi, not really
 being mentioned when you search for such. Not using separate
 wpa_supplicant configuration at all.&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;root@frontend:~#&lt;/span&gt; cat /etc/network/interfaces
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;auto lo&lt;/span&gt;
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface lo inet loopback&lt;/span&gt;
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-4"&gt;&lt;/a&gt;
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface eth0 inet dhcp&lt;/span&gt;
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-6"&gt;&lt;/a&gt;
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;allow-hotplug wlan0&lt;/span&gt;
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface wlan0 inet dhcp&lt;/span&gt;
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;wpa-ssid  NETWORK_NAME&lt;/span&gt;
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;wpa-psk NETWORK_KEY&lt;/span&gt;
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-11"&gt;&lt;/a&gt;
-&lt;a name="rest_code_1f84091b176e485a92191b1f73709274-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface default inet dhcp&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;root@frontend:~#&lt;/span&gt; cat /etc/network/interfaces
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;auto lo&lt;/span&gt;
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface lo inet loopback&lt;/span&gt;
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface eth0 inet dhcp&lt;/span&gt;
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;allow-hotplug wlan0&lt;/span&gt;
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface wlan0 inet dhcp&lt;/span&gt;
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;wpa-ssid  NETWORK_NAME&lt;/span&gt;
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;wpa-psk NETWORK_KEY&lt;/span&gt;
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-11"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;iface default inet dhcp&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</description><category>debian</category><category>raspberry</category><category>raspberrypi</category><category>raspbian</category><category>wifi</category><guid>https://blog.cyplo.net/posts/2014/02/24/wifi-raspberrypi.html</guid><pubDate>Mon, 24 Feb 2014 20:45:32 GMT</pubDate></item></channel></rss>

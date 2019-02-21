@@ -74,21 +74,21 @@ installed and started playing with the softwar">
 <p>I think my NAS box build is no longer in much flux, so I thought it'd be
 nice to describe it. I had some disks laying around, I had them
 installed and started playing with the software setup.</p>
-<pre class="code text"><a name="rest_code_36116523ca1b4564a4213136205863a7-1"></a>Disk /dev/sda:  60.0 GB,  60022480896 bytes
-<a name="rest_code_36116523ca1b4564a4213136205863a7-2"></a>Disk /dev/sdb: 320.1 GB, 320072933376 bytes
-<a name="rest_code_36116523ca1b4564a4213136205863a7-3"></a>Disk /dev/sdc: 160.0 GB, 160041885696 bytes
-<a name="rest_code_36116523ca1b4564a4213136205863a7-4"></a>Disk /dev/sdd: 250.1 GB, 250059350016 bytes
-<a name="rest_code_36116523ca1b4564a4213136205863a7-5"></a>Disk /dev/sde: 500.1 GB, 500107862016 bytes
+<pre class="code text"><a name="rest_code_15ed444555804bb48bd89b0df0e9365e-1"></a>Disk /dev/sda:  60.0 GB,  60022480896 bytes
+<a name="rest_code_15ed444555804bb48bd89b0df0e9365e-2"></a>Disk /dev/sdb: 320.1 GB, 320072933376 bytes
+<a name="rest_code_15ed444555804bb48bd89b0df0e9365e-3"></a>Disk /dev/sdc: 160.0 GB, 160041885696 bytes
+<a name="rest_code_15ed444555804bb48bd89b0df0e9365e-4"></a>Disk /dev/sdd: 250.1 GB, 250059350016 bytes
+<a name="rest_code_15ed444555804bb48bd89b0df0e9365e-5"></a>Disk /dev/sde: 500.1 GB, 500107862016 bytes
 </pre>
 <p>First one is an SSD drive, I used it for OS
 installation.  I went for <a class="reference external" href="http://crunchbang.org/">Crunchbang</a> as I
 was already familiar with it, however now I'm thinking of just getting
 newest Debian there, as it's finally released. Nothing fancy about the
 OS, a regular install really.</p>
-<pre class="code text"><a name="rest_code_859aaec4ab734b60b89021573f8fb926-1"></a>storage# df -h
-<a name="rest_code_859aaec4ab734b60b89021573f8fb926-2"></a>Filesystem                   Size  Used Avail Use% Mounted on
-<a name="rest_code_859aaec4ab734b60b89021573f8fb926-3"></a>rootfs                        53G  2.4G   48G   5% /
-<a name="rest_code_859aaec4ab734b60b89021573f8fb926-4"></a>/dev/sda1                    461M   31M  407M   7% /boot
+<pre class="code text"><a name="rest_code_a72ca1c5f80c479f88b490bce4952ae1-1"></a>storage# df -h
+<a name="rest_code_a72ca1c5f80c479f88b490bce4952ae1-2"></a>Filesystem                   Size  Used Avail Use% Mounted on
+<a name="rest_code_a72ca1c5f80c479f88b490bce4952ae1-3"></a>rootfs                        53G  2.4G   48G   5% /
+<a name="rest_code_a72ca1c5f80c479f88b490bce4952ae1-4"></a>/dev/sda1                    461M   31M  407M   7% /boot
 </pre>
 <p>As you can see / filesystem takes little amount
 of space, hence the next thing I plan on doing is actually move / to
@@ -97,11 +97,11 @@ I'm reluctant to do so right now, as moving swap to pendrive might
 result in significant wear. I'm thinking of getting more RAM and then
 getting rid of the swap at all. These stats were acquired after reboot,
 there are some loads under which I saw swapping occur.</p>
-<pre class="code text"><a name="rest_code_c3671c1356394a0c9f2f9ba7af9cded0-1"></a>storage# free -m
-<a name="rest_code_c3671c1356394a0c9f2f9ba7af9cded0-2"></a>             total       used       free     shared    buffers
-<a name="rest_code_c3671c1356394a0c9f2f9ba7af9cded0-3"></a>Mem:          1636        282       1354          0         53
-<a name="rest_code_c3671c1356394a0c9f2f9ba7af9cded0-4"></a>-/+ buffers/cache:        166       1470
-<a name="rest_code_c3671c1356394a0c9f2f9ba7af9cded0-5"></a>Swap:         1903          0       1903
+<pre class="code text"><a name="rest_code_7ed34818b91644f7b3f547f18638e2dc-1"></a>storage# free -m
+<a name="rest_code_7ed34818b91644f7b3f547f18638e2dc-2"></a>             total       used       free     shared    buffers
+<a name="rest_code_7ed34818b91644f7b3f547f18638e2dc-3"></a>Mem:          1636        282       1354          0         53
+<a name="rest_code_7ed34818b91644f7b3f547f18638e2dc-4"></a>-/+ buffers/cache:        166       1470
+<a name="rest_code_7ed34818b91644f7b3f547f18638e2dc-5"></a>Swap:         1903          0       1903
 </pre>
 </div>
 <div class="section" id="software-configuration">
@@ -114,40 +114,40 @@ be found. RAID5, although having internal copies for resiliency, was
 visible as one drive only and happily deleted the data when asked to.
 What I really needed was a backup solution, not a NAS. My final answer
 to that:</p>
-<pre class="code text"><a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-1"></a>storage# df -h
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-2"></a>Filesystem                   Size  Used Avail Use% Mounted on
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-3"></a>rootfs                        53G  2.4G   48G   5% /
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-4"></a>/dev/md0                     294G   36G  243G  13% /mnt/array_back
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-5"></a>/dev/sde1                    459G   35G  401G   8% /mnt/array_front
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-6"></a>
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-7"></a>storage# cat /etc/fstab
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-8"></a>#
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-9"></a>/dev/mapper/vg_storage-root                /               ext4    errors=remount-ro 0       1
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-10"></a>UUID=b9d32208-edc0-4981-ab74-5da1e7348a1a  /boot           ext4    defaults          0       2
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-11"></a>/dev/mapper/vg_storage-swap                none            swap    sw                0       0
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-12"></a>
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-13"></a>/dev/md0                                  /mnt/array_back  ext4    defaults          0       2
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-14"></a>/dev/sde1                                 /mnt/array_front ext4    defaults          0       2
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-15"></a>
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-16"></a>storage# mdadm --detail /dev/md0
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-17"></a>/dev/md0:
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-18"></a>        Version : 1.2
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-19"></a>  Creation Time : Sun Apr 21 22:47:38 2013
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-20"></a>     Raid Level : raid5
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-21"></a>     Array Size : 312318976 (297.85 GiB 319.81 GB)
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-22"></a>  Used Dev Size : 156159488 (148.93 GiB 159.91 GB)
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-23"></a>
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-24"></a>    Number   Major   Minor   RaidDevice State
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-25"></a>       0       8       17        0      active sync   /dev/sdb1
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-26"></a>       1       8       33        1      active sync   /dev/sdc1
-<a name="rest_code_1942ab5e6b2144219d9166a5b677d02d-27"></a>       3       8       49        2      active sync   /dev/sdd1
+<pre class="code text"><a name="rest_code_6402d20678b44e2abda74ae9337dece6-1"></a>storage# df -h
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-2"></a>Filesystem                   Size  Used Avail Use% Mounted on
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-3"></a>rootfs                        53G  2.4G   48G   5% /
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-4"></a>/dev/md0                     294G   36G  243G  13% /mnt/array_back
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-5"></a>/dev/sde1                    459G   35G  401G   8% /mnt/array_front
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-6"></a>
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-7"></a>storage# cat /etc/fstab
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-8"></a>#
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-9"></a>/dev/mapper/vg_storage-root                /               ext4    errors=remount-ro 0       1
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-10"></a>UUID=b9d32208-edc0-4981-ab74-5da1e7348a1a  /boot           ext4    defaults          0       2
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-11"></a>/dev/mapper/vg_storage-swap                none            swap    sw                0       0
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-12"></a>
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-13"></a>/dev/md0                                  /mnt/array_back  ext4    defaults          0       2
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-14"></a>/dev/sde1                                 /mnt/array_front ext4    defaults          0       2
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-15"></a>
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-16"></a>storage# mdadm --detail /dev/md0
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-17"></a>/dev/md0:
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-18"></a>        Version : 1.2
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-19"></a>  Creation Time : Sun Apr 21 22:47:38 2013
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-20"></a>     Raid Level : raid5
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-21"></a>     Array Size : 312318976 (297.85 GiB 319.81 GB)
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-22"></a>  Used Dev Size : 156159488 (148.93 GiB 159.91 GB)
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-23"></a>
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-24"></a>    Number   Major   Minor   RaidDevice State
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-25"></a>       0       8       17        0      active sync   /dev/sdb1
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-26"></a>       1       8       33        1      active sync   /dev/sdc1
+<a name="rest_code_6402d20678b44e2abda74ae9337dece6-27"></a>       3       8       49        2      active sync   /dev/sdd1
 </pre>
 <p>One disk [sde] serves as a front for all user operations. After a while, all changes
 except for deletions are being flushed onto [array_back] which is a
 RAID5 matrix.</p>
-<pre class="code text"><a name="rest_code_db563dd8168c49218ca7798da8e16860-1"></a>storage# cat /etc/cron.daily/90_sync_front_to_back
-<a name="rest_code_db563dd8168c49218ca7798da8e16860-2"></a>#!/bin/bash
-<a name="rest_code_db563dd8168c49218ca7798da8e16860-3"></a>rsync -avr /mnt/array_front/ /mnt/array_back/back
+<pre class="code text"><a name="rest_code_1345dc3d6bd3497eba59e6e5cd459a91-1"></a>storage# cat /etc/cron.daily/90_sync_front_to_back
+<a name="rest_code_1345dc3d6bd3497eba59e6e5cd459a91-2"></a>#!/bin/bash
+<a name="rest_code_1345dc3d6bd3497eba59e6e5cd459a91-3"></a>rsync -avr /mnt/array_front/ /mnt/array_back/back
 </pre>
 </div>
 <div class="section" id="secret-sauce">

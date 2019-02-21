@@ -71,22 +71,22 @@ ls: cannot open directory /mnt: Permissio">
         <div class="body">
             <div>
 <p>I've recently tried running some quick Docker commands using host's directory as a volume:</p>
-<pre class="code console"><a name="rest_code_9dfd7c0e8ad24bbf98d0068841f63911-1"></a><span class="go">docker run -i -t -v `pwd`:/mnt debian:jessie bash -c "ls -hal /mnt"</span>
-<a name="rest_code_9dfd7c0e8ad24bbf98d0068841f63911-2"></a><span class="go">ls: cannot open directory /mnt: Permission denied</span>
+<pre class="code console"><a name="rest_code_f92a81fc3904492f8dc3840c8626d976-1"></a><span class="go">docker run -i -t -v `pwd`:/mnt debian:jessie bash -c "ls -hal /mnt"</span>
+<a name="rest_code_f92a81fc3904492f8dc3840c8626d976-2"></a><span class="go">ls: cannot open directory /mnt: Permission denied</span>
 </pre>
 <p>I use Fedora as my main OS, which, it turns out, has some pretty nice SELinux settings. These deny access from inside the container to the outside.
 Said Fedora consists mostly of almost-newest-but-stable everything though, which makes Docker to be in a fairly recent version.
 A version that understands how to change a SELinux context for the directory we're mounting, by itself !
 You need at least Docker v1.7 for this.</p>
-<pre class="code console"><a name="rest_code_2e8a1be81b074d0c813495f162e91c62-1"></a><span class="go">docker run -i -t -v `pwd`:/mnt:Z debian:jessie bash -c "ls -hal /mnt"</span>
-<a name="rest_code_2e8a1be81b074d0c813495f162e91c62-2"></a><span class="go">total 8.0K</span>
-<a name="rest_code_2e8a1be81b074d0c813495f162e91c62-3"></a><span class="go">drwxrwxr-x.  2 1000 1000 4.0K Dec 30 18:34 .</span>
-<a name="rest_code_2e8a1be81b074d0c813495f162e91c62-4"></a><span class="go">drwxr-xr-x. 21 root root  242 Dec 30 19:07 ..</span>
+<pre class="code console"><a name="rest_code_235e30470fd941f49740ef00c3f684af-1"></a><span class="go">docker run -i -t -v `pwd`:/mnt:Z debian:jessie bash -c "ls -hal /mnt"</span>
+<a name="rest_code_235e30470fd941f49740ef00c3f684af-2"></a><span class="go">total 8.0K</span>
+<a name="rest_code_235e30470fd941f49740ef00c3f684af-3"></a><span class="go">drwxrwxr-x.  2 1000 1000 4.0K Dec 30 18:34 .</span>
+<a name="rest_code_235e30470fd941f49740ef00c3f684af-4"></a><span class="go">drwxr-xr-x. 21 root root  242 Dec 30 19:07 ..</span>
 </pre>
 <p>Please notice the capital <cite>Z</cite> as a mount parameter.
 And that is it. Mostly. Some cleanup remains, as docker leaves the host's directory with a changed SELinux context.
 To restore it you need to</p>
-<pre class="code console"><a name="rest_code_4dfb641f406841d4b179ae9241ea73d1-1"></a><span class="go">restorecon -R `pwd`</span>
+<pre class="code console"><a name="rest_code_55db51fd45aa4c9cb666d5692cd3b00e-1"></a><span class="go">restorecon -R `pwd`</span>
 </pre>
 <p>Or use any other path you'd like instead of <cite>`pwd`</cite> in the examples above.
 Happy dockerizing !</p>

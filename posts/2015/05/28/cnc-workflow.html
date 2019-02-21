@@ -107,35 +107,35 @@ With the help of the
 <a class="reference external" href="https://code.google.com/p/heekscad/wiki/BuildDebianPackages">documentation</a>
 and the comments there and in other corners of the internet I was able
 to get this little script done:</p>
-<pre class="code bash"><a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-1"></a><span class="ch">#!/bin/bash</span>
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-2"></a><span class="nb">set</span> -e
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-3"></a><span class="nb">set</span> -v
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-4"></a>
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-5"></a>sudo apt-get update
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-6"></a>sudo apt-get -y install liboce-visualization-dev libwxgtk2.8-dev libgtkglext1-dev python-dev build-essential bzr git libboost-dev libboost-python-dev subversion debhelper cmake liboce-ocaf2 liboce-ocaf-dev oce-draw
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-7"></a>mkdir heeks_build
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-8"></a><span class="nb">cd</span> heeks_build
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-9"></a>svn checkout http://libarea.googlecode.com/svn/trunk/ libarea
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-10"></a><span class="nb">cd</span> libarea
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-11"></a>dpkg-buildpackage -b -us -uc
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-12"></a><span class="nb">cd</span> ..
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-13"></a>sudo dpkg -i libarea*.deb python-area*.deb
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-14"></a>svn checkout http://heekscad.googlecode.com/svn/trunk/ heekscad
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-15"></a><span class="nb">cd</span> heekscad
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-16"></a>dpkg-buildpackage -b -us -uc
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-17"></a><span class="nb">cd</span> ..
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-18"></a>sudo dpkg -i *heeks*.deb
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-19"></a>svn checkout http://heekscnc.googlecode.com/svn/trunk/ heekscnc
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-20"></a><span class="nb">cd</span> heekscnc
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-21"></a>dpkg-buildpackage -b -us -uc
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-22"></a><span class="nb">cd</span> ..
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-23"></a>git clone https://github.com/aewallin/opencamlib.git
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-24"></a><span class="nb">cd</span> opencamlib
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-25"></a>bzr branch lp:~neomilium/opencamlib/packaging debian
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-26"></a>dpkg-buildpackage -b -us -uc
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-27"></a><span class="nb">cd</span> ..
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-28"></a>sudo dpkg -i python-ocl*.deb
-<a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-29"></a>sudo dpkg -i heekscnc*.deb
+<pre class="code bash"><a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-2"></a><span class="nb">set</span> -e
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-3"></a><span class="nb">set</span> -v
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-4"></a>
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-5"></a>sudo apt-get update
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-6"></a>sudo apt-get -y install liboce-visualization-dev libwxgtk2.8-dev libgtkglext1-dev python-dev build-essential bzr git libboost-dev libboost-python-dev subversion debhelper cmake liboce-ocaf2 liboce-ocaf-dev oce-draw
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-7"></a>mkdir heeks_build
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-8"></a><span class="nb">cd</span> heeks_build
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-9"></a>svn checkout http://libarea.googlecode.com/svn/trunk/ libarea
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-10"></a><span class="nb">cd</span> libarea
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-11"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-12"></a><span class="nb">cd</span> ..
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-13"></a>sudo dpkg -i libarea*.deb python-area*.deb
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-14"></a>svn checkout http://heekscad.googlecode.com/svn/trunk/ heekscad
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-15"></a><span class="nb">cd</span> heekscad
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-16"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-17"></a><span class="nb">cd</span> ..
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-18"></a>sudo dpkg -i *heeks*.deb
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-19"></a>svn checkout http://heekscnc.googlecode.com/svn/trunk/ heekscnc
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-20"></a><span class="nb">cd</span> heekscnc
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-21"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-22"></a><span class="nb">cd</span> ..
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-23"></a>git clone https://github.com/aewallin/opencamlib.git
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-24"></a><span class="nb">cd</span> opencamlib
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-25"></a>bzr branch lp:~neomilium/opencamlib/packaging debian
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-26"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-27"></a><span class="nb">cd</span> ..
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-28"></a>sudo dpkg -i python-ocl*.deb
+<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-29"></a>sudo dpkg -i heekscnc*.deb
 </pre>
 <p>Run this on your LinuxCNC machine and that's it. It will download and
 build all the dependencies and Heeks CAD and CAM packages. This way, my

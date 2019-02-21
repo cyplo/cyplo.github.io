@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Adventurous Computing (Posts about tarsnap)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/tarsnap.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:56:07 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Compiling tarsnap on RaspberryPi</title><link>https://blog.cyplo.net/posts/2014/02/01/compiling-tarsnap-raspberrypi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Just a quickie for tarsnap 1.0.35. Featuring my new favourite, the
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about tarsnap)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/tarsnap.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Thu, 21 Feb 2019 19:02:34 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Compiling tarsnap on RaspberryPi</title><link>https://blog.cyplo.net/posts/2014/02/01/compiling-tarsnap-raspberrypi.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Just a quickie for tarsnap 1.0.35. Featuring my new favourite, the
 download software called aria2.&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_9361e2e9fdcf45d48b8329b09a9d0cd4-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;aptitude install aria2 libssl-dev zlib1g-dev e2fslibs-dev&lt;/span&gt;
-&lt;a name="rest_code_9361e2e9fdcf45d48b8329b09a9d0cd4-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;aria2c https://www.tarsnap.com/download/tarsnap-autoconf-1.0.35.tgz&lt;/span&gt;
-&lt;a name="rest_code_9361e2e9fdcf45d48b8329b09a9d0cd4-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;aria2c https://www.tarsnap.com/download/tarsnap-sigs-1.0.35.asc&lt;/span&gt;
-&lt;a name="rest_code_9361e2e9fdcf45d48b8329b09a9d0cd4-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;gpg --recv-key 2F102ABB&lt;/span&gt;
-&lt;a name="rest_code_9361e2e9fdcf45d48b8329b09a9d0cd4-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;gpg --decrypt tarsnap-sigs-1.0.35.asc&lt;/span&gt;
-&lt;a name="rest_code_9361e2e9fdcf45d48b8329b09a9d0cd4-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;sha256sum tarsnap-autoconf-1.0.35.tgz # should get the value from sig file, 6c9f67....9a&lt;/span&gt;
-&lt;a name="rest_code_9361e2e9fdcf45d48b8329b09a9d0cd4-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;tar xf tarsnap-autoconf-1.0.35.tgz&lt;/span&gt;
-&lt;a name="rest_code_9361e2e9fdcf45d48b8329b09a9d0cd4-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd tarsnap-autoconf-1.0.35/&lt;/span&gt;
-&lt;a name="rest_code_9361e2e9fdcf45d48b8329b09a9d0cd4-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;./configure&lt;/span&gt;
-&lt;a name="rest_code_9361e2e9fdcf45d48b8329b09a9d0cd4-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;time nice ionice make -j2&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;aptitude install aria2 libssl-dev zlib1g-dev e2fslibs-dev&lt;/span&gt;
+&lt;a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;aria2c https://www.tarsnap.com/download/tarsnap-autoconf-1.0.35.tgz&lt;/span&gt;
+&lt;a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;aria2c https://www.tarsnap.com/download/tarsnap-sigs-1.0.35.asc&lt;/span&gt;
+&lt;a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;gpg --recv-key 2F102ABB&lt;/span&gt;
+&lt;a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;gpg --decrypt tarsnap-sigs-1.0.35.asc&lt;/span&gt;
+&lt;a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;sha256sum tarsnap-autoconf-1.0.35.tgz # should get the value from sig file, 6c9f67....9a&lt;/span&gt;
+&lt;a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;tar xf tarsnap-autoconf-1.0.35.tgz&lt;/span&gt;
+&lt;a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd tarsnap-autoconf-1.0.35/&lt;/span&gt;
+&lt;a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;./configure&lt;/span&gt;
+&lt;a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;time nice ionice make -j2&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;How do I know that -j2 really gives some advantage on raspi ? Well, here
 are the timings:&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;fresh, j1
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    14m7.129s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m30.790s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m21.640s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-5"&gt;&lt;/a&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-6"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j2
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    11m33.868s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m36.690s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m19.880s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-10"&gt;&lt;/a&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-11"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j1 again, caches warmed up
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    12m38.598s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m30.960s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m20.470s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-15"&gt;&lt;/a&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-16"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j2 again
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-17"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    10m14.975s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-18"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m34.980s&lt;/span&gt;
-&lt;a name="rest_code_62f8df81d4bd4296abd30d1058e2b1d2-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m20.710s&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;fresh, j1
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    14m7.129s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m30.790s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m21.640s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-5"&gt;&lt;/a&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-6"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j2
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    11m33.868s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m36.690s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m19.880s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-10"&gt;&lt;/a&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-11"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j1 again, caches warmed up
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    12m38.598s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m30.960s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m20.470s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-15"&gt;&lt;/a&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-16"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;-j2 again
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-17"&gt;&lt;/a&gt;&lt;span class="go"&gt;real    10m14.975s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-18"&gt;&lt;/a&gt;&lt;span class="go"&gt;user    6m34.980s&lt;/span&gt;
+&lt;a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;sys 0m20.710s&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</description><category>raspberrypi</category><category>tarsnap</category><guid>https://blog.cyplo.net/posts/2014/02/01/compiling-tarsnap-raspberrypi.html</guid><pubDate>Sat, 01 Feb 2014 21:59:27 GMT</pubDate></item></channel></rss>

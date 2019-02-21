@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Adventurous Computing (Posts about cryptsetup)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/cryptsetup.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:56:06 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Booting Gentoo with LUKS+LVM2+systemd</title><link>https://blog.cyplo.net/posts/2013/11/10/booting-gentoo-lukslvm2systemd.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I've spent quite some time recently trying to get a laptop running
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about cryptsetup)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/cryptsetup.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Thu, 21 Feb 2019 19:02:36 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Booting Gentoo with LUKS+LVM2+systemd</title><link>https://blog.cyplo.net/posts/2013/11/10/booting-gentoo-lukslvm2systemd.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I've spent quite some time recently trying to get a laptop running
 Gentoo boot from an encrypted partition with LVM. I thought that this
 might be useful for someone else, so here you are: First things first:
 I'm assuming you've followed Gentoo handbook and are operating from
 within livecd's shell. You've done the regular luksFormat + lvm stuff
 and you've come up with a layout similar to this one:&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-1"&gt;&lt;/a&gt;dagrey ~ # lsblk
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-2"&gt;&lt;/a&gt;NAME                          SIZE TYPE  MOUNTPOINT
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-3"&gt;&lt;/a&gt;sda                           55.9G disk
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-4"&gt;&lt;/a&gt;└─sda1                        55.9G part
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-5"&gt;&lt;/a&gt;  └─crypthome (dm-3)          55.9G crypt /home
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-6"&gt;&lt;/a&gt;sdb                           29.8G disk
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-7"&gt;&lt;/a&gt;├─sdb1                       485.4M part  /boot
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-8"&gt;&lt;/a&gt;└─sdb2                        29.4G part
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-9"&gt;&lt;/a&gt;  └─root_sdb2-vg-root (dm-0)  29.3G crypt
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-10"&gt;&lt;/a&gt;    ├─vg-swap (dm-1)             8G lvm   [SWAP]
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-11"&gt;&lt;/a&gt;    └─vg-root (dm-2)          21.3G lvm   /
+&lt;pre class="code text"&gt;&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-1"&gt;&lt;/a&gt;dagrey ~ # lsblk
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-2"&gt;&lt;/a&gt;NAME                          SIZE TYPE  MOUNTPOINT
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-3"&gt;&lt;/a&gt;sda                           55.9G disk
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-4"&gt;&lt;/a&gt;└─sda1                        55.9G part
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-5"&gt;&lt;/a&gt;  └─crypthome (dm-3)          55.9G crypt /home
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-6"&gt;&lt;/a&gt;sdb                           29.8G disk
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-7"&gt;&lt;/a&gt;├─sdb1                       485.4M part  /boot
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-8"&gt;&lt;/a&gt;└─sdb2                        29.4G part
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-9"&gt;&lt;/a&gt;  └─root_sdb2-vg-root (dm-0)  29.3G crypt
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-10"&gt;&lt;/a&gt;    ├─vg-swap (dm-1)             8G lvm   [SWAP]
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-11"&gt;&lt;/a&gt;    └─vg-root (dm-2)          21.3G lvm   /
 &lt;/pre&gt;&lt;p&gt;You need a kernel to boot this, a kernel that understands crypto stuff as well as
 lvm.&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_a05df9ebf3ae4d91b828acf98e300940-1"&gt;&lt;/a&gt;genkernel --symlink --save-config --no-mrproper --luks --lvm --udev --menuconfig all
+&lt;pre class="code text"&gt;&lt;a name="rest_code_b369b43ec53f4cd3b65d8347e9559c9f-1"&gt;&lt;/a&gt;genkernel --symlink --save-config --no-mrproper --luks --lvm --udev --menuconfig all
 &lt;/pre&gt;&lt;p&gt;If you're using &lt;em&gt;gentoo-sources&lt;/em&gt; you'd notice the fancy gentoo-specific menu on top. Go there and check
 systemd. Apart from the usual stuff, please make sure to check stuff on
 &lt;a class="reference external" href="https://wiki.gentoo.org/wiki/Systemd"&gt;this list&lt;/a&gt;, and also this one:&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-1"&gt;&lt;/a&gt;Device Drivers
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-2"&gt;&lt;/a&gt; Multi-device support (RAID and LVM)
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-3"&gt;&lt;/a&gt; [*] Multiple devices driver support (RAID and LVM)
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-4"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  Device mapper support
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-5"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  Crypt target support
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-6"&gt;&lt;/a&gt;
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-7"&gt;&lt;/a&gt;Cryptographic API
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-8"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  SHA256 digest algorithm
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-9"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  AES cipher algorithms
+&lt;pre class="code text"&gt;&lt;a name="rest_code_315b66f319e741e9a909089677605452-1"&gt;&lt;/a&gt;Device Drivers
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-2"&gt;&lt;/a&gt; Multi-device support (RAID and LVM)
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-3"&gt;&lt;/a&gt; [*] Multiple devices driver support (RAID and LVM)
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-4"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  Device mapper support
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-5"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  Crypt target support
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-7"&gt;&lt;/a&gt;Cryptographic API
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-8"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  SHA256 digest algorithm
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-9"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  AES cipher algorithms
 &lt;/pre&gt;&lt;p&gt;Your setup is so new that you need grub2. Grub2 is very picky about its configuration. Take this one and
 avoid hours of reading:&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-1"&gt;&lt;/a&gt;dagrey ~ # cat /etc/default/grub
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-2"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-3"&gt;&lt;/a&gt;GRUB_DISTRIBUTOR="Gentoo"
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-4"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-5"&gt;&lt;/a&gt;GRUB_DEFAULT=0
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-6"&gt;&lt;/a&gt;GRUB_HIDDEN_TIMEOUT=0
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-7"&gt;&lt;/a&gt;GRUB_HIDDEN_TIMEOUT_QUIET=true
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-8"&gt;&lt;/a&gt;GRUB_TIMEOUT=3
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-9"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-10"&gt;&lt;/a&gt;GRUB_PRELOAD_MODULES=lvm
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-11"&gt;&lt;/a&gt;GRUB_CRYPTODISK_ENABLE=y
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-12"&gt;&lt;/a&gt;GRUB_DEVICE=/dev/ram0
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-13"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-14"&gt;&lt;/a&gt;# Append parameters to the linux kernel command line
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-15"&gt;&lt;/a&gt;GRUB_CMDLINE_LINUX="real_init=/usr/bin/systemd quiet real_root=/dev/mapper/vg-root crypt_root=/dev/sdb2 dolvm acpi_backlight=vendor"
+&lt;pre class="code text"&gt;&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-1"&gt;&lt;/a&gt;dagrey ~ # cat /etc/default/grub
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-3"&gt;&lt;/a&gt;GRUB_DISTRIBUTOR="Gentoo"
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-5"&gt;&lt;/a&gt;GRUB_DEFAULT=0
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-6"&gt;&lt;/a&gt;GRUB_HIDDEN_TIMEOUT=0
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-7"&gt;&lt;/a&gt;GRUB_HIDDEN_TIMEOUT_QUIET=true
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-8"&gt;&lt;/a&gt;GRUB_TIMEOUT=3
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-10"&gt;&lt;/a&gt;GRUB_PRELOAD_MODULES=lvm
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-11"&gt;&lt;/a&gt;GRUB_CRYPTODISK_ENABLE=y
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-12"&gt;&lt;/a&gt;GRUB_DEVICE=/dev/ram0
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-13"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-14"&gt;&lt;/a&gt;# Append parameters to the linux kernel command line
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-15"&gt;&lt;/a&gt;GRUB_CMDLINE_LINUX="real_init=/usr/bin/systemd quiet real_root=/dev/mapper/vg-root crypt_root=/dev/sdb2 dolvm acpi_backlight=vendor"
 &lt;/pre&gt;&lt;p&gt;You're using initrd to set everything up for the kernel, so you need &lt;em&gt;real_root&lt;/em&gt; and &lt;em&gt;real_init&lt;/em&gt; instead of
 regular ones. &lt;em&gt;cryptdevice&lt;/em&gt; no longer works, use &lt;em&gt;crypt_root&lt;/em&gt; And
 &lt;em&gt;dolvm&lt;/em&gt; is essential, without it only the first part will work, leaving
@@ -55,8 +55,8 @@ you with open crypt container and kernel panic just afterwards. Also
 notice GRUB_DEVICE, GRUB_CRYPTODISK_ENABLE and GRUB_PRELOAD_MODULES. Make sure the first partition on the disk you're
 installing grub onto is starting at 2048. If it's any earlier grub just
 won't be able to fit its magic in there. Finally, install grub&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_1dc4107bd4044b7c9be4ca36dc00b9de-1"&gt;&lt;/a&gt;grub2-install --modules="configfile linux crypto search_fs_uuid luks lvm" --recheck /dev/sda
-&lt;a name="rest_code_1dc4107bd4044b7c9be4ca36dc00b9de-2"&gt;&lt;/a&gt;grub2-mkconfig -o /boot/grub/grub.cfg
+&lt;pre class="code text"&gt;&lt;a name="rest_code_caa158f5f70b4b2e8e3f7e89f44d3dd0-1"&gt;&lt;/a&gt;grub2-install --modules="configfile linux crypto search_fs_uuid luks lvm" --recheck /dev/sda
+&lt;a name="rest_code_caa158f5f70b4b2e8e3f7e89f44d3dd0-2"&gt;&lt;/a&gt;grub2-mkconfig -o /boot/grub/grub.cfg
 &lt;/pre&gt;&lt;p&gt;That should be sufficient to boot the system and initialize root. What
 about those other encrypted partitions like /home though ? Well, init
 subsystem needs to initialize them, OpenRC did such by reading
@@ -64,15 +64,15 @@ subsystem needs to initialize them, OpenRC did such by reading
 bit different here. You still need your /etc/fstab entries for it to
 know which partitions need to be initialized. The place where you say
 how to map and decrypt crypto containers, however, is in /etc/crypttab.&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-1"&gt;&lt;/a&gt;dagrey ~ # cat /etc/fstab
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-2"&gt;&lt;/a&gt;
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-3"&gt;&lt;/a&gt;/dev/sdb1              /boot     ext2    defaults    1 2
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-4"&gt;&lt;/a&gt;/dev/mapper/vg-root    /         ext4    defaults    0 1
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-5"&gt;&lt;/a&gt;/dev/mapper/vg-swap    none      swap    sw          0 0
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-6"&gt;&lt;/a&gt;/dev/mapper/crypthome  /home     ext4    defaults    0 2
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-7"&gt;&lt;/a&gt;
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-8"&gt;&lt;/a&gt;dagrey ~ # cat /etc/crypttab
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-9"&gt;&lt;/a&gt;#crypthome /dev/sda1
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-10"&gt;&lt;/a&gt;crypthome /dev/sda1 /etc/conf.d/dmcrypt.key
+&lt;pre class="code text"&gt;&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-1"&gt;&lt;/a&gt;dagrey ~ # cat /etc/fstab
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-3"&gt;&lt;/a&gt;/dev/sdb1              /boot     ext2    defaults    1 2
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-4"&gt;&lt;/a&gt;/dev/mapper/vg-root    /         ext4    defaults    0 1
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-5"&gt;&lt;/a&gt;/dev/mapper/vg-swap    none      swap    sw          0 0
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-6"&gt;&lt;/a&gt;/dev/mapper/crypthome  /home     ext4    defaults    0 2
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-7"&gt;&lt;/a&gt;
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-8"&gt;&lt;/a&gt;dagrey ~ # cat /etc/crypttab
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-9"&gt;&lt;/a&gt;#crypthome /dev/sda1
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-10"&gt;&lt;/a&gt;crypthome /dev/sda1 /etc/conf.d/dmcrypt.key
 &lt;/pre&gt;&lt;p&gt;The keyfile is available from then already decrypted root partition. You can also skip the key and the
 you'll get a password prompt, sometimes hidden somewhere in systemd messages. Hit enter to reveal it once more.&lt;/p&gt;&lt;/div&gt;</description><category>cryptsetup</category><category>gentoo</category><category>linux</category><category>luks</category><category>lvm</category><category>lvm2</category><category>openrc</category><category>systemd</category><guid>https://blog.cyplo.net/posts/2013/11/10/booting-gentoo-lukslvm2systemd.html</guid><pubDate>Sun, 10 Nov 2013 21:20:26 GMT</pubDate></item></channel></rss>

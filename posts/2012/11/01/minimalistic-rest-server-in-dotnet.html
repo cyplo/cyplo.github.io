@@ -79,66 +79,66 @@ using'>
             <div>
 <p>Install "Microsoft ASP.NET Web API Self Host" and all of its
 dependencies via NuGet.</p>
-<pre class="code csharp"><a name="rest_code_287223e806ef4d978d533a3e55e935c1-1"></a><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-2"></a><span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-3"></a><span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-4"></a><span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-5"></a><span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-6"></a><span class="k">using</span> <span class="nn">System.Threading.Tasks</span><span class="p">;</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-7"></a><span class="k">using</span> <span class="nn">System.Web.Http</span><span class="p">;</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-8"></a><span class="k">using</span> <span class="nn">System.Web.Http.SelfHost</span><span class="p">;</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-9"></a>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-10"></a><span class="k">namespace</span> <span class="nn">resttest</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-11"></a><span class="p">{</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-12"></a>    <span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleData</span> <span class="p">{</span> <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-13"></a>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-14"></a>    <span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleController</span> <span class="p">:</span> <span class="n">ApiController</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-15"></a>    <span class="p">{</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-16"></a>        <span class="c1">// /api/job</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-17"></a>        <span class="k">public</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">ExampleData</span><span class="p">&gt;</span> <span class="n">Get</span><span class="p">()</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-18"></a>        <span class="p">{</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-19"></a>            <span class="k">return</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ExampleData</span><span class="p">&gt;()</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-20"></a>            <span class="p">{</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-21"></a>                <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">(){</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">2</span> <span class="p">},</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-22"></a>                <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">(){</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">4</span> <span class="p">}</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-23"></a>            <span class="p">};</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-24"></a>        <span class="p">}</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-25"></a>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-26"></a>        <span class="c1">// /api/job/3</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-27"></a>        <span class="k">public</span> <span class="n">ExampleData</span> <span class="nf">Get</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-28"></a>        <span class="p">{</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-29"></a>            <span class="k">return</span> <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">()</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">3</span> <span class="p">};</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-30"></a>        <span class="p">}</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-31"></a>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-32"></a>    <span class="p">}</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-33"></a>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-34"></a>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-35"></a>    <span class="k">class</span> <span class="nc">Program</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-36"></a>    <span class="p">{</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-37"></a>        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-38"></a>        <span class="p">{</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-39"></a>            <span class="kt">var</span> <span class="n">configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpSelfHostConfiguration</span><span class="p">(</span><span class="s">"http://localhost:1337"</span><span class="p">);</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-40"></a>            <span class="c1">//Setup the routes</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-41"></a>            <span class="n">configuration</span><span class="p">.</span><span class="n">Routes</span><span class="p">.</span><span class="n">MapHttpRoute</span><span class="p">(</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-42"></a>                <span class="n">name</span><span class="p">:</span> <span class="s">"DefaultApiRoute"</span><span class="p">,</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-43"></a>                <span class="n">routeTemplate</span><span class="p">:</span> <span class="s">"api/{controller}/{id}"</span><span class="p">,</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-44"></a>                <span class="n">defaults</span><span class="p">:</span> <span class="k">new</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-45"></a>                    <span class="p">{</span> <span class="n">controller</span> <span class="p">=</span> <span class="s">"ExampleController"</span><span class="p">,</span> <span class="n">id</span> <span class="p">=</span> <span class="n">RouteParameter</span><span class="p">.</span><span class="n">Optional</span> <span class="p">}</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-46"></a>                <span class="p">);</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-47"></a>            <span class="kt">var</span> <span class="n">server</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpSelfHostServer</span><span class="p">(</span><span class="n">configuration</span><span class="p">);</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-48"></a>            <span class="n">server</span><span class="p">.</span><span class="n">OpenAsync</span><span class="p">().</span><span class="n">Wait</span><span class="p">();</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-49"></a>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-50"></a>            <span class="n">Console</span><span class="p">.</span><span class="n">Out</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">"Press ESC to quit"</span><span class="p">);</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-51"></a>            <span class="k">do</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-52"></a>            <span class="p">{</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-53"></a>                <span class="k">while</span> <span class="p">(!</span><span class="n">Console</span><span class="p">.</span><span class="n">KeyAvailable</span><span class="p">)</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-54"></a>                <span class="p">{</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-55"></a>                    <span class="n">Thread</span><span class="p">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">256</span><span class="p">);</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-56"></a>                <span class="p">}</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-57"></a>            <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">(</span><span class="k">true</span><span class="p">).</span><span class="n">Key</span> <span class="p">!=</span> <span class="n">ConsoleKey</span><span class="p">.</span><span class="n">Escape</span><span class="p">);</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-58"></a>        <span class="p">}</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-59"></a>    <span class="p">}</span>
-<a name="rest_code_287223e806ef4d978d533a3e55e935c1-60"></a><span class="p">}</span>
+<pre class="code csharp"><a name="rest_code_7eb3c71de790418180f829e2d4db298e-1"></a><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-2"></a><span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-3"></a><span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-4"></a><span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-5"></a><span class="k">using</span> <span class="nn">System.Threading</span><span class="p">;</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-6"></a><span class="k">using</span> <span class="nn">System.Threading.Tasks</span><span class="p">;</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-7"></a><span class="k">using</span> <span class="nn">System.Web.Http</span><span class="p">;</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-8"></a><span class="k">using</span> <span class="nn">System.Web.Http.SelfHost</span><span class="p">;</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-9"></a>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-10"></a><span class="k">namespace</span> <span class="nn">resttest</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-11"></a><span class="p">{</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-12"></a>    <span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleData</span> <span class="p">{</span> <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-13"></a>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-14"></a>    <span class="k">public</span> <span class="k">class</span> <span class="nc">ExampleController</span> <span class="p">:</span> <span class="n">ApiController</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-15"></a>    <span class="p">{</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-16"></a>        <span class="c1">// /api/job</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-17"></a>        <span class="k">public</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">ExampleData</span><span class="p">&gt;</span> <span class="n">Get</span><span class="p">()</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-18"></a>        <span class="p">{</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-19"></a>            <span class="k">return</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ExampleData</span><span class="p">&gt;()</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-20"></a>            <span class="p">{</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-21"></a>                <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">(){</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">2</span> <span class="p">},</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-22"></a>                <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">(){</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">4</span> <span class="p">}</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-23"></a>            <span class="p">};</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-24"></a>        <span class="p">}</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-25"></a>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-26"></a>        <span class="c1">// /api/job/3</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-27"></a>        <span class="k">public</span> <span class="n">ExampleData</span> <span class="nf">Get</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-28"></a>        <span class="p">{</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-29"></a>            <span class="k">return</span> <span class="k">new</span> <span class="nf">ExampleData</span><span class="p">()</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="m">3</span> <span class="p">};</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-30"></a>        <span class="p">}</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-31"></a>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-32"></a>    <span class="p">}</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-33"></a>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-34"></a>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-35"></a>    <span class="k">class</span> <span class="nc">Program</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-36"></a>    <span class="p">{</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-37"></a>        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-38"></a>        <span class="p">{</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-39"></a>            <span class="kt">var</span> <span class="n">configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpSelfHostConfiguration</span><span class="p">(</span><span class="s">"http://localhost:1337"</span><span class="p">);</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-40"></a>            <span class="c1">//Setup the routes</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-41"></a>            <span class="n">configuration</span><span class="p">.</span><span class="n">Routes</span><span class="p">.</span><span class="n">MapHttpRoute</span><span class="p">(</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-42"></a>                <span class="n">name</span><span class="p">:</span> <span class="s">"DefaultApiRoute"</span><span class="p">,</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-43"></a>                <span class="n">routeTemplate</span><span class="p">:</span> <span class="s">"api/{controller}/{id}"</span><span class="p">,</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-44"></a>                <span class="n">defaults</span><span class="p">:</span> <span class="k">new</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-45"></a>                    <span class="p">{</span> <span class="n">controller</span> <span class="p">=</span> <span class="s">"ExampleController"</span><span class="p">,</span> <span class="n">id</span> <span class="p">=</span> <span class="n">RouteParameter</span><span class="p">.</span><span class="n">Optional</span> <span class="p">}</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-46"></a>                <span class="p">);</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-47"></a>            <span class="kt">var</span> <span class="n">server</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpSelfHostServer</span><span class="p">(</span><span class="n">configuration</span><span class="p">);</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-48"></a>            <span class="n">server</span><span class="p">.</span><span class="n">OpenAsync</span><span class="p">().</span><span class="n">Wait</span><span class="p">();</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-49"></a>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-50"></a>            <span class="n">Console</span><span class="p">.</span><span class="n">Out</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">"Press ESC to quit"</span><span class="p">);</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-51"></a>            <span class="k">do</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-52"></a>            <span class="p">{</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-53"></a>                <span class="k">while</span> <span class="p">(!</span><span class="n">Console</span><span class="p">.</span><span class="n">KeyAvailable</span><span class="p">)</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-54"></a>                <span class="p">{</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-55"></a>                    <span class="n">Thread</span><span class="p">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">256</span><span class="p">);</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-56"></a>                <span class="p">}</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-57"></a>            <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">(</span><span class="k">true</span><span class="p">).</span><span class="n">Key</span> <span class="p">!=</span> <span class="n">ConsoleKey</span><span class="p">.</span><span class="n">Escape</span><span class="p">);</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-58"></a>        <span class="p">}</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-59"></a>    <span class="p">}</span>
+<a name="rest_code_7eb3c71de790418180f829e2d4db298e-60"></a><span class="p">}</span>
 </pre>
 <p>We can launch it and query it using any http-enabled client:</p>
 <p><tt class="docutils literal">$ curl <span class="pre">http://localhost:1337/api/Example</span> <span class="pre">[{"Id":2},{"Id":4}]</span></tt></p>

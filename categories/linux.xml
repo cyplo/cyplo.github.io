@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Adventurous Computing (Posts about linux)</title><link>https://blog.cyplo.net/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://blog.cyplo.net/categories/linux.xml"></atom:link><language>en</language><lastBuildDate>Tue, 01 Jan 2019 13:56:06 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Running host programs in isolation inside one-off Docker containers</title><link>https://blog.cyplo.net/posts/2017/02/one-off-docker-runjessie.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I am quite bad at remembering how to launch docker to have everything set up correctly. Hence the following - a script that launches any commandline specified in its arguments inside a new docker container. Current directory is mounted inside the container automatically, so the thing you are executing can have its local dependencies satisfied.&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-2"&gt;&lt;/a&gt;&lt;span class="nv"&gt;USERNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;whoami&lt;span class="sb"&gt;`&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-3"&gt;&lt;/a&gt;&lt;span class="nv"&gt;MOUNT_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/mnt"&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-4"&gt;&lt;/a&gt;&lt;span class="nv"&gt;CURRENT_DIRECTORY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt; -P&lt;span class="sb"&gt;`&lt;/span&gt; &lt;span class="c1"&gt;# untangle symbolic links if needed - SELinux needs the real path&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-5"&gt;&lt;/a&gt;&lt;span class="nv"&gt;IMAGE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"debian:jessie"&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-6"&gt;&lt;/a&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -z &lt;span class="nv"&gt;$1&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-8"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: `basename &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt;` command_to_run_inside_a_container"&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-9"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-10"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-11"&gt;&lt;/a&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-12"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RESOLVED_ARGUMENTS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-13"&gt;&lt;/a&gt;docker run -i -t -v &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$CURRENT_DIRECTORY&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;:&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$MOUNT_PATH&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;:Z &lt;span class="nv"&gt;$IMAGE&lt;/span&gt; bash -c &lt;span class="s2"&gt;"useradd -M -d '&lt;/span&gt;&lt;span class="nv"&gt;$MOUNT_PATH&lt;/span&gt;&lt;span class="s2"&gt;' &lt;/span&gt;&lt;span class="nv"&gt;$USERNAME&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; cd '&lt;/span&gt;&lt;span class="nv"&gt;$MOUNT_PATH&lt;/span&gt;&lt;span class="s2"&gt;' &amp;amp;&amp;amp; bash -c '&lt;/span&gt;&lt;span class="nv"&gt;$RESOLVED_ARGUMENTS&lt;/span&gt;&lt;span class="s2"&gt;'"&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-14"&gt;&lt;/a&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-15"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# restore SELinux context for the current directory&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-16"&gt;&lt;/a&gt;&lt;span class="nv"&gt;restorecon_path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;which restorecon&lt;span class="sb"&gt;`&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-17"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -x &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$restorecon_path&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-18"&gt;&lt;/a&gt;    restorecon -R &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$CURRENT_DIRECTORY&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-&lt;a name="rest_code_456a3b4c99c04c12b07d13488e3263de-19"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about linux)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/linux.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Thu, 21 Feb 2019 19:02:33 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Running host programs in isolation inside one-off Docker containers</title><link>https://blog.cyplo.net/posts/2017/02/one-off-docker-runjessie.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I am quite bad at remembering how to launch docker to have everything set up correctly. Hence the following - a script that launches any commandline specified in its arguments inside a new docker container. Current directory is mounted inside the container automatically, so the thing you are executing can have its local dependencies satisfied.&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-2"&gt;&lt;/a&gt;&lt;span class="nv"&gt;USERNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;whoami&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-3"&gt;&lt;/a&gt;&lt;span class="nv"&gt;MOUNT_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"/mnt"&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-4"&gt;&lt;/a&gt;&lt;span class="nv"&gt;CURRENT_DIRECTORY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt; -P&lt;span class="sb"&gt;`&lt;/span&gt; &lt;span class="c1"&gt;# untangle symbolic links if needed - SELinux needs the real path&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-5"&gt;&lt;/a&gt;&lt;span class="nv"&gt;IMAGE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"debian:jessie"&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-7"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -z &lt;span class="nv"&gt;$1&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-8"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"usage: `basename &lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt;` command_to_run_inside_a_container"&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-9"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-10"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-11"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-12"&gt;&lt;/a&gt;&lt;span class="nv"&gt;RESOLVED_ARGUMENTS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-13"&gt;&lt;/a&gt;docker run -i -t -v &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$CURRENT_DIRECTORY&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;:&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$MOUNT_PATH&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;:Z &lt;span class="nv"&gt;$IMAGE&lt;/span&gt; bash -c &lt;span class="s2"&gt;"useradd -M -d '&lt;/span&gt;&lt;span class="nv"&gt;$MOUNT_PATH&lt;/span&gt;&lt;span class="s2"&gt;' &lt;/span&gt;&lt;span class="nv"&gt;$USERNAME&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; cd '&lt;/span&gt;&lt;span class="nv"&gt;$MOUNT_PATH&lt;/span&gt;&lt;span class="s2"&gt;' &amp;amp;&amp;amp; bash -c '&lt;/span&gt;&lt;span class="nv"&gt;$RESOLVED_ARGUMENTS&lt;/span&gt;&lt;span class="s2"&gt;'"&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-14"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-15"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# restore SELinux context for the current directory&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-16"&gt;&lt;/a&gt;&lt;span class="nv"&gt;restorecon_path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;which restorecon&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-17"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -x &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$restorecon_path&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-18"&gt;&lt;/a&gt;    restorecon -R &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$CURRENT_DIRECTORY&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a name="rest_code_c2f0064e32b94d10ac5603a3eca1c27f-19"&gt;&lt;/a&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;I use vanilla Debian Jessie as a run platform there, mostly because this is what most of my servers run.
 The script covers setting up SELinux and mounting the directory from which it is run as &lt;tt class="docutils literal"&gt;/mnt&lt;/tt&gt; inside the container while also having the default non-root user added.&lt;/p&gt;
 &lt;p&gt;Run Jessie, run !&lt;/p&gt;&lt;/div&gt;</description><category>container</category><category>docker</category><category>jessie</category><category>linux</category><guid>https://blog.cyplo.net/posts/2017/02/one-off-docker-runjessie.html</guid><pubDate>Fri, 17 Feb 2017 22:08:46 GMT</pubDate></item><item><title>The best terminal emulator for Windows 10's Bash or how to run X applications</title><link>https://blog.cyplo.net/posts/2016/07/06/terminal-emulator-windows-10-bash.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;div class="line-block"&gt;
@@ -49,8 +49,8 @@ would be possible to use it here as well. To my surprise the answer was - yes !&
 &lt;li&gt;run VcXsrv&lt;/li&gt;
 &lt;li&gt;invoke the following from the bash console:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_6a92c329c25c4597b4083d35e523ea71-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;sudo apt-get install terminator&lt;/span&gt;
-&lt;a name="rest_code_6a92c329c25c4597b4083d35e523ea71-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;DISPLAY=:0 terminator -u&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_2ad9b400c65e47c484a1cc4293c7f04b-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;sudo apt-get install terminator&lt;/span&gt;
+&lt;a name="rest_code_2ad9b400c65e47c484a1cc4293c7f04b-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;DISPLAY=:0 terminator -u&lt;/span&gt;
 &lt;/pre&gt;&lt;ul class="simple"&gt;
 &lt;li&gt;profit !&lt;/li&gt;
 &lt;/ul&gt;
@@ -69,25 +69,25 @@ swapping is allowed. Like complex nightly builds. Here is a set of super
 simple scripts I've come up with to quickly boot up a system, and then
 in the background add a new swap file on the temp drive there. The temp
 drive is assumed to be under /mnt.&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_f85bbb01212f456e992d445ce5fb605b-1"&gt;&lt;/a&gt;root@someazurehost:~# cat /etc/rc.local
-&lt;a name="rest_code_f85bbb01212f456e992d445ce5fb605b-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/sh -e&lt;/span&gt;
-&lt;a name="rest_code_f85bbb01212f456e992d445ce5fb605b-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
-&lt;a name="rest_code_f85bbb01212f456e992d445ce5fb605b-4"&gt;&lt;/a&gt;
-&lt;a name="rest_code_f85bbb01212f456e992d445ce5fb605b-5"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# do not wait for swap to become online,&lt;/span&gt;
-&lt;a name="rest_code_f85bbb01212f456e992d445ce5fb605b-6"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# proceed with the boot further,&lt;/span&gt;
-&lt;a name="rest_code_f85bbb01212f456e992d445ce5fb605b-7"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# with swap being created in the background&lt;/span&gt;
-&lt;a name="rest_code_f85bbb01212f456e992d445ce5fb605b-8"&gt;&lt;/a&gt;/etc/make_and_enable_swap &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
-&lt;a name="rest_code_f85bbb01212f456e992d445ce5fb605b-9"&gt;&lt;/a&gt;
-&lt;a name="rest_code_f85bbb01212f456e992d445ce5fb605b-10"&gt;&lt;/a&gt;&lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
-&lt;/pre&gt;&lt;pre class="code bash"&gt;&lt;a name="rest_code_d873af7f5f6d4cf082944034e123aed2-1"&gt;&lt;/a&gt;root@someazurehost:~# cat /etc/make_and_enable_swap
-&lt;a name="rest_code_d873af7f5f6d4cf082944034e123aed2-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/sh&lt;/span&gt;
-&lt;a name="rest_code_d873af7f5f6d4cf082944034e123aed2-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
-&lt;a name="rest_code_d873af7f5f6d4cf082944034e123aed2-4"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
-&lt;a name="rest_code_d873af7f5f6d4cf082944034e123aed2-5"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# create new 2GB swap file&lt;/span&gt;
-&lt;a name="rest_code_d873af7f5f6d4cf082944034e123aed2-6"&gt;&lt;/a&gt;dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mnt/swap &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2048&lt;/span&gt;
-&lt;a name="rest_code_d873af7f5f6d4cf082944034e123aed2-7"&gt;&lt;/a&gt;chmod &lt;span class="m"&gt;0600&lt;/span&gt; /mnt/swap
-&lt;a name="rest_code_d873af7f5f6d4cf082944034e123aed2-8"&gt;&lt;/a&gt;mkswap /mnt/swap
-&lt;a name="rest_code_d873af7f5f6d4cf082944034e123aed2-9"&gt;&lt;/a&gt;swapon /mnt/swap
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_917744d169b14b21aecc7e7e139ea9b4-1"&gt;&lt;/a&gt;root@someazurehost:~# cat /etc/rc.local
+&lt;a name="rest_code_917744d169b14b21aecc7e7e139ea9b4-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/sh -e&lt;/span&gt;
+&lt;a name="rest_code_917744d169b14b21aecc7e7e139ea9b4-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_917744d169b14b21aecc7e7e139ea9b4-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_917744d169b14b21aecc7e7e139ea9b4-5"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# do not wait for swap to become online,&lt;/span&gt;
+&lt;a name="rest_code_917744d169b14b21aecc7e7e139ea9b4-6"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# proceed with the boot further,&lt;/span&gt;
+&lt;a name="rest_code_917744d169b14b21aecc7e7e139ea9b4-7"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# with swap being created in the background&lt;/span&gt;
+&lt;a name="rest_code_917744d169b14b21aecc7e7e139ea9b4-8"&gt;&lt;/a&gt;/etc/make_and_enable_swap &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+&lt;a name="rest_code_917744d169b14b21aecc7e7e139ea9b4-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_917744d169b14b21aecc7e7e139ea9b4-10"&gt;&lt;/a&gt;&lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;pre class="code bash"&gt;&lt;a name="rest_code_254ce2101a4949c9a229d33a6c571a5c-1"&gt;&lt;/a&gt;root@someazurehost:~# cat /etc/make_and_enable_swap
+&lt;a name="rest_code_254ce2101a4949c9a229d33a6c571a5c-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;#!/bin/sh&lt;/span&gt;
+&lt;a name="rest_code_254ce2101a4949c9a229d33a6c571a5c-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_254ce2101a4949c9a229d33a6c571a5c-4"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_254ce2101a4949c9a229d33a6c571a5c-5"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# create new 2GB swap file&lt;/span&gt;
+&lt;a name="rest_code_254ce2101a4949c9a229d33a6c571a5c-6"&gt;&lt;/a&gt;dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/dev/zero &lt;span class="nv"&gt;of&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mnt/swap &lt;span class="nv"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;1M &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2048&lt;/span&gt;
+&lt;a name="rest_code_254ce2101a4949c9a229d33a6c571a5c-7"&gt;&lt;/a&gt;chmod &lt;span class="m"&gt;0600&lt;/span&gt; /mnt/swap
+&lt;a name="rest_code_254ce2101a4949c9a229d33a6c571a5c-8"&gt;&lt;/a&gt;mkswap /mnt/swap
+&lt;a name="rest_code_254ce2101a4949c9a229d33a6c571a5c-9"&gt;&lt;/a&gt;swapon /mnt/swap
 &lt;/pre&gt;&lt;p&gt;Don't forget to make &lt;strong&gt;/etc/make_and_enable_swap&lt;/strong&gt; executable !
 Do not add this swap file to fstab, as it is being read before rc.local,
 and this may certainly result in a boot failure, as the swap file would
@@ -120,35 +120,35 @@ With the help of the
 &lt;a class="reference external" href="https://code.google.com/p/heekscad/wiki/BuildDebianPackages"&gt;documentation&lt;/a&gt;
 and the comments there and in other corners of the internet I was able
 to get this little script done:&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-2"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-4"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-5"&gt;&lt;/a&gt;sudo apt-get update
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-6"&gt;&lt;/a&gt;sudo apt-get -y install liboce-visualization-dev libwxgtk2.8-dev libgtkglext1-dev python-dev build-essential bzr git libboost-dev libboost-python-dev subversion debhelper cmake liboce-ocaf2 liboce-ocaf-dev oce-draw
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-7"&gt;&lt;/a&gt;mkdir heeks_build
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-8"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; heeks_build
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-9"&gt;&lt;/a&gt;svn checkout http://libarea.googlecode.com/svn/trunk/ libarea
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-10"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; libarea
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-11"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-12"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-13"&gt;&lt;/a&gt;sudo dpkg -i libarea*.deb python-area*.deb
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-14"&gt;&lt;/a&gt;svn checkout http://heekscad.googlecode.com/svn/trunk/ heekscad
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-15"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; heekscad
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-16"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-18"&gt;&lt;/a&gt;sudo dpkg -i *heeks*.deb
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-19"&gt;&lt;/a&gt;svn checkout http://heekscnc.googlecode.com/svn/trunk/ heekscnc
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-20"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; heekscnc
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-21"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-22"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-23"&gt;&lt;/a&gt;git clone https://github.com/aewallin/opencamlib.git
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-24"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; opencamlib
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-25"&gt;&lt;/a&gt;bzr branch lp:~neomilium/opencamlib/packaging debian
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-26"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-27"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-28"&gt;&lt;/a&gt;sudo dpkg -i python-ocl*.deb
-&lt;a name="rest_code_d9acd0cfa72b4daaae83afe1b42dd323-29"&gt;&lt;/a&gt;sudo dpkg -i heekscnc*.deb
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-2"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -v
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-5"&gt;&lt;/a&gt;sudo apt-get update
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-6"&gt;&lt;/a&gt;sudo apt-get -y install liboce-visualization-dev libwxgtk2.8-dev libgtkglext1-dev python-dev build-essential bzr git libboost-dev libboost-python-dev subversion debhelper cmake liboce-ocaf2 liboce-ocaf-dev oce-draw
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-7"&gt;&lt;/a&gt;mkdir heeks_build
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-8"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; heeks_build
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-9"&gt;&lt;/a&gt;svn checkout http://libarea.googlecode.com/svn/trunk/ libarea
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-10"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; libarea
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-11"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-12"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-13"&gt;&lt;/a&gt;sudo dpkg -i libarea*.deb python-area*.deb
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-14"&gt;&lt;/a&gt;svn checkout http://heekscad.googlecode.com/svn/trunk/ heekscad
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-15"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; heekscad
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-16"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-18"&gt;&lt;/a&gt;sudo dpkg -i *heeks*.deb
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-19"&gt;&lt;/a&gt;svn checkout http://heekscnc.googlecode.com/svn/trunk/ heekscnc
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-20"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; heekscnc
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-21"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-22"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-23"&gt;&lt;/a&gt;git clone https://github.com/aewallin/opencamlib.git
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-24"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; opencamlib
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-25"&gt;&lt;/a&gt;bzr branch lp:~neomilium/opencamlib/packaging debian
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-26"&gt;&lt;/a&gt;dpkg-buildpackage -b -us -uc
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-27"&gt;&lt;/a&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ..
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-28"&gt;&lt;/a&gt;sudo dpkg -i python-ocl*.deb
+&lt;a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-29"&gt;&lt;/a&gt;sudo dpkg -i heekscnc*.deb
 &lt;/pre&gt;&lt;p&gt;Run this on your LinuxCNC machine and that's it. It will download and
 build all the dependencies and Heeks CAD and CAM packages. This way, my
 current workflow goes more like this:&lt;/p&gt;
@@ -167,75 +167,75 @@ migrate projects over to non-proprietary software ! Say, you'd like to
 run new Eagle 7.1 under Ubuntu ? Try repos. Repos have the old major
 version 6 only. The harder to get proprietary software the better, I
 suppose. Download the blob then:&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_f56369eaf4ea4e25b2ad6da05b622aa7-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; wget -c http://web.cadsoft.de/ftp/eagle/program/7.1/eagle-lin-7.1.0.run
-&lt;a name="rest_code_f56369eaf4ea4e25b2ad6da05b622aa7-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; chmod a+x eagle-lin-7.1.0.run
+&lt;pre class="code console"&gt;&lt;a name="rest_code_22145012912d46bdabb5cbb5cb4da8a4-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; wget -c http://web.cadsoft.de/ftp/eagle/program/7.1/eagle-lin-7.1.0.run
+&lt;a name="rest_code_22145012912d46bdabb5cbb5cb4da8a4-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; chmod a+x eagle-lin-7.1.0.run
 &lt;/pre&gt;&lt;p&gt;Inspect and run the stuff:&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; vim eagle-lin-7.1.0.run
-&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; ./eagle-lin-7.1.0.run
-&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;Ensure the following 32 bit libraries are available:&lt;/span&gt;
-&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXrender.so.1 =&amp;amp;gt; not found&lt;/span&gt;
-&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXrandr.so.2 =&amp;amp;gt; not found&lt;/span&gt;
-&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXcursor.so.1 =&amp;amp;gt; not found&lt;/span&gt;
-&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libfreetype.so.6 =&amp;amp;gt; not found&lt;/span&gt;
-&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libfontconfig.so.1 =&amp;amp;gt; not found&lt;/span&gt;
-&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXi.so.6 =&amp;amp;gt; not found&lt;/span&gt;
-&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libssl.so.1.0.0 =&amp;amp;gt; not found&lt;/span&gt;
-&lt;a name="rest_code_55246fa02f9d4b2398b3e78c7d2e7a05-11"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libcrypto.so.1.0.0 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; vim eagle-lin-7.1.0.run
+&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; ./eagle-lin-7.1.0.run
+&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;Ensure the following 32 bit libraries are available:&lt;/span&gt;
+&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXrender.so.1 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXrandr.so.2 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXcursor.so.1 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libfreetype.so.6 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-8"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libfontconfig.so.1 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-9"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libXi.so.6 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-10"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libssl.so.1.0.0 =&amp;amp;gt; not found&lt;/span&gt;
+&lt;a name="rest_code_64936a565d3548e6b0d311c6780657fe-11"&gt;&lt;/a&gt;&lt;span class="go"&gt;    libcrypto.so.1.0.0 =&amp;amp;gt; not found&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;32bit craziness, you say.
 New Ubuntu does not have ia32 libs prepackaged, you say ? Here, have
 this handy list of all of the dependencies then:&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_692029d1c3404839b8a705615e07ec52-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo apt-get install libxrandr2:i386 libxrender1:i386 libxcursor1:i386 libfreetype6:i386 libfontconfig:i386 libxi6:i386 libssl1.0.0:i386 libcrypto++9:i386
-&lt;a name="rest_code_692029d1c3404839b8a705615e07ec52-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; should show you the installation wizard &lt;span class="o"&gt;[&lt;/span&gt;sic !&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;a name="rest_code_692029d1c3404839b8a705615e07ec52-3"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; ./eagle-lin-7.1.0.run
+&lt;pre class="code console"&gt;&lt;a name="rest_code_3cf4dc4ea6b848d183996fba79c9722a-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo apt-get install libxrandr2:i386 libxrender1:i386 libxcursor1:i386 libfreetype6:i386 libfontconfig:i386 libxi6:i386 libssl1.0.0:i386 libcrypto++9:i386
+&lt;a name="rest_code_3cf4dc4ea6b848d183996fba79c9722a-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; should show you the installation wizard &lt;span class="o"&gt;[&lt;/span&gt;sic !&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;a name="rest_code_3cf4dc4ea6b848d183996fba79c9722a-3"&gt;&lt;/a&gt;&lt;span class="gp"&gt;$&lt;/span&gt; ./eagle-lin-7.1.0.run
 &lt;/pre&gt;&lt;/div&gt;</description><category>32bit</category><category>64bit</category><category>cadsoft</category><category>eagle</category><category>linux</category><category>ubuntu</category><category>utopic</category><guid>https://blog.cyplo.net/posts/2014/11/01/running-eagle-ubuntu-14-10-64bit.html</guid><pubDate>Sat, 01 Nov 2014 11:08:10 GMT</pubDate></item><item><title>Booting Gentoo with LUKS+LVM2+systemd</title><link>https://blog.cyplo.net/posts/2013/11/10/booting-gentoo-lukslvm2systemd.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I've spent quite some time recently trying to get a laptop running
 Gentoo boot from an encrypted partition with LVM. I thought that this
 might be useful for someone else, so here you are: First things first:
 I'm assuming you've followed Gentoo handbook and are operating from
 within livecd's shell. You've done the regular luksFormat + lvm stuff
 and you've come up with a layout similar to this one:&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-1"&gt;&lt;/a&gt;dagrey ~ # lsblk
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-2"&gt;&lt;/a&gt;NAME                          SIZE TYPE  MOUNTPOINT
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-3"&gt;&lt;/a&gt;sda                           55.9G disk
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-4"&gt;&lt;/a&gt;└─sda1                        55.9G part
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-5"&gt;&lt;/a&gt;  └─crypthome (dm-3)          55.9G crypt /home
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-6"&gt;&lt;/a&gt;sdb                           29.8G disk
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-7"&gt;&lt;/a&gt;├─sdb1                       485.4M part  /boot
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-8"&gt;&lt;/a&gt;└─sdb2                        29.4G part
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-9"&gt;&lt;/a&gt;  └─root_sdb2-vg-root (dm-0)  29.3G crypt
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-10"&gt;&lt;/a&gt;    ├─vg-swap (dm-1)             8G lvm   [SWAP]
-&lt;a name="rest_code_a5cf574b10c848d09057f0a330cabc7d-11"&gt;&lt;/a&gt;    └─vg-root (dm-2)          21.3G lvm   /
+&lt;pre class="code text"&gt;&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-1"&gt;&lt;/a&gt;dagrey ~ # lsblk
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-2"&gt;&lt;/a&gt;NAME                          SIZE TYPE  MOUNTPOINT
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-3"&gt;&lt;/a&gt;sda                           55.9G disk
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-4"&gt;&lt;/a&gt;└─sda1                        55.9G part
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-5"&gt;&lt;/a&gt;  └─crypthome (dm-3)          55.9G crypt /home
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-6"&gt;&lt;/a&gt;sdb                           29.8G disk
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-7"&gt;&lt;/a&gt;├─sdb1                       485.4M part  /boot
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-8"&gt;&lt;/a&gt;└─sdb2                        29.4G part
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-9"&gt;&lt;/a&gt;  └─root_sdb2-vg-root (dm-0)  29.3G crypt
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-10"&gt;&lt;/a&gt;    ├─vg-swap (dm-1)             8G lvm   [SWAP]
+&lt;a name="rest_code_fd2560ce70ac4336814419bfeea88337-11"&gt;&lt;/a&gt;    └─vg-root (dm-2)          21.3G lvm   /
 &lt;/pre&gt;&lt;p&gt;You need a kernel to boot this, a kernel that understands crypto stuff as well as
 lvm.&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_a05df9ebf3ae4d91b828acf98e300940-1"&gt;&lt;/a&gt;genkernel --symlink --save-config --no-mrproper --luks --lvm --udev --menuconfig all
+&lt;pre class="code text"&gt;&lt;a name="rest_code_b369b43ec53f4cd3b65d8347e9559c9f-1"&gt;&lt;/a&gt;genkernel --symlink --save-config --no-mrproper --luks --lvm --udev --menuconfig all
 &lt;/pre&gt;&lt;p&gt;If you're using &lt;em&gt;gentoo-sources&lt;/em&gt; you'd notice the fancy gentoo-specific menu on top. Go there and check
 systemd. Apart from the usual stuff, please make sure to check stuff on
 &lt;a class="reference external" href="https://wiki.gentoo.org/wiki/Systemd"&gt;this list&lt;/a&gt;, and also this one:&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-1"&gt;&lt;/a&gt;Device Drivers
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-2"&gt;&lt;/a&gt; Multi-device support (RAID and LVM)
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-3"&gt;&lt;/a&gt; [*] Multiple devices driver support (RAID and LVM)
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-4"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  Device mapper support
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-5"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  Crypt target support
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-6"&gt;&lt;/a&gt;
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-7"&gt;&lt;/a&gt;Cryptographic API
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-8"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  SHA256 digest algorithm
-&lt;a name="rest_code_67ee9f9550b74045b81a9240f2ada7e6-9"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  AES cipher algorithms
+&lt;pre class="code text"&gt;&lt;a name="rest_code_315b66f319e741e9a909089677605452-1"&gt;&lt;/a&gt;Device Drivers
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-2"&gt;&lt;/a&gt; Multi-device support (RAID and LVM)
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-3"&gt;&lt;/a&gt; [*] Multiple devices driver support (RAID and LVM)
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-4"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  Device mapper support
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-5"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  Crypt target support
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-7"&gt;&lt;/a&gt;Cryptographic API
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-8"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  SHA256 digest algorithm
+&lt;a name="rest_code_315b66f319e741e9a909089677605452-9"&gt;&lt;/a&gt; &amp;lt;*&amp;gt;  AES cipher algorithms
 &lt;/pre&gt;&lt;p&gt;Your setup is so new that you need grub2. Grub2 is very picky about its configuration. Take this one and
 avoid hours of reading:&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-1"&gt;&lt;/a&gt;dagrey ~ # cat /etc/default/grub
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-2"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-3"&gt;&lt;/a&gt;GRUB_DISTRIBUTOR="Gentoo"
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-4"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-5"&gt;&lt;/a&gt;GRUB_DEFAULT=0
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-6"&gt;&lt;/a&gt;GRUB_HIDDEN_TIMEOUT=0
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-7"&gt;&lt;/a&gt;GRUB_HIDDEN_TIMEOUT_QUIET=true
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-8"&gt;&lt;/a&gt;GRUB_TIMEOUT=3
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-9"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-10"&gt;&lt;/a&gt;GRUB_PRELOAD_MODULES=lvm
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-11"&gt;&lt;/a&gt;GRUB_CRYPTODISK_ENABLE=y
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-12"&gt;&lt;/a&gt;GRUB_DEVICE=/dev/ram0
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-13"&gt;&lt;/a&gt;
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-14"&gt;&lt;/a&gt;# Append parameters to the linux kernel command line
-&lt;a name="rest_code_d70612ce497f4d58a179ae6f0d79981b-15"&gt;&lt;/a&gt;GRUB_CMDLINE_LINUX="real_init=/usr/bin/systemd quiet real_root=/dev/mapper/vg-root crypt_root=/dev/sdb2 dolvm acpi_backlight=vendor"
+&lt;pre class="code text"&gt;&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-1"&gt;&lt;/a&gt;dagrey ~ # cat /etc/default/grub
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-3"&gt;&lt;/a&gt;GRUB_DISTRIBUTOR="Gentoo"
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-5"&gt;&lt;/a&gt;GRUB_DEFAULT=0
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-6"&gt;&lt;/a&gt;GRUB_HIDDEN_TIMEOUT=0
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-7"&gt;&lt;/a&gt;GRUB_HIDDEN_TIMEOUT_QUIET=true
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-8"&gt;&lt;/a&gt;GRUB_TIMEOUT=3
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-10"&gt;&lt;/a&gt;GRUB_PRELOAD_MODULES=lvm
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-11"&gt;&lt;/a&gt;GRUB_CRYPTODISK_ENABLE=y
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-12"&gt;&lt;/a&gt;GRUB_DEVICE=/dev/ram0
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-13"&gt;&lt;/a&gt;
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-14"&gt;&lt;/a&gt;# Append parameters to the linux kernel command line
+&lt;a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-15"&gt;&lt;/a&gt;GRUB_CMDLINE_LINUX="real_init=/usr/bin/systemd quiet real_root=/dev/mapper/vg-root crypt_root=/dev/sdb2 dolvm acpi_backlight=vendor"
 &lt;/pre&gt;&lt;p&gt;You're using initrd to set everything up for the kernel, so you need &lt;em&gt;real_root&lt;/em&gt; and &lt;em&gt;real_init&lt;/em&gt; instead of
 regular ones. &lt;em&gt;cryptdevice&lt;/em&gt; no longer works, use &lt;em&gt;crypt_root&lt;/em&gt; And
 &lt;em&gt;dolvm&lt;/em&gt; is essential, without it only the first part will work, leaving
@@ -243,8 +243,8 @@ you with open crypt container and kernel panic just afterwards. Also
 notice GRUB_DEVICE, GRUB_CRYPTODISK_ENABLE and GRUB_PRELOAD_MODULES. Make sure the first partition on the disk you're
 installing grub onto is starting at 2048. If it's any earlier grub just
 won't be able to fit its magic in there. Finally, install grub&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_1dc4107bd4044b7c9be4ca36dc00b9de-1"&gt;&lt;/a&gt;grub2-install --modules="configfile linux crypto search_fs_uuid luks lvm" --recheck /dev/sda
-&lt;a name="rest_code_1dc4107bd4044b7c9be4ca36dc00b9de-2"&gt;&lt;/a&gt;grub2-mkconfig -o /boot/grub/grub.cfg
+&lt;pre class="code text"&gt;&lt;a name="rest_code_caa158f5f70b4b2e8e3f7e89f44d3dd0-1"&gt;&lt;/a&gt;grub2-install --modules="configfile linux crypto search_fs_uuid luks lvm" --recheck /dev/sda
+&lt;a name="rest_code_caa158f5f70b4b2e8e3f7e89f44d3dd0-2"&gt;&lt;/a&gt;grub2-mkconfig -o /boot/grub/grub.cfg
 &lt;/pre&gt;&lt;p&gt;That should be sufficient to boot the system and initialize root. What
 about those other encrypted partitions like /home though ? Well, init
 subsystem needs to initialize them, OpenRC did such by reading
@@ -252,16 +252,16 @@ subsystem needs to initialize them, OpenRC did such by reading
 bit different here. You still need your /etc/fstab entries for it to
 know which partitions need to be initialized. The place where you say
 how to map and decrypt crypto containers, however, is in /etc/crypttab.&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-1"&gt;&lt;/a&gt;dagrey ~ # cat /etc/fstab
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-2"&gt;&lt;/a&gt;
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-3"&gt;&lt;/a&gt;/dev/sdb1              /boot     ext2    defaults    1 2
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-4"&gt;&lt;/a&gt;/dev/mapper/vg-root    /         ext4    defaults    0 1
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-5"&gt;&lt;/a&gt;/dev/mapper/vg-swap    none      swap    sw          0 0
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-6"&gt;&lt;/a&gt;/dev/mapper/crypthome  /home     ext4    defaults    0 2
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-7"&gt;&lt;/a&gt;
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-8"&gt;&lt;/a&gt;dagrey ~ # cat /etc/crypttab
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-9"&gt;&lt;/a&gt;#crypthome /dev/sda1
-&lt;a name="rest_code_54a90deb2ddb48ab98600bcfa9aa6348-10"&gt;&lt;/a&gt;crypthome /dev/sda1 /etc/conf.d/dmcrypt.key
+&lt;pre class="code text"&gt;&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-1"&gt;&lt;/a&gt;dagrey ~ # cat /etc/fstab
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-3"&gt;&lt;/a&gt;/dev/sdb1              /boot     ext2    defaults    1 2
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-4"&gt;&lt;/a&gt;/dev/mapper/vg-root    /         ext4    defaults    0 1
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-5"&gt;&lt;/a&gt;/dev/mapper/vg-swap    none      swap    sw          0 0
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-6"&gt;&lt;/a&gt;/dev/mapper/crypthome  /home     ext4    defaults    0 2
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-7"&gt;&lt;/a&gt;
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-8"&gt;&lt;/a&gt;dagrey ~ # cat /etc/crypttab
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-9"&gt;&lt;/a&gt;#crypthome /dev/sda1
+&lt;a name="rest_code_987f9e120c484037b1afa6f85e80437e-10"&gt;&lt;/a&gt;crypthome /dev/sda1 /etc/conf.d/dmcrypt.key
 &lt;/pre&gt;&lt;p&gt;The keyfile is available from then already decrypted root partition. You can also skip the key and the
 you'll get a password prompt, sometimes hidden somewhere in systemd messages. Hit enter to reveal it once more.&lt;/p&gt;&lt;/div&gt;</description><category>cryptsetup</category><category>gentoo</category><category>linux</category><category>luks</category><category>lvm</category><category>lvm2</category><category>openrc</category><category>systemd</category><guid>https://blog.cyplo.net/posts/2013/11/10/booting-gentoo-lukslvm2systemd.html</guid><pubDate>Sun, 10 Nov 2013 21:20:26 GMT</pubDate></item><item><title>New dotfiles repository</title><link>https://blog.cyplo.net/posts/2013/10/26/new-dotfiles-repository.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;Hi ! Just letting you know that I've been working for some time on
 structuring my dotfiles and finally published them to
@@ -274,9 +274,9 @@ the famous &lt;a class="reference external" href="http://ethanschoonover.com/sol
 for vim to allow better
 &lt;a class="reference external" href="https://github.com/airblade/vim-gitgutter"&gt;gitgutter&lt;/a&gt; symbols
 display. Enjoy !&lt;/p&gt;</description><category>cygwin</category><category>dotfiles</category><category>fontconfig</category><category>linux</category><category>mac</category><category>vim</category><category>vimrc</category><guid>https://blog.cyplo.net/posts/2013/10/26/new-dotfiles-repository.html</guid><pubDate>Sat, 26 Oct 2013 10:35:52 GMT</pubDate></item><item><title>How to remove multiarch in debian 7</title><link>https://blog.cyplo.net/posts/2013/06/13/how-to-remove-multiarch-in-debian-7.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Just a quick one, for me to remember and for you to enjoy.&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_385e22eb81794dfebeae82dbfca927ea-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg -l | grep :i386 | cut -s -d ' ' -f3 | xargs apt-get remove -y&lt;/span&gt;
-&lt;a name="rest_code_385e22eb81794dfebeae82dbfca927ea-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove-architecture i386&lt;/span&gt;
-&lt;a name="rest_code_385e22eb81794dfebeae82dbfca927ea-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;apt-get update&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_a906b30d01c44ee7a75a089482670f91-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg -l | grep :i386 | cut -s -d ' ' -f3 | xargs apt-get remove -y&lt;/span&gt;
+&lt;a name="rest_code_a906b30d01c44ee7a75a089482670f91-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove-architecture i386&lt;/span&gt;
+&lt;a name="rest_code_a906b30d01c44ee7a75a089482670f91-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;apt-get update&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</description><category>debian</category><category>linux</category><category>multiarch</category><guid>https://blog.cyplo.net/posts/2013/06/13/how-to-remove-multiarch-in-debian-7.html</guid><pubDate>Thu, 13 Jun 2013 09:04:37 GMT</pubDate></item><item><title>Enabling wireless on Dell Latitude 2110 under CrunchBang Linux</title><link>https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Some time ago I got my hands on &lt;a class="reference external" href="http://crunchbanglinux.org/"&gt;CrunchBang
 Linux&lt;/a&gt; distro, which is great. Like
 really. Try it. The only annoying thing is missing proper wireless
@@ -290,12 +290,12 @@ kernel, &lt;a class="reference external" href="http://crunchbanglinux.org/forums
 for Intel Atom and with BCM43224 support. This is a 64bit kernel.
 Download &lt;a href="https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html#id1"&gt;&lt;span class="problematic" id="id2"&gt;`crunchbanglinux-kernel-3.4.4-intel\_atom.tar.bz2 &amp;lt;&amp;gt;`__&lt;/span&gt;&lt;/a&gt;
 and:&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_0c8008fcd5ab438bb48a4bf920648e3d-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove firmware-linux&lt;/span&gt;
-&lt;a name="rest_code_0c8008fcd5ab438bb48a4bf920648e3d-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove firmware-linux-nonfree&lt;/span&gt;
-&lt;a name="rest_code_0c8008fcd5ab438bb48a4bf920648e3d-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;tar jxf crunchbanglinux-kernel-3.4.4-intel_atom.tar.bz2&lt;/span&gt;
-&lt;a name="rest_code_0c8008fcd5ab438bb48a4bf920648e3d-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd linux-3.4.4-intel_atom/&lt;/span&gt;
-&lt;a name="rest_code_0c8008fcd5ab438bb48a4bf920648e3d-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg -i *.deb&lt;/span&gt;
-&lt;a name="rest_code_0c8008fcd5ab438bb48a4bf920648e3d-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;reboot&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove firmware-linux&lt;/span&gt;
+&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove firmware-linux-nonfree&lt;/span&gt;
+&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;tar jxf crunchbanglinux-kernel-3.4.4-intel_atom.tar.bz2&lt;/span&gt;
+&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd linux-3.4.4-intel_atom/&lt;/span&gt;
+&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg -i *.deb&lt;/span&gt;
+&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;reboot&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;Should work for Debian Squeeze also but not tested on that system. Write me if you'd
 like it compiled any other way, e.g. for another processor.&lt;/p&gt;
 &lt;div class="system-messages section"&gt;
@@ -310,13 +310,13 @@ installation of various software. However using Netbeans from the
 default repo could cause you a headache when developing Rails 3 apps.
 These just won't run. Let us start with installing the newest version of
 the IDE&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_07e001e42c654f39a4e8248a9add698d-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;sudo apt-get install netbeans&lt;/span&gt;
-&lt;a name="rest_code_07e001e42c654f39a4e8248a9add698d-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;&lt;span class="k"&gt;then&lt;/span&gt; go to the Tools-&amp;gt;Plugins-&amp;gt;Available and install all regarding Ruby
+&lt;pre class="code console"&gt;&lt;a name="rest_code_b02f87c42d0a472f867b7f88a65e5813-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;sudo apt-get install netbeans&lt;/span&gt;
+&lt;a name="rest_code_b02f87c42d0a472f867b7f88a65e5813-2"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt;&lt;span class="k"&gt;then&lt;/span&gt; go to the Tools-&amp;gt;Plugins-&amp;gt;Available and install all regarding Ruby
 &lt;/pre&gt;&lt;p&gt;Now go ahead and try running some Rails app.&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_0b601c19712341f4aeb5f732121d5f77-1"&gt;&lt;/a&gt;/var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/dependencies.rb:239:in `require': /var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/cache/mem_cache_store.rb:32: invalid multibyte escape: /[x00-x20%x7F-xFF]/ (SyntaxError)
+&lt;pre class="code text"&gt;&lt;a name="rest_code_c99b2b29fd79412985de83e9516c37ee-1"&gt;&lt;/a&gt;/var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/dependencies.rb:239:in `require': /var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/cache/mem_cache_store.rb:32: invalid multibyte escape: /[x00-x20%x7F-xFF]/ (SyntaxError)
 &lt;/pre&gt;&lt;p&gt;you say ? Here's a quick fix&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_8a1c8529674c41e3aed19f714e12a66e-1"&gt;&lt;/a&gt;#edit /usr/share/netbeans/6.9/etc/netbeans.conf
-&lt;a name="rest_code_8a1c8529674c41e3aed19f714e12a66e-2"&gt;&lt;/a&gt;#=&amp;gt; append -J-Druby.no.kcode=true to the the netbeans_default_options and volia
-&lt;a name="rest_code_8a1c8529674c41e3aed19f714e12a66e-3"&gt;&lt;/a&gt;# the whole line im my case goes like that:
-&lt;a name="rest_code_8a1c8529674c41e3aed19f714e12a66e-4"&gt;&lt;/a&gt;netbeans_default_options="-J-client -J-Xss2m -J-Xms32m -J-XX:PermSize=32m -J-XX:MaxPermSize=200m -J-Dapple.laf.useScreenMenuBar=true -J-Dsun.java2d.noddraw=true -J-Dsun.java2d.pmoffscreen=false -J-Druby.no.kcode=true"
+&lt;pre class="code text"&gt;&lt;a name="rest_code_a0335ff010604920b25fd105b0426d54-1"&gt;&lt;/a&gt;#edit /usr/share/netbeans/6.9/etc/netbeans.conf
+&lt;a name="rest_code_a0335ff010604920b25fd105b0426d54-2"&gt;&lt;/a&gt;#=&amp;gt; append -J-Druby.no.kcode=true to the the netbeans_default_options and volia
+&lt;a name="rest_code_a0335ff010604920b25fd105b0426d54-3"&gt;&lt;/a&gt;# the whole line im my case goes like that:
+&lt;a name="rest_code_a0335ff010604920b25fd105b0426d54-4"&gt;&lt;/a&gt;netbeans_default_options="-J-client -J-Xss2m -J-Xms32m -J-XX:PermSize=32m -J-XX:MaxPermSize=200m -J-Dapple.laf.useScreenMenuBar=true -J-Dsun.java2d.noddraw=true -J-Dsun.java2d.pmoffscreen=false -J-Druby.no.kcode=true"
 &lt;/pre&gt;&lt;p&gt;Long term solution ? Wait for Netbeans 7.0 as the devs promised it to be fixed there&lt;/p&gt;&lt;/div&gt;</description><category>linux</category><category>maverick</category><category>netbeans</category><category>ruby</category><category>ubuntu</category><guid>https://blog.cyplo.net/posts/2011/01/29/netbeans-6-9-rails-3-ubuntu-10-10.html</guid><pubDate>Sat, 29 Jan 2011 14:51:07 GMT</pubDate></item></channel></rss>
