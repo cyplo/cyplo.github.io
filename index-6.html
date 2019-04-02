@@ -94,35 +94,35 @@ With the help of the
 <a class="reference external" href="https://code.google.com/p/heekscad/wiki/BuildDebianPackages">documentation</a>
 and the comments there and in other corners of the internet I was able
 to get this little script done:</p>
-<pre class="code bash"><a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-1"></a><span class="ch">#!/bin/bash</span>
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-2"></a><span class="nb">set</span> -e
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-3"></a><span class="nb">set</span> -v
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-4"></a>
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-5"></a>sudo apt-get update
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-6"></a>sudo apt-get -y install liboce-visualization-dev libwxgtk2.8-dev libgtkglext1-dev python-dev build-essential bzr git libboost-dev libboost-python-dev subversion debhelper cmake liboce-ocaf2 liboce-ocaf-dev oce-draw
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-7"></a>mkdir heeks_build
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-8"></a><span class="nb">cd</span> heeks_build
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-9"></a>svn checkout http://libarea.googlecode.com/svn/trunk/ libarea
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-10"></a><span class="nb">cd</span> libarea
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-11"></a>dpkg-buildpackage -b -us -uc
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-12"></a><span class="nb">cd</span> ..
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-13"></a>sudo dpkg -i libarea*.deb python-area*.deb
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-14"></a>svn checkout http://heekscad.googlecode.com/svn/trunk/ heekscad
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-15"></a><span class="nb">cd</span> heekscad
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-16"></a>dpkg-buildpackage -b -us -uc
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-17"></a><span class="nb">cd</span> ..
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-18"></a>sudo dpkg -i *heeks*.deb
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-19"></a>svn checkout http://heekscnc.googlecode.com/svn/trunk/ heekscnc
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-20"></a><span class="nb">cd</span> heekscnc
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-21"></a>dpkg-buildpackage -b -us -uc
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-22"></a><span class="nb">cd</span> ..
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-23"></a>git clone https://github.com/aewallin/opencamlib.git
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-24"></a><span class="nb">cd</span> opencamlib
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-25"></a>bzr branch lp:~neomilium/opencamlib/packaging debian
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-26"></a>dpkg-buildpackage -b -us -uc
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-27"></a><span class="nb">cd</span> ..
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-28"></a>sudo dpkg -i python-ocl*.deb
-<a name="rest_code_76f2596d53f043e28c5bbda1eda63e34-29"></a>sudo dpkg -i heekscnc*.deb
+<pre class="code bash"><a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-2"></a><span class="nb">set</span> -e
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-3"></a><span class="nb">set</span> -v
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-4"></a>
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-5"></a>sudo apt-get update
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-6"></a>sudo apt-get -y install liboce-visualization-dev libwxgtk2.8-dev libgtkglext1-dev python-dev build-essential bzr git libboost-dev libboost-python-dev subversion debhelper cmake liboce-ocaf2 liboce-ocaf-dev oce-draw
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-7"></a>mkdir heeks_build
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-8"></a><span class="nb">cd</span> heeks_build
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-9"></a>svn checkout http://libarea.googlecode.com/svn/trunk/ libarea
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-10"></a><span class="nb">cd</span> libarea
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-11"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-12"></a><span class="nb">cd</span> ..
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-13"></a>sudo dpkg -i libarea*.deb python-area*.deb
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-14"></a>svn checkout http://heekscad.googlecode.com/svn/trunk/ heekscad
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-15"></a><span class="nb">cd</span> heekscad
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-16"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-17"></a><span class="nb">cd</span> ..
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-18"></a>sudo dpkg -i *heeks*.deb
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-19"></a>svn checkout http://heekscnc.googlecode.com/svn/trunk/ heekscnc
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-20"></a><span class="nb">cd</span> heekscnc
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-21"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-22"></a><span class="nb">cd</span> ..
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-23"></a>git clone https://github.com/aewallin/opencamlib.git
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-24"></a><span class="nb">cd</span> opencamlib
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-25"></a>bzr branch lp:~neomilium/opencamlib/packaging debian
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-26"></a>dpkg-buildpackage -b -us -uc
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-27"></a><span class="nb">cd</span> ..
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-28"></a>sudo dpkg -i python-ocl*.deb
+<a name="rest_code_fd84e9ac4ffd49b398a96e317c50f03f-29"></a>sudo dpkg -i heekscnc*.deb
 </pre>
 <p>Run this on your LinuxCNC machine and that's it. It will download and
 build all the dependencies and Heeks CAD and CAM packages. This way, my
@@ -350,55 +350,55 @@ plastic. And the whole thing <strong>ROTATES</strong> !</p>
 constantly e.g. while sitting in always powered-on Raspberry Pi. Because
 of that I've recently needed to perform lots of backup/restore
 operations ;) I wrote this script for backing up:</p>
-<pre class="code bash"><a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-1"></a><span class="ch">#!/bin/bash</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-2"></a>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-3"></a><span class="k">if</span> <span class="o">[[</span> -z <span class="nv">$1</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-4"></a>    <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> device_to_clone"</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-5"></a>    <span class="nb">exit</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-6"></a><span class="k">fi</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-7"></a>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-8"></a><span class="nv">device</span><span class="o">=</span><span class="nv">$1</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-9"></a>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-10"></a><span class="nv">timestamp</span><span class="o">=</span><span class="sb">`</span>date +%Y%m%d<span class="sb">`</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-11"></a><span class="nv">dest_file</span><span class="o">=</span><span class="s2">"/tmp/</span><span class="nv">$timestamp</span><span class="s2">.dd.xz"</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-12"></a>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-13"></a><span class="nb">echo</span> <span class="s2">"about to clone </span><span class="nv">$device</span><span class="s2"> to </span><span class="nv">$dest_file</span><span class="s2">"</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-14"></a><span class="nb">echo</span> <span class="s2">"ctrl-c or [enter]"</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-15"></a><span class="nb">read</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-16"></a>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-17"></a>sudo umount <span class="nv">$device</span>?
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-18"></a>sudo umount <span class="nv">$device</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-19"></a>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-20"></a>sudo sync
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-21"></a>sudo pv -tpreb <span class="nv">$device</span> <span class="p">|</span> dd <span class="nv">bs</span><span class="o">=</span>4M <span class="p">|</span> pixz &gt; <span class="nv">$dest_file</span>
-<a name="rest_code_90d8553a6d5841f282c019c9fe1fcf2e-22"></a>sudo sync
+<pre class="code bash"><a name="rest_code_709cbf46318e485e82ef1e7219023d5f-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-2"></a>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-3"></a><span class="k">if</span> <span class="o">[[</span> -z <span class="nv">$1</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-4"></a>    <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> device_to_clone"</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-5"></a>    <span class="nb">exit</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-6"></a><span class="k">fi</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-7"></a>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-8"></a><span class="nv">device</span><span class="o">=</span><span class="nv">$1</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-9"></a>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-10"></a><span class="nv">timestamp</span><span class="o">=</span><span class="sb">`</span>date +%Y%m%d<span class="sb">`</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-11"></a><span class="nv">dest_file</span><span class="o">=</span><span class="s2">"/tmp/</span><span class="nv">$timestamp</span><span class="s2">.dd.xz"</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-12"></a>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-13"></a><span class="nb">echo</span> <span class="s2">"about to clone </span><span class="nv">$device</span><span class="s2"> to </span><span class="nv">$dest_file</span><span class="s2">"</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-14"></a><span class="nb">echo</span> <span class="s2">"ctrl-c or [enter]"</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-15"></a><span class="nb">read</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-16"></a>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-17"></a>sudo umount <span class="nv">$device</span>?
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-18"></a>sudo umount <span class="nv">$device</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-19"></a>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-20"></a>sudo sync
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-21"></a>sudo pv -tpreb <span class="nv">$device</span> <span class="p">|</span> dd <span class="nv">bs</span><span class="o">=</span>4M <span class="p">|</span> pixz &gt; <span class="nv">$dest_file</span>
+<a name="rest_code_709cbf46318e485e82ef1e7219023d5f-22"></a>sudo sync
 </pre>
 <p>And this one for restoring:</p>
-<pre class="code bash"><a name="rest_code_27baf84b6c5948aa891990383231ced1-1"></a><span class="ch">#!/bin/bash</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-2"></a>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-3"></a><span class="k">if</span> <span class="o">[[</span> -z <span class="nv">$1</span> <span class="o">]]</span> <span class="o">||</span> <span class="o">[[</span> -z <span class="nv">$2</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-4"></a>    <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> restore_file.xz device_to_restore_to"</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-5"></a>    <span class="nb">exit</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-6"></a><span class="k">fi</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-7"></a>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-8"></a><span class="nv">source_file</span><span class="o">=</span><span class="nv">$1</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-9"></a><span class="k">if</span> <span class="o">[[</span> ! -f <span class="nv">$source_file</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-10"></a>    <span class="nb">echo</span> <span class="s2">"cannot open </span><span class="nv">$source_file</span><span class="s2">"</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-11"></a>    <span class="nb">exit</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-12"></a><span class="k">fi</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-13"></a>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-14"></a><span class="nv">device</span><span class="o">=</span><span class="nv">$2</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-15"></a>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-16"></a><span class="nb">echo</span> <span class="s2">"about to restore </span><span class="nv">$source_file</span><span class="s2"> onto </span><span class="nv">$device</span><span class="s2">"</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-17"></a><span class="nb">echo</span> <span class="s2">"ctrl-c or [enter]"</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-18"></a><span class="nb">read</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-19"></a>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-20"></a>sudo umount <span class="nv">$device</span>?
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-21"></a>sudo umount <span class="nv">$device</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-22"></a>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-23"></a>pv -tpreb <span class="nv">$source_file</span> <span class="p">|</span> pixz -d <span class="p">|</span> sudo dd <span class="nv">bs</span><span class="o">=</span>4M <span class="nv">of</span><span class="o">=</span><span class="nv">$device</span>
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-24"></a>sudo sync
-<a name="rest_code_27baf84b6c5948aa891990383231ced1-25"></a>sudo eject <span class="nv">$device</span>
+<pre class="code bash"><a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-2"></a>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-3"></a><span class="k">if</span> <span class="o">[[</span> -z <span class="nv">$1</span> <span class="o">]]</span> <span class="o">||</span> <span class="o">[[</span> -z <span class="nv">$2</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-4"></a>    <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> restore_file.xz device_to_restore_to"</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-5"></a>    <span class="nb">exit</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-6"></a><span class="k">fi</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-7"></a>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-8"></a><span class="nv">source_file</span><span class="o">=</span><span class="nv">$1</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-9"></a><span class="k">if</span> <span class="o">[[</span> ! -f <span class="nv">$source_file</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-10"></a>    <span class="nb">echo</span> <span class="s2">"cannot open </span><span class="nv">$source_file</span><span class="s2">"</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-11"></a>    <span class="nb">exit</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-12"></a><span class="k">fi</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-13"></a>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-14"></a><span class="nv">device</span><span class="o">=</span><span class="nv">$2</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-15"></a>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-16"></a><span class="nb">echo</span> <span class="s2">"about to restore </span><span class="nv">$source_file</span><span class="s2"> onto </span><span class="nv">$device</span><span class="s2">"</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-17"></a><span class="nb">echo</span> <span class="s2">"ctrl-c or [enter]"</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-18"></a><span class="nb">read</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-19"></a>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-20"></a>sudo umount <span class="nv">$device</span>?
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-21"></a>sudo umount <span class="nv">$device</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-22"></a>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-23"></a>pv -tpreb <span class="nv">$source_file</span> <span class="p">|</span> pixz -d <span class="p">|</span> sudo dd <span class="nv">bs</span><span class="o">=</span>4M <span class="nv">of</span><span class="o">=</span><span class="nv">$device</span>
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-24"></a>sudo sync
+<a name="rest_code_f68c78df10614e2bb36dcc5b772bbaa1-25"></a>sudo eject <span class="nv">$device</span>
 </pre>
 <p>Some of the more fun features include progressbars and making sure you've unmounted the
 device properly before ;) This also uses parallel threads to deflate the
@@ -407,15 +407,15 @@ machine. The scripts above were used to backup and restore SD cards but
 will work for any block device, be it an external or internal disk
 drive, etc. usage example [remember to use the whole device, not just
 its partition as an argument]:</p>
-<pre class="code console"><a name="rest_code_6a28ba12202147a685c2bb9cc6ce4825-1"></a><span class="go">./backup_sdcard /dev/sdc</span>
-<a name="rest_code_6a28ba12202147a685c2bb9cc6ce4825-2"></a><span class="go">about to clone /dev/sdc to /tmp/20150214.dd.xz</span>
-<a name="rest_code_6a28ba12202147a685c2bb9cc6ce4825-3"></a><span class="go">ctrl-c or [enter]</span>
-<a name="rest_code_6a28ba12202147a685c2bb9cc6ce4825-4"></a>
-<a name="rest_code_6a28ba12202147a685c2bb9cc6ce4825-5"></a><span class="go">[sudo] password for cyryl:</span>
-<a name="rest_code_6a28ba12202147a685c2bb9cc6ce4825-6"></a><span class="go">umount: /dev/sdc1: not mounted</span>
-<a name="rest_code_6a28ba12202147a685c2bb9cc6ce4825-7"></a><span class="go">umount: /dev/sdc2: not mounted</span>
-<a name="rest_code_6a28ba12202147a685c2bb9cc6ce4825-8"></a><span class="go">umount: /dev/sdc: not mounted</span>
-<a name="rest_code_6a28ba12202147a685c2bb9cc6ce4825-9"></a><span class="go">19,6MiB 0:00:02 [9,72MiB/s] [&gt;                       ]  0% ETA 0:52:26</span>
+<pre class="code console"><a name="rest_code_264ae215b23d460e9c4134198399bc45-1"></a><span class="go">./backup_sdcard /dev/sdc</span>
+<a name="rest_code_264ae215b23d460e9c4134198399bc45-2"></a><span class="go">about to clone /dev/sdc to /tmp/20150214.dd.xz</span>
+<a name="rest_code_264ae215b23d460e9c4134198399bc45-3"></a><span class="go">ctrl-c or [enter]</span>
+<a name="rest_code_264ae215b23d460e9c4134198399bc45-4"></a>
+<a name="rest_code_264ae215b23d460e9c4134198399bc45-5"></a><span class="go">[sudo] password for cyryl:</span>
+<a name="rest_code_264ae215b23d460e9c4134198399bc45-6"></a><span class="go">umount: /dev/sdc1: not mounted</span>
+<a name="rest_code_264ae215b23d460e9c4134198399bc45-7"></a><span class="go">umount: /dev/sdc2: not mounted</span>
+<a name="rest_code_264ae215b23d460e9c4134198399bc45-8"></a><span class="go">umount: /dev/sdc: not mounted</span>
+<a name="rest_code_264ae215b23d460e9c4134198399bc45-9"></a><span class="go">19,6MiB 0:00:02 [9,72MiB/s] [&gt;                       ]  0% ETA 0:52:26</span>
 </pre>
 </div>
             </div>
@@ -492,8 +492,8 @@ for extra speed. In short, my <tt class="docutils literal">vagrant up</tt> boots
 then couple of docker containers. What I've found is that there is not
 really a plethora of GUI-enabled vagrant boxes, so I've created one ! If
 you want to use it, go:</p>
-<pre class="code console"><a name="rest_code_6f955b0835474b9ba696e1e4b1333978-1"></a><span class="go">vagrant init</span>
-<a name="rest_code_6f955b0835474b9ba696e1e4b1333978-2"></a><span class="go">cyplo/ubuntu-gnome-utopic-gui vagrant up</span>
+<pre class="code console"><a name="rest_code_09ccfe796ae747218f109581f7b33c9a-1"></a><span class="go">vagrant init</span>
+<a name="rest_code_09ccfe796ae747218f109581f7b33c9a-2"></a><span class="go">cyplo/ubuntu-gnome-utopic-gui vagrant up</span>
 </pre>
 <p>I will write about the whole setup later, as I'm not yet sure what approach is best for me.</p>
 </div>
@@ -578,28 +578,28 @@ migrate projects over to non-proprietary software ! Say, you'd like to
 run new Eagle 7.1 under Ubuntu ? Try repos. Repos have the old major
 version 6 only. The harder to get proprietary software the better, I
 suppose. Download the blob then:</p>
-<pre class="code console"><a name="rest_code_22145012912d46bdabb5cbb5cb4da8a4-1"></a><span class="gp">$</span> wget -c http://web.cadsoft.de/ftp/eagle/program/7.1/eagle-lin-7.1.0.run
-<a name="rest_code_22145012912d46bdabb5cbb5cb4da8a4-2"></a><span class="gp">$</span> chmod a+x eagle-lin-7.1.0.run
+<pre class="code console"><a name="rest_code_7508fa4754f1484f97160b4cfeb6fa4b-1"></a><span class="gp">$</span> wget -c http://web.cadsoft.de/ftp/eagle/program/7.1/eagle-lin-7.1.0.run
+<a name="rest_code_7508fa4754f1484f97160b4cfeb6fa4b-2"></a><span class="gp">$</span> chmod a+x eagle-lin-7.1.0.run
 </pre>
 <p>Inspect and run the stuff:</p>
-<pre class="code console"><a name="rest_code_64936a565d3548e6b0d311c6780657fe-1"></a><span class="gp">$</span> vim eagle-lin-7.1.0.run
-<a name="rest_code_64936a565d3548e6b0d311c6780657fe-2"></a><span class="gp">$</span> ./eagle-lin-7.1.0.run
-<a name="rest_code_64936a565d3548e6b0d311c6780657fe-3"></a><span class="go">Ensure the following 32 bit libraries are available:</span>
-<a name="rest_code_64936a565d3548e6b0d311c6780657fe-4"></a><span class="go">    libXrender.so.1 =&amp;gt; not found</span>
-<a name="rest_code_64936a565d3548e6b0d311c6780657fe-5"></a><span class="go">    libXrandr.so.2 =&amp;gt; not found</span>
-<a name="rest_code_64936a565d3548e6b0d311c6780657fe-6"></a><span class="go">    libXcursor.so.1 =&amp;gt; not found</span>
-<a name="rest_code_64936a565d3548e6b0d311c6780657fe-7"></a><span class="go">    libfreetype.so.6 =&amp;gt; not found</span>
-<a name="rest_code_64936a565d3548e6b0d311c6780657fe-8"></a><span class="go">    libfontconfig.so.1 =&amp;gt; not found</span>
-<a name="rest_code_64936a565d3548e6b0d311c6780657fe-9"></a><span class="go">    libXi.so.6 =&amp;gt; not found</span>
-<a name="rest_code_64936a565d3548e6b0d311c6780657fe-10"></a><span class="go">    libssl.so.1.0.0 =&amp;gt; not found</span>
-<a name="rest_code_64936a565d3548e6b0d311c6780657fe-11"></a><span class="go">    libcrypto.so.1.0.0 =&amp;gt; not found</span>
+<pre class="code console"><a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-1"></a><span class="gp">$</span> vim eagle-lin-7.1.0.run
+<a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-2"></a><span class="gp">$</span> ./eagle-lin-7.1.0.run
+<a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-3"></a><span class="go">Ensure the following 32 bit libraries are available:</span>
+<a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-4"></a><span class="go">    libXrender.so.1 =&amp;gt; not found</span>
+<a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-5"></a><span class="go">    libXrandr.so.2 =&amp;gt; not found</span>
+<a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-6"></a><span class="go">    libXcursor.so.1 =&amp;gt; not found</span>
+<a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-7"></a><span class="go">    libfreetype.so.6 =&amp;gt; not found</span>
+<a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-8"></a><span class="go">    libfontconfig.so.1 =&amp;gt; not found</span>
+<a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-9"></a><span class="go">    libXi.so.6 =&amp;gt; not found</span>
+<a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-10"></a><span class="go">    libssl.so.1.0.0 =&amp;gt; not found</span>
+<a name="rest_code_8e617ad37b3e4dcb939a3c7033a349ef-11"></a><span class="go">    libcrypto.so.1.0.0 =&amp;gt; not found</span>
 </pre>
 <p>32bit craziness, you say.
 New Ubuntu does not have ia32 libs prepackaged, you say ? Here, have
 this handy list of all of the dependencies then:</p>
-<pre class="code console"><a name="rest_code_3cf4dc4ea6b848d183996fba79c9722a-1"></a><span class="gp">$</span> sudo apt-get install libxrandr2:i386 libxrender1:i386 libxcursor1:i386 libfreetype6:i386 libfontconfig:i386 libxi6:i386 libssl1.0.0:i386 libcrypto++9:i386
-<a name="rest_code_3cf4dc4ea6b848d183996fba79c9722a-2"></a><span class="gp">#</span> should show you the installation wizard <span class="o">[</span>sic !<span class="o">]</span>
-<a name="rest_code_3cf4dc4ea6b848d183996fba79c9722a-3"></a><span class="gp">$</span> ./eagle-lin-7.1.0.run
+<pre class="code console"><a name="rest_code_483b13df8e77447ab4e60036c3edcc2f-1"></a><span class="gp">$</span> sudo apt-get install libxrandr2:i386 libxrender1:i386 libxcursor1:i386 libfreetype6:i386 libfontconfig:i386 libxi6:i386 libssl1.0.0:i386 libcrypto++9:i386
+<a name="rest_code_483b13df8e77447ab4e60036c3edcc2f-2"></a><span class="gp">#</span> should show you the installation wizard <span class="o">[</span>sic !<span class="o">]</span>
+<a name="rest_code_483b13df8e77447ab4e60036c3edcc2f-3"></a><span class="gp">$</span> ./eagle-lin-7.1.0.run
 </pre>
 </div>
             </div>

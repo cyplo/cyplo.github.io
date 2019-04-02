@@ -75,17 +75,17 @@ installation of various software. However using Netbeans from the
 default repo could cause you a headache when developing Rails 3 apps.
 These just won't run. Let us start with installing the newest version of
 the IDE</p>
-<pre class="code console"><a name="rest_code_b02f87c42d0a472f867b7f88a65e5813-1"></a><span class="go">sudo apt-get install netbeans</span>
-<a name="rest_code_b02f87c42d0a472f867b7f88a65e5813-2"></a><span class="gp">#</span><span class="k">then</span> go to the Tools-&gt;Plugins-&gt;Available and install all regarding Ruby
+<pre class="code console"><a name="rest_code_3f45566761fe421aa756ec2fb1687211-1"></a><span class="go">sudo apt-get install netbeans</span>
+<a name="rest_code_3f45566761fe421aa756ec2fb1687211-2"></a><span class="gp">#</span><span class="k">then</span> go to the Tools-&gt;Plugins-&gt;Available and install all regarding Ruby
 </pre>
 <p>Now go ahead and try running some Rails app.</p>
-<pre class="code text"><a name="rest_code_c99b2b29fd79412985de83e9516c37ee-1"></a>/var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/dependencies.rb:239:in `require': /var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/cache/mem_cache_store.rb:32: invalid multibyte escape: /[x00-x20%x7F-xFF]/ (SyntaxError)
+<pre class="code text"><a name="rest_code_eeb4665418a2491daaf121dc94a30e3b-1"></a>/var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/dependencies.rb:239:in `require': /var/lib/gems/1.9.1/gems/activesupport-3.0.3/lib/active_support/cache/mem_cache_store.rb:32: invalid multibyte escape: /[x00-x20%x7F-xFF]/ (SyntaxError)
 </pre>
 <p>you say ? Here's a quick fix</p>
-<pre class="code text"><a name="rest_code_a0335ff010604920b25fd105b0426d54-1"></a>#edit /usr/share/netbeans/6.9/etc/netbeans.conf
-<a name="rest_code_a0335ff010604920b25fd105b0426d54-2"></a>#=&gt; append -J-Druby.no.kcode=true to the the netbeans_default_options and volia
-<a name="rest_code_a0335ff010604920b25fd105b0426d54-3"></a># the whole line im my case goes like that:
-<a name="rest_code_a0335ff010604920b25fd105b0426d54-4"></a>netbeans_default_options="-J-client -J-Xss2m -J-Xms32m -J-XX:PermSize=32m -J-XX:MaxPermSize=200m -J-Dapple.laf.useScreenMenuBar=true -J-Dsun.java2d.noddraw=true -J-Dsun.java2d.pmoffscreen=false -J-Druby.no.kcode=true"
+<pre class="code text"><a name="rest_code_cc3430a8473b48e99c16ba2371272fd1-1"></a>#edit /usr/share/netbeans/6.9/etc/netbeans.conf
+<a name="rest_code_cc3430a8473b48e99c16ba2371272fd1-2"></a>#=&gt; append -J-Druby.no.kcode=true to the the netbeans_default_options and volia
+<a name="rest_code_cc3430a8473b48e99c16ba2371272fd1-3"></a># the whole line im my case goes like that:
+<a name="rest_code_cc3430a8473b48e99c16ba2371272fd1-4"></a>netbeans_default_options="-J-client -J-Xss2m -J-Xms32m -J-XX:PermSize=32m -J-XX:MaxPermSize=200m -J-Dapple.laf.useScreenMenuBar=true -J-Dsun.java2d.noddraw=true -J-Dsun.java2d.pmoffscreen=false -J-Druby.no.kcode=true"
 </pre>
 <p>Long term solution ? Wait for Netbeans 7.0 as the devs promised it to be fixed there</p>
 </div>

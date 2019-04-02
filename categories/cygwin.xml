@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about cygwin)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/cygwin.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Thu, 21 Feb 2019 19:02:36 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Compiling git 2.0 on cygwin</title><link>https://blog.cyplo.net/posts/2014/07/05/compiling-git-2-0-cygwin.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I had some troubles compiling git 2.0 under cygwin. I present you with a
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about cygwin)</title><link>https://blog.cyplo.net/</link><description></description><atom:link href="https://blog.cyplo.net/categories/cygwin.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 02 Apr 2019 08:32:42 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Compiling git 2.0 on cygwin</title><link>https://blog.cyplo.net/posts/2014/07/05/compiling-git-2-0-cygwin.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I had some troubles compiling git 2.0 under cygwin. I present you with a
 very dirty hack to do so. Proper patch will probably follow. Did I
 mention that the hack is dirty and will make your hands burn if you're
 gonna type it in ?&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;git clone https://github.com/git/git.git&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd git&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;git checkout v2.0.1&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;autoconf&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;./configure&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-6"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; so far so good...
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;make&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-8"&gt;&lt;/a&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-9"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; oops
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-10"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; ....
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-11"&gt;&lt;/a&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;SUBDIR perl&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;make[2]: /home/cplotnicki/dev/git/perl/0: Command not found&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;perl.mak:375: recipe for target 'blib/lib/.exists' failed&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-15"&gt;&lt;/a&gt;&lt;span class="go"&gt;make[2]: *** [blib/lib/.exists] Error 127&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-16"&gt;&lt;/a&gt;&lt;span class="go"&gt;Makefile:16: recipe for target 'all' failed&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-17"&gt;&lt;/a&gt;&lt;span class="go"&gt;make[1]: *** [all] Error 2&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-18"&gt;&lt;/a&gt;&lt;span class="go"&gt;Makefile:1653: recipe for target 'all' failed&lt;/span&gt;
-&lt;a name="rest_code_922063051bd443cab35a243a851f99f6-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;make: *** [all] Error 2&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;git clone https://github.com/git/git.git&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd git&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;git checkout v2.0.1&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;autoconf&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;./configure&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-6"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; so far so good...
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;make&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-9"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; oops
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-10"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; ....
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-11"&gt;&lt;/a&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;SUBDIR perl&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;make[2]: /home/cplotnicki/dev/git/perl/0: Command not found&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-14"&gt;&lt;/a&gt;&lt;span class="go"&gt;perl.mak:375: recipe for target 'blib/lib/.exists' failed&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-15"&gt;&lt;/a&gt;&lt;span class="go"&gt;make[2]: *** [blib/lib/.exists] Error 127&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-16"&gt;&lt;/a&gt;&lt;span class="go"&gt;Makefile:16: recipe for target 'all' failed&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-17"&gt;&lt;/a&gt;&lt;span class="go"&gt;make[1]: *** [all] Error 2&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-18"&gt;&lt;/a&gt;&lt;span class="go"&gt;Makefile:1653: recipe for target 'all' failed&lt;/span&gt;
+&lt;a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;make: *** [all] Error 2&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;Want perl as '0' ? Well, why not. Here you are:&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; link perl as &lt;span class="m"&gt;0&lt;/span&gt; to some directory that is in your path
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;ln -s /usr/bin/perl ~/tools/0&lt;/span&gt;
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-3"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; also link here, obviously.
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-4"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; &lt;span class="s1"&gt;'perl'&lt;/span&gt; is a direct subdir &lt;span class="k"&gt;for&lt;/span&gt; your git checkout
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;ln -s /usr/bin/perl perl/0&lt;/span&gt;
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-6"&gt;&lt;/a&gt;
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;make # should now compile&lt;/span&gt;
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-8"&gt;&lt;/a&gt;
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-9"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; cygwin&lt;span class="err"&gt;'&lt;/span&gt;s permission scheme is very peculiar
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-10"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; here, have a dirty hack &lt;span class="k"&gt;for&lt;/span&gt; your default install
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-11"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; where there is no su or sudo
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;chmod a+rwX -R /usr/local/share/man/man3&lt;/span&gt;
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;chmod a+rwX -R /usr/local/lib/perl5/site_perl&lt;/span&gt;
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-14"&gt;&lt;/a&gt;
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-15"&gt;&lt;/a&gt;&lt;span class="go"&gt;make install&lt;/span&gt;
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-16"&gt;&lt;/a&gt;&lt;span class="go"&gt;git --version&lt;/span&gt;
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-17"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; should display &lt;span class="m"&gt;2&lt;/span&gt;.0.1.
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-18"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; update man pages&lt;span class="err"&gt;'&lt;/span&gt; cache manually
-&lt;a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;/etc/postinstall/man-db.sh&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-1"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; link perl as &lt;span class="m"&gt;0&lt;/span&gt; to some directory that is in your path
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;ln -s /usr/bin/perl ~/tools/0&lt;/span&gt;
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-3"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; also link here, obviously.
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-4"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; &lt;span class="s1"&gt;'perl'&lt;/span&gt; is a direct subdir &lt;span class="k"&gt;for&lt;/span&gt; your git checkout
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;ln -s /usr/bin/perl perl/0&lt;/span&gt;
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-7"&gt;&lt;/a&gt;&lt;span class="go"&gt;make # should now compile&lt;/span&gt;
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-8"&gt;&lt;/a&gt;
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-9"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; cygwin&lt;span class="err"&gt;'&lt;/span&gt;s permission scheme is very peculiar
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-10"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; here, have a dirty hack &lt;span class="k"&gt;for&lt;/span&gt; your default install
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-11"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; where there is no su or sudo
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-12"&gt;&lt;/a&gt;&lt;span class="go"&gt;chmod a+rwX -R /usr/local/share/man/man3&lt;/span&gt;
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-13"&gt;&lt;/a&gt;&lt;span class="go"&gt;chmod a+rwX -R /usr/local/lib/perl5/site_perl&lt;/span&gt;
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-14"&gt;&lt;/a&gt;
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-15"&gt;&lt;/a&gt;&lt;span class="go"&gt;make install&lt;/span&gt;
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-16"&gt;&lt;/a&gt;&lt;span class="go"&gt;git --version&lt;/span&gt;
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-17"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; should display &lt;span class="m"&gt;2&lt;/span&gt;.0.1.
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-18"&gt;&lt;/a&gt;&lt;span class="gp"&gt;#&lt;/span&gt; update man pages&lt;span class="err"&gt;'&lt;/span&gt; cache manually
+&lt;a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-19"&gt;&lt;/a&gt;&lt;span class="go"&gt;/etc/postinstall/man-db.sh&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</description><category>cygwin</category><guid>https://blog.cyplo.net/posts/2014/07/05/compiling-git-2-0-cygwin.html</guid><pubDate>Sat, 05 Jul 2014 10:06:59 GMT</pubDate></item><item><title>New dotfiles repository</title><link>https://blog.cyplo.net/posts/2013/10/26/new-dotfiles-repository.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;p&gt;Hi ! Just letting you know that I've been working for some time on
 structuring my dotfiles and finally published them to
 &lt;a class="reference external" href="https://github.com/cyplo/dotfiles"&gt;github&lt;/a&gt;. These contain e.g. my

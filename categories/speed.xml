@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about speed)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/speed.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Thu, 21 Feb 2019 19:02:34 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Speeding up Eclipse/Aptana</title><link>https://blog.cyplo.net/posts/2011/05/23/speeding-up-eclipse-aptana.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;As some of you know Aptana is Eclipse. And Eclipse is a Java-based IDE
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about speed)</title><link>https://blog.cyplo.net/</link><description></description><atom:link href="https://blog.cyplo.net/categories/speed.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 02 Apr 2019 08:32:41 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Speeding up Eclipse/Aptana</title><link>https://blog.cyplo.net/posts/2011/05/23/speeding-up-eclipse-aptana.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;As some of you know Aptana is Eclipse. And Eclipse is a Java-based IDE
 which means it's not particularly a speedy one. However if you have a
 decent amount of ram, like 4gb, it's fairly easy to speed the Eclipse
 up. Go ahead and find &lt;strong&gt;eclipse.ini&lt;/strong&gt; or &lt;strong&gt;aptana.ini&lt;/strong&gt; or other file which
 contents look similar. These settings are from my Linux box, I know that
 MacOS might be kinda scared by so high values, try lowering the Xmx
 and/or others in such a case.&lt;/p&gt;
-&lt;pre class="code text"&gt;&lt;a name="rest_code_b77d5675d0ae43e189b173b7fd28cd24-1"&gt;&lt;/a&gt;--launcher.XXMaxPermSize
-&lt;a name="rest_code_b77d5675d0ae43e189b173b7fd28cd24-2"&gt;&lt;/a&gt;512m
-&lt;a name="rest_code_b77d5675d0ae43e189b173b7fd28cd24-3"&gt;&lt;/a&gt;--launcher.defaultAction
-&lt;a name="rest_code_b77d5675d0ae43e189b173b7fd28cd24-4"&gt;&lt;/a&gt;openFile
-&lt;a name="rest_code_b77d5675d0ae43e189b173b7fd28cd24-5"&gt;&lt;/a&gt;-vmargs
-&lt;a name="rest_code_b77d5675d0ae43e189b173b7fd28cd24-6"&gt;&lt;/a&gt;-Xms128m
-&lt;a name="rest_code_b77d5675d0ae43e189b173b7fd28cd24-7"&gt;&lt;/a&gt;-Xmx2048m
+&lt;pre class="code text"&gt;&lt;a name="rest_code_ed57b9d0d7514e5e978207cbff7a145f-1"&gt;&lt;/a&gt;--launcher.XXMaxPermSize
+&lt;a name="rest_code_ed57b9d0d7514e5e978207cbff7a145f-2"&gt;&lt;/a&gt;512m
+&lt;a name="rest_code_ed57b9d0d7514e5e978207cbff7a145f-3"&gt;&lt;/a&gt;--launcher.defaultAction
+&lt;a name="rest_code_ed57b9d0d7514e5e978207cbff7a145f-4"&gt;&lt;/a&gt;openFile
+&lt;a name="rest_code_ed57b9d0d7514e5e978207cbff7a145f-5"&gt;&lt;/a&gt;-vmargs
+&lt;a name="rest_code_ed57b9d0d7514e5e978207cbff7a145f-6"&gt;&lt;/a&gt;-Xms128m
+&lt;a name="rest_code_ed57b9d0d7514e5e978207cbff7a145f-7"&gt;&lt;/a&gt;-Xmx2048m
 &lt;/pre&gt;&lt;p&gt;These settings are for the 4gb ram box, try to find the ones which suit you best. MaxPermSize
 stands for the maximum amount of the memory to be used by the Java
 internals, Xms gives the amount of heap allocated on the VM start and

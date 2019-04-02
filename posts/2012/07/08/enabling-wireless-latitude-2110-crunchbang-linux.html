@@ -82,12 +82,12 @@ kernel, <a class="reference external" href="http://crunchbanglinux.org/forums/to
 for Intel Atom and with BCM43224 support. This is a 64bit kernel.
 Download <a href="enabling-wireless-latitude-2110-crunchbang-linux.html#id1"><span class="problematic" id="id2">`crunchbanglinux-kernel-3.4.4-intel\_atom.tar.bz2 &lt;&gt;`__</span></a>
 and:</p>
-<pre class="code console"><a name="rest_code_bbc25429adbd4e2fb268760155231b0c-1"></a><span class="go">dpkg --remove firmware-linux</span>
-<a name="rest_code_bbc25429adbd4e2fb268760155231b0c-2"></a><span class="go">dpkg --remove firmware-linux-nonfree</span>
-<a name="rest_code_bbc25429adbd4e2fb268760155231b0c-3"></a><span class="go">tar jxf crunchbanglinux-kernel-3.4.4-intel_atom.tar.bz2</span>
-<a name="rest_code_bbc25429adbd4e2fb268760155231b0c-4"></a><span class="go">cd linux-3.4.4-intel_atom/</span>
-<a name="rest_code_bbc25429adbd4e2fb268760155231b0c-5"></a><span class="go">dpkg -i *.deb</span>
-<a name="rest_code_bbc25429adbd4e2fb268760155231b0c-6"></a><span class="go">reboot</span>
+<pre class="code console"><a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-1"></a><span class="go">dpkg --remove firmware-linux</span>
+<a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-2"></a><span class="go">dpkg --remove firmware-linux-nonfree</span>
+<a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-3"></a><span class="go">tar jxf crunchbanglinux-kernel-3.4.4-intel_atom.tar.bz2</span>
+<a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-4"></a><span class="go">cd linux-3.4.4-intel_atom/</span>
+<a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-5"></a><span class="go">dpkg -i *.deb</span>
+<a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-6"></a><span class="go">reboot</span>
 </pre>
 <p>Should work for Debian Squeeze also but not tested on that system. Write me if you'd
 like it compiled any other way, e.g. for another processor.</p>

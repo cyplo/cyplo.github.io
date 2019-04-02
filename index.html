@@ -790,35 +790,35 @@ graph TB
 <p>This blog is rendered by Nikola hence I would like to show you how I've added mermaid support to my Nikola installation.
 I use <tt class="docutils literal">USE_BUNDLES = False</tt> in <tt class="docutils literal">conf.py</tt> as for it gives me more control and is more HTTP/2 friendly.
 With that disabled I can include mermaid's style and js files like so (also in <tt class="docutils literal">conf.py</tt>):</p>
-<pre class="code python"><a name="rest_code_117f0edd22f342298843b7c6acc6bad0-1"></a><span class="n">EXTRA_HEAD_DATA</span> <span class="o">=</span> <span class="s2">"""</span>
-<a name="rest_code_117f0edd22f342298843b7c6acc6bad0-2"></a><span class="s2">&lt;link rel="stylesheet" type="text/css" href="/assets/css/fontawesome.css"&gt;</span>
-<a name="rest_code_117f0edd22f342298843b7c6acc6bad0-3"></a><span class="s2">&lt;link rel="stylesheet" type="text/css" href="/assets/css/titillium.css"&gt;</span>
-<a name="rest_code_117f0edd22f342298843b7c6acc6bad0-4"></a><span class="s2">&lt;link rel="stylesheet" type="text/css" href="/assets/css/mermaid.forest.css"&gt;</span>
-<a name="rest_code_117f0edd22f342298843b7c6acc6bad0-5"></a><span class="s2">"""</span>
-<a name="rest_code_117f0edd22f342298843b7c6acc6bad0-6"></a>
-<a name="rest_code_117f0edd22f342298843b7c6acc6bad0-7"></a><span class="n">BODY_END</span> <span class="o">=</span> <span class="s2">"""</span>
-<a name="rest_code_117f0edd22f342298843b7c6acc6bad0-8"></a><span class="s2">&lt;script src="/assets/js/mermaid.js"&gt;&lt;/script&gt;</span>
-<a name="rest_code_117f0edd22f342298843b7c6acc6bad0-9"></a><span class="s2">&lt;script&gt;mermaid.initialize({startOnLoad:true, cloneCssStyles: false});&lt;/script&gt;</span>
-<a name="rest_code_117f0edd22f342298843b7c6acc6bad0-10"></a><span class="s2">"""</span>
+<pre class="code python"><a name="rest_code_18fc00840d5840d3b3fa506a55fb80b1-1"></a><span class="n">EXTRA_HEAD_DATA</span> <span class="o">=</span> <span class="s2">"""</span>
+<a name="rest_code_18fc00840d5840d3b3fa506a55fb80b1-2"></a><span class="s2">&lt;link rel="stylesheet" type="text/css" href="/assets/css/fontawesome.css"&gt;</span>
+<a name="rest_code_18fc00840d5840d3b3fa506a55fb80b1-3"></a><span class="s2">&lt;link rel="stylesheet" type="text/css" href="/assets/css/titillium.css"&gt;</span>
+<a name="rest_code_18fc00840d5840d3b3fa506a55fb80b1-4"></a><span class="s2">&lt;link rel="stylesheet" type="text/css" href="/assets/css/mermaid.forest.css"&gt;</span>
+<a name="rest_code_18fc00840d5840d3b3fa506a55fb80b1-5"></a><span class="s2">"""</span>
+<a name="rest_code_18fc00840d5840d3b3fa506a55fb80b1-6"></a>
+<a name="rest_code_18fc00840d5840d3b3fa506a55fb80b1-7"></a><span class="n">BODY_END</span> <span class="o">=</span> <span class="s2">"""</span>
+<a name="rest_code_18fc00840d5840d3b3fa506a55fb80b1-8"></a><span class="s2">&lt;script src="/assets/js/mermaid.js"&gt;&lt;/script&gt;</span>
+<a name="rest_code_18fc00840d5840d3b3fa506a55fb80b1-9"></a><span class="s2">&lt;script&gt;mermaid.initialize({startOnLoad:true, cloneCssStyles: false});&lt;/script&gt;</span>
+<a name="rest_code_18fc00840d5840d3b3fa506a55fb80b1-10"></a><span class="s2">"""</span>
 </pre>
 <p>Where do all these files come from though ? In my case, I have a custom theme, based on <tt class="docutils literal">zen</tt> called <tt class="docutils literal"><span class="pre">zen-cyplo</span></tt>. The assets in the sources are located under <tt class="docutils literal"><span class="pre">themes/zen-cyplo/assets/</span></tt>.
 Oh, and <tt class="docutils literal">cloneCssStyles: false</tt> is there as the default of <tt class="docutils literal">true</tt> made the different css styles on my blog clash.
 Finally, to use mermaid in the post do (for reStructured Text):</p>
-<pre class="code restructuredtext"><a name="rest_code_ed05c188361742128de8f8a32ce7b87b-1"></a><span class="p">..</span> <span class="ow">raw</span><span class="p">::</span> html
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-2"></a>
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-3"></a>        &lt;div class="mermaid"&gt;
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-4"></a>        graph TB
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-5"></a>                        subgraph one
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-6"></a>                        a1--&gt;a2
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-7"></a>                        end
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-8"></a>                        subgraph two
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-9"></a>                        b1--&gt;b2
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-10"></a>                        end
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-11"></a>                        subgraph three
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-12"></a>                        c1--&gt;c2
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-13"></a>                        end
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-14"></a>                        c1--&gt;a2
-<a name="rest_code_ed05c188361742128de8f8a32ce7b87b-15"></a>        &lt;/div&gt;
+<pre class="code restructuredtext"><a name="rest_code_c8a18dea30594f6c835b791003c28b33-1"></a><span class="p">..</span> <span class="ow">raw</span><span class="p">::</span> html
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-2"></a>
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-3"></a>        &lt;div class="mermaid"&gt;
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-4"></a>        graph TB
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-5"></a>                        subgraph one
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-6"></a>                        a1--&gt;a2
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-7"></a>                        end
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-8"></a>                        subgraph two
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-9"></a>                        b1--&gt;b2
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-10"></a>                        end
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-11"></a>                        subgraph three
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-12"></a>                        c1--&gt;c2
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-13"></a>                        end
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-14"></a>                        c1--&gt;a2
+<a name="rest_code_c8a18dea30594f6c835b791003c28b33-15"></a>        &lt;/div&gt;
 </pre>
 <p>You can click on <tt class="docutils literal">source</tt> button located below the title of this post to see it in action. If you are interested in the build process and how all these come together - the complete sources for this blog are hosted under <a class="reference external" href="https://github.com/cyplo/blog">https://github.com/cyplo/blog</a></p>
 </div>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about BCM43224)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/bcm43224.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Thu, 21 Feb 2019 19:02:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Enabling wireless on Dell Latitude 2110 under CrunchBang Linux</title><link>https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Some time ago I got my hands on &lt;a class="reference external" href="http://crunchbanglinux.org/"&gt;CrunchBang
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about BCM43224)</title><link>https://blog.cyplo.net/</link><description></description><atom:link href="https://blog.cyplo.net/categories/bcm43224.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 02 Apr 2019 08:32:42 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Enabling wireless on Dell Latitude 2110 under CrunchBang Linux</title><link>https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;Some time ago I got my hands on &lt;a class="reference external" href="http://crunchbanglinux.org/"&gt;CrunchBang
 Linux&lt;/a&gt; distro, which is great. Like
 really. Try it. The only annoying thing is missing proper wireless
 driver for my Broadcom BCM43224 WiFi card. But I'm used to it, as many
@@ -12,12 +12,12 @@ kernel, &lt;a class="reference external" href="http://crunchbanglinux.org/forums
 for Intel Atom and with BCM43224 support. This is a 64bit kernel.
 Download &lt;a href="https://blog.cyplo.net/posts/2012/07/08/enabling-wireless-latitude-2110-crunchbang-linux.html#id1"&gt;&lt;span class="problematic" id="id2"&gt;`crunchbanglinux-kernel-3.4.4-intel\_atom.tar.bz2 &amp;lt;&amp;gt;`__&lt;/span&gt;&lt;/a&gt;
 and:&lt;/p&gt;
-&lt;pre class="code console"&gt;&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove firmware-linux&lt;/span&gt;
-&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove firmware-linux-nonfree&lt;/span&gt;
-&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;tar jxf crunchbanglinux-kernel-3.4.4-intel_atom.tar.bz2&lt;/span&gt;
-&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd linux-3.4.4-intel_atom/&lt;/span&gt;
-&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg -i *.deb&lt;/span&gt;
-&lt;a name="rest_code_bbc25429adbd4e2fb268760155231b0c-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;reboot&lt;/span&gt;
+&lt;pre class="code console"&gt;&lt;a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-1"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove firmware-linux&lt;/span&gt;
+&lt;a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-2"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg --remove firmware-linux-nonfree&lt;/span&gt;
+&lt;a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-3"&gt;&lt;/a&gt;&lt;span class="go"&gt;tar jxf crunchbanglinux-kernel-3.4.4-intel_atom.tar.bz2&lt;/span&gt;
+&lt;a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-4"&gt;&lt;/a&gt;&lt;span class="go"&gt;cd linux-3.4.4-intel_atom/&lt;/span&gt;
+&lt;a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-5"&gt;&lt;/a&gt;&lt;span class="go"&gt;dpkg -i *.deb&lt;/span&gt;
+&lt;a name="rest_code_8124871ad9ca4cbba9ff0e5cc4149086-6"&gt;&lt;/a&gt;&lt;span class="go"&gt;reboot&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;Should work for Debian Squeeze also but not tested on that system. Write me if you'd
 like it compiled any other way, e.g. for another processor.&lt;/p&gt;
 &lt;div class="system-messages section"&gt;

@@ -72,14 +72,14 @@ if (!empty($_SER">
 nonstandard port and the admin interface lives in that land, while the
 site itself is using plain http.</p>
 <p>In wp-config.php:</p>
-<pre class="code php"><a name="rest_code_0c695036d7f04ccfac592e20e917689e-1"></a><span class="x">if (!empty($_SERVER['HTTPS'])) {</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-2"></a><span class="x">    define('WP_SITEURL', 'https://example.com:12345');</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-3"></a><span class="x">    define('WP_HOME', 'https://example.com:12345');</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-4"></a><span class="x">}</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-5"></a><span class="x">else {</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-6"></a><span class="x">    define('WP_SITEURL', 'http://example.com');</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-7"></a><span class="x">    define('WP_HOME', 'http://example.com');</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-8"></a><span class="x">}</span>
+<pre class="code php"><a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-1"></a><span class="x">if (!empty($_SERVER['HTTPS'])) {</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-2"></a><span class="x">    define('WP_SITEURL', 'https://example.com:12345');</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-3"></a><span class="x">    define('WP_HOME', 'https://example.com:12345');</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-4"></a><span class="x">}</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-5"></a><span class="x">else {</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-6"></a><span class="x">    define('WP_SITEURL', 'http://example.com');</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-7"></a><span class="x">    define('WP_HOME', 'http://example.com');</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-8"></a><span class="x">}</span>
 </pre>
 <p>This allows the installation to properly see resources like
 images and css if accessed via nonstandard port. So if you don't see

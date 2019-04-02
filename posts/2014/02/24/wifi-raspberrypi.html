@@ -72,18 +72,18 @@ root@frontend:~# cat /etc/network/">
 <p>Easiest way I've found to configure wifi on RaspberryPi, not really
 being mentioned when you search for such. Not using separate
 wpa_supplicant configuration at all.</p>
-<pre class="code console"><a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-1"></a><span class="gp">root@frontend:~#</span> cat /etc/network/interfaces
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-2"></a><span class="go">auto lo</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-3"></a><span class="go">iface lo inet loopback</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-4"></a>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-5"></a><span class="go">iface eth0 inet dhcp</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-6"></a>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-7"></a><span class="go">allow-hotplug wlan0</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-8"></a><span class="go">iface wlan0 inet dhcp</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-9"></a><span class="go">wpa-ssid  NETWORK_NAME</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-10"></a><span class="go">wpa-psk NETWORK_KEY</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-11"></a>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-12"></a><span class="go">iface default inet dhcp</span>
+<pre class="code console"><a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-1"></a><span class="gp">root@frontend:~#</span> cat /etc/network/interfaces
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-2"></a><span class="go">auto lo</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-3"></a><span class="go">iface lo inet loopback</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-4"></a>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-5"></a><span class="go">iface eth0 inet dhcp</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-6"></a>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-7"></a><span class="go">allow-hotplug wlan0</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-8"></a><span class="go">iface wlan0 inet dhcp</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-9"></a><span class="go">wpa-ssid  NETWORK_NAME</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-10"></a><span class="go">wpa-psk NETWORK_KEY</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-11"></a>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-12"></a><span class="go">iface default inet dhcp</span>
 </pre>
 </div>
         </div>

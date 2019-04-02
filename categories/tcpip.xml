@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about tcpip)</title><link>https://blog.cyplo.net/</link><description></description><atom:link type="application/rss+xml" href="https://blog.cyplo.net/categories/tcpip.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Thu, 21 Feb 2019 19:02:35 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Wordpress and nonstandard ports and protocols</title><link>https://blog.cyplo.net/posts/2014/01/01/wordpress-https-nonstandard-port.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I needed to set up a Wordpress installation where https is on
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adventurous Computing (Posts about tcpip)</title><link>https://blog.cyplo.net/</link><description></description><atom:link href="https://blog.cyplo.net/categories/tcpip.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 02 Apr 2019 08:32:42 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Wordpress and nonstandard ports and protocols</title><link>https://blog.cyplo.net/posts/2014/01/01/wordpress-https-nonstandard-port.html</link><dc:creator>Cyryl Płotnicki</dc:creator><description>&lt;div&gt;&lt;p&gt;I needed to set up a Wordpress installation where https is on
 nonstandard port and the admin interface lives in that land, while the
 site itself is using plain http.&lt;/p&gt;
 &lt;p&gt;In wp-config.php:&lt;/p&gt;
-&lt;pre class="code php"&gt;&lt;a name="rest_code_0c695036d7f04ccfac592e20e917689e-1"&gt;&lt;/a&gt;&lt;span class="x"&gt;if (!empty($_SERVER['HTTPS'])) {&lt;/span&gt;
-&lt;a name="rest_code_0c695036d7f04ccfac592e20e917689e-2"&gt;&lt;/a&gt;&lt;span class="x"&gt;    define('WP_SITEURL', 'https://example.com:12345');&lt;/span&gt;
-&lt;a name="rest_code_0c695036d7f04ccfac592e20e917689e-3"&gt;&lt;/a&gt;&lt;span class="x"&gt;    define('WP_HOME', 'https://example.com:12345');&lt;/span&gt;
-&lt;a name="rest_code_0c695036d7f04ccfac592e20e917689e-4"&gt;&lt;/a&gt;&lt;span class="x"&gt;}&lt;/span&gt;
-&lt;a name="rest_code_0c695036d7f04ccfac592e20e917689e-5"&gt;&lt;/a&gt;&lt;span class="x"&gt;else {&lt;/span&gt;
-&lt;a name="rest_code_0c695036d7f04ccfac592e20e917689e-6"&gt;&lt;/a&gt;&lt;span class="x"&gt;    define('WP_SITEURL', 'http://example.com');&lt;/span&gt;
-&lt;a name="rest_code_0c695036d7f04ccfac592e20e917689e-7"&gt;&lt;/a&gt;&lt;span class="x"&gt;    define('WP_HOME', 'http://example.com');&lt;/span&gt;
-&lt;a name="rest_code_0c695036d7f04ccfac592e20e917689e-8"&gt;&lt;/a&gt;&lt;span class="x"&gt;}&lt;/span&gt;
+&lt;pre class="code php"&gt;&lt;a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-1"&gt;&lt;/a&gt;&lt;span class="x"&gt;if (!empty($_SERVER['HTTPS'])) {&lt;/span&gt;
+&lt;a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-2"&gt;&lt;/a&gt;&lt;span class="x"&gt;    define('WP_SITEURL', 'https://example.com:12345');&lt;/span&gt;
+&lt;a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-3"&gt;&lt;/a&gt;&lt;span class="x"&gt;    define('WP_HOME', 'https://example.com:12345');&lt;/span&gt;
+&lt;a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-4"&gt;&lt;/a&gt;&lt;span class="x"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-5"&gt;&lt;/a&gt;&lt;span class="x"&gt;else {&lt;/span&gt;
+&lt;a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-6"&gt;&lt;/a&gt;&lt;span class="x"&gt;    define('WP_SITEURL', 'http://example.com');&lt;/span&gt;
+&lt;a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-7"&gt;&lt;/a&gt;&lt;span class="x"&gt;    define('WP_HOME', 'http://example.com');&lt;/span&gt;
+&lt;a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-8"&gt;&lt;/a&gt;&lt;span class="x"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;p&gt;This allows the installation to properly see resources like
 images and css if accessed via nonstandard port. So if you don't see
 image previews in the admin panel, your styles look weird, or you just

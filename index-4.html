@@ -81,38 +81,38 @@ day we fight back. <a class="reference external" href="https://thedaywefightback
                 <div>
 <p>Just a quickie for tarsnap 1.0.35. Featuring my new favourite, the
 download software called aria2.</p>
-<pre class="code console"><a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-1"></a><span class="go">aptitude install aria2 libssl-dev zlib1g-dev e2fslibs-dev</span>
-<a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-2"></a><span class="go">aria2c https://www.tarsnap.com/download/tarsnap-autoconf-1.0.35.tgz</span>
-<a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-3"></a><span class="go">aria2c https://www.tarsnap.com/download/tarsnap-sigs-1.0.35.asc</span>
-<a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-4"></a><span class="go">gpg --recv-key 2F102ABB</span>
-<a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-5"></a><span class="go">gpg --decrypt tarsnap-sigs-1.0.35.asc</span>
-<a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-6"></a><span class="go">sha256sum tarsnap-autoconf-1.0.35.tgz # should get the value from sig file, 6c9f67....9a</span>
-<a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-7"></a><span class="go">tar xf tarsnap-autoconf-1.0.35.tgz</span>
-<a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-8"></a><span class="go">cd tarsnap-autoconf-1.0.35/</span>
-<a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-9"></a><span class="go">./configure</span>
-<a name="rest_code_f23f0e4003c04be2b13e5f35f77002ea-10"></a><span class="go">time nice ionice make -j2</span>
+<pre class="code console"><a name="rest_code_58a8eea242134374a1661dbb73b67aa4-1"></a><span class="go">aptitude install aria2 libssl-dev zlib1g-dev e2fslibs-dev</span>
+<a name="rest_code_58a8eea242134374a1661dbb73b67aa4-2"></a><span class="go">aria2c https://www.tarsnap.com/download/tarsnap-autoconf-1.0.35.tgz</span>
+<a name="rest_code_58a8eea242134374a1661dbb73b67aa4-3"></a><span class="go">aria2c https://www.tarsnap.com/download/tarsnap-sigs-1.0.35.asc</span>
+<a name="rest_code_58a8eea242134374a1661dbb73b67aa4-4"></a><span class="go">gpg --recv-key 2F102ABB</span>
+<a name="rest_code_58a8eea242134374a1661dbb73b67aa4-5"></a><span class="go">gpg --decrypt tarsnap-sigs-1.0.35.asc</span>
+<a name="rest_code_58a8eea242134374a1661dbb73b67aa4-6"></a><span class="go">sha256sum tarsnap-autoconf-1.0.35.tgz # should get the value from sig file, 6c9f67....9a</span>
+<a name="rest_code_58a8eea242134374a1661dbb73b67aa4-7"></a><span class="go">tar xf tarsnap-autoconf-1.0.35.tgz</span>
+<a name="rest_code_58a8eea242134374a1661dbb73b67aa4-8"></a><span class="go">cd tarsnap-autoconf-1.0.35/</span>
+<a name="rest_code_58a8eea242134374a1661dbb73b67aa4-9"></a><span class="go">./configure</span>
+<a name="rest_code_58a8eea242134374a1661dbb73b67aa4-10"></a><span class="go">time nice ionice make -j2</span>
 </pre>
 <p>How do I know that -j2 really gives some advantage on raspi ? Well, here
 are the timings:</p>
-<pre class="code console"><a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-1"></a><span class="gp">#</span>fresh, j1
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-2"></a><span class="go">real    14m7.129s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-3"></a><span class="go">user    6m30.790s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-4"></a><span class="go">sys 0m21.640s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-5"></a>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-6"></a><span class="gp">#</span>-j2
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-7"></a><span class="go">real    11m33.868s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-8"></a><span class="go">user    6m36.690s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-9"></a><span class="go">sys 0m19.880s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-10"></a>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-11"></a><span class="gp">#</span>-j1 again, caches warmed up
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-12"></a><span class="go">real    12m38.598s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-13"></a><span class="go">user    6m30.960s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-14"></a><span class="go">sys 0m20.470s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-15"></a>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-16"></a><span class="gp">#</span>-j2 again
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-17"></a><span class="go">real    10m14.975s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-18"></a><span class="go">user    6m34.980s</span>
-<a name="rest_code_672d44770e664ca3bfaae82415ad1e1b-19"></a><span class="go">sys 0m20.710s</span>
+<pre class="code console"><a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-1"></a><span class="gp">#</span>fresh, j1
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-2"></a><span class="go">real    14m7.129s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-3"></a><span class="go">user    6m30.790s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-4"></a><span class="go">sys 0m21.640s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-5"></a>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-6"></a><span class="gp">#</span>-j2
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-7"></a><span class="go">real    11m33.868s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-8"></a><span class="go">user    6m36.690s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-9"></a><span class="go">sys 0m19.880s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-10"></a>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-11"></a><span class="gp">#</span>-j1 again, caches warmed up
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-12"></a><span class="go">real    12m38.598s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-13"></a><span class="go">user    6m30.960s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-14"></a><span class="go">sys 0m20.470s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-15"></a>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-16"></a><span class="gp">#</span>-j2 again
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-17"></a><span class="go">real    10m14.975s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-18"></a><span class="go">user    6m34.980s</span>
+<a name="rest_code_db0b4fcc7bd04bbbbc5e192180936fb7-19"></a><span class="go">sys 0m20.710s</span>
 </pre>
 </div>
             </div>
@@ -232,14 +232,14 @@ Possibly, also, I just like ‘hey, got a second?’ approach better.</p>
 nonstandard port and the admin interface lives in that land, while the
 site itself is using plain http.</p>
 <p>In wp-config.php:</p>
-<pre class="code php"><a name="rest_code_0c695036d7f04ccfac592e20e917689e-1"></a><span class="x">if (!empty($_SERVER['HTTPS'])) {</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-2"></a><span class="x">    define('WP_SITEURL', 'https://example.com:12345');</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-3"></a><span class="x">    define('WP_HOME', 'https://example.com:12345');</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-4"></a><span class="x">}</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-5"></a><span class="x">else {</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-6"></a><span class="x">    define('WP_SITEURL', 'http://example.com');</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-7"></a><span class="x">    define('WP_HOME', 'http://example.com');</span>
-<a name="rest_code_0c695036d7f04ccfac592e20e917689e-8"></a><span class="x">}</span>
+<pre class="code php"><a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-1"></a><span class="x">if (!empty($_SERVER['HTTPS'])) {</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-2"></a><span class="x">    define('WP_SITEURL', 'https://example.com:12345');</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-3"></a><span class="x">    define('WP_HOME', 'https://example.com:12345');</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-4"></a><span class="x">}</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-5"></a><span class="x">else {</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-6"></a><span class="x">    define('WP_SITEURL', 'http://example.com');</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-7"></a><span class="x">    define('WP_HOME', 'http://example.com');</span>
+<a name="rest_code_27089e0ed5ba46929bf14ad8efa21a0b-8"></a><span class="x">}</span>
 </pre>
 <p>This allows the installation to properly see resources like
 images and css if accessed via nonstandard port. So if you don't see
@@ -322,52 +322,52 @@ might be useful for someone else, so here you are: First things first:
 I'm assuming you've followed Gentoo handbook and are operating from
 within livecd's shell. You've done the regular luksFormat + lvm stuff
 and you've come up with a layout similar to this one:</p>
-<pre class="code text"><a name="rest_code_fd2560ce70ac4336814419bfeea88337-1"></a>dagrey ~ # lsblk
-<a name="rest_code_fd2560ce70ac4336814419bfeea88337-2"></a>NAME                          SIZE TYPE  MOUNTPOINT
-<a name="rest_code_fd2560ce70ac4336814419bfeea88337-3"></a>sda                           55.9G disk
-<a name="rest_code_fd2560ce70ac4336814419bfeea88337-4"></a>└─sda1                        55.9G part
-<a name="rest_code_fd2560ce70ac4336814419bfeea88337-5"></a>  └─crypthome (dm-3)          55.9G crypt /home
-<a name="rest_code_fd2560ce70ac4336814419bfeea88337-6"></a>sdb                           29.8G disk
-<a name="rest_code_fd2560ce70ac4336814419bfeea88337-7"></a>├─sdb1                       485.4M part  /boot
-<a name="rest_code_fd2560ce70ac4336814419bfeea88337-8"></a>└─sdb2                        29.4G part
-<a name="rest_code_fd2560ce70ac4336814419bfeea88337-9"></a>  └─root_sdb2-vg-root (dm-0)  29.3G crypt
-<a name="rest_code_fd2560ce70ac4336814419bfeea88337-10"></a>    ├─vg-swap (dm-1)             8G lvm   [SWAP]
-<a name="rest_code_fd2560ce70ac4336814419bfeea88337-11"></a>    └─vg-root (dm-2)          21.3G lvm   /
+<pre class="code text"><a name="rest_code_c46438478a654b2989ca331d437785a3-1"></a>dagrey ~ # lsblk
+<a name="rest_code_c46438478a654b2989ca331d437785a3-2"></a>NAME                          SIZE TYPE  MOUNTPOINT
+<a name="rest_code_c46438478a654b2989ca331d437785a3-3"></a>sda                           55.9G disk
+<a name="rest_code_c46438478a654b2989ca331d437785a3-4"></a>└─sda1                        55.9G part
+<a name="rest_code_c46438478a654b2989ca331d437785a3-5"></a>  └─crypthome (dm-3)          55.9G crypt /home
+<a name="rest_code_c46438478a654b2989ca331d437785a3-6"></a>sdb                           29.8G disk
+<a name="rest_code_c46438478a654b2989ca331d437785a3-7"></a>├─sdb1                       485.4M part  /boot
+<a name="rest_code_c46438478a654b2989ca331d437785a3-8"></a>└─sdb2                        29.4G part
+<a name="rest_code_c46438478a654b2989ca331d437785a3-9"></a>  └─root_sdb2-vg-root (dm-0)  29.3G crypt
+<a name="rest_code_c46438478a654b2989ca331d437785a3-10"></a>    ├─vg-swap (dm-1)             8G lvm   [SWAP]
+<a name="rest_code_c46438478a654b2989ca331d437785a3-11"></a>    └─vg-root (dm-2)          21.3G lvm   /
 </pre>
 <p>You need a kernel to boot this, a kernel that understands crypto stuff as well as
 lvm.</p>
-<pre class="code text"><a name="rest_code_b369b43ec53f4cd3b65d8347e9559c9f-1"></a>genkernel --symlink --save-config --no-mrproper --luks --lvm --udev --menuconfig all
+<pre class="code text"><a name="rest_code_4772ba17bf604e90a14f6ae24d6ed3a8-1"></a>genkernel --symlink --save-config --no-mrproper --luks --lvm --udev --menuconfig all
 </pre>
 <p>If you're using <em>gentoo-sources</em> you'd notice the fancy gentoo-specific menu on top. Go there and check
 systemd. Apart from the usual stuff, please make sure to check stuff on
 <a class="reference external" href="https://wiki.gentoo.org/wiki/Systemd">this list</a>, and also this one:</p>
-<pre class="code text"><a name="rest_code_315b66f319e741e9a909089677605452-1"></a>Device Drivers
-<a name="rest_code_315b66f319e741e9a909089677605452-2"></a> Multi-device support (RAID and LVM)
-<a name="rest_code_315b66f319e741e9a909089677605452-3"></a> [*] Multiple devices driver support (RAID and LVM)
-<a name="rest_code_315b66f319e741e9a909089677605452-4"></a> &lt;*&gt;  Device mapper support
-<a name="rest_code_315b66f319e741e9a909089677605452-5"></a> &lt;*&gt;  Crypt target support
-<a name="rest_code_315b66f319e741e9a909089677605452-6"></a>
-<a name="rest_code_315b66f319e741e9a909089677605452-7"></a>Cryptographic API
-<a name="rest_code_315b66f319e741e9a909089677605452-8"></a> &lt;*&gt;  SHA256 digest algorithm
-<a name="rest_code_315b66f319e741e9a909089677605452-9"></a> &lt;*&gt;  AES cipher algorithms
+<pre class="code text"><a name="rest_code_f4f16b8e25f9449da6fd4c5421e3b55b-1"></a>Device Drivers
+<a name="rest_code_f4f16b8e25f9449da6fd4c5421e3b55b-2"></a> Multi-device support (RAID and LVM)
+<a name="rest_code_f4f16b8e25f9449da6fd4c5421e3b55b-3"></a> [*] Multiple devices driver support (RAID and LVM)
+<a name="rest_code_f4f16b8e25f9449da6fd4c5421e3b55b-4"></a> &lt;*&gt;  Device mapper support
+<a name="rest_code_f4f16b8e25f9449da6fd4c5421e3b55b-5"></a> &lt;*&gt;  Crypt target support
+<a name="rest_code_f4f16b8e25f9449da6fd4c5421e3b55b-6"></a>
+<a name="rest_code_f4f16b8e25f9449da6fd4c5421e3b55b-7"></a>Cryptographic API
+<a name="rest_code_f4f16b8e25f9449da6fd4c5421e3b55b-8"></a> &lt;*&gt;  SHA256 digest algorithm
+<a name="rest_code_f4f16b8e25f9449da6fd4c5421e3b55b-9"></a> &lt;*&gt;  AES cipher algorithms
 </pre>
 <p>Your setup is so new that you need grub2. Grub2 is very picky about its configuration. Take this one and
 avoid hours of reading:</p>
-<pre class="code text"><a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-1"></a>dagrey ~ # cat /etc/default/grub
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-2"></a>
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-3"></a>GRUB_DISTRIBUTOR="Gentoo"
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-4"></a>
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-5"></a>GRUB_DEFAULT=0
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-6"></a>GRUB_HIDDEN_TIMEOUT=0
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-7"></a>GRUB_HIDDEN_TIMEOUT_QUIET=true
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-8"></a>GRUB_TIMEOUT=3
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-9"></a>
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-10"></a>GRUB_PRELOAD_MODULES=lvm
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-11"></a>GRUB_CRYPTODISK_ENABLE=y
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-12"></a>GRUB_DEVICE=/dev/ram0
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-13"></a>
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-14"></a># Append parameters to the linux kernel command line
-<a name="rest_code_5b6ca755c8c54797aba49de6e7dbeec5-15"></a>GRUB_CMDLINE_LINUX="real_init=/usr/bin/systemd quiet real_root=/dev/mapper/vg-root crypt_root=/dev/sdb2 dolvm acpi_backlight=vendor"
+<pre class="code text"><a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-1"></a>dagrey ~ # cat /etc/default/grub
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-2"></a>
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-3"></a>GRUB_DISTRIBUTOR="Gentoo"
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-4"></a>
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-5"></a>GRUB_DEFAULT=0
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-6"></a>GRUB_HIDDEN_TIMEOUT=0
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-7"></a>GRUB_HIDDEN_TIMEOUT_QUIET=true
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-8"></a>GRUB_TIMEOUT=3
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-9"></a>
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-10"></a>GRUB_PRELOAD_MODULES=lvm
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-11"></a>GRUB_CRYPTODISK_ENABLE=y
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-12"></a>GRUB_DEVICE=/dev/ram0
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-13"></a>
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-14"></a># Append parameters to the linux kernel command line
+<a name="rest_code_41215cb7b140410dbdb103fb3bfc1587-15"></a>GRUB_CMDLINE_LINUX="real_init=/usr/bin/systemd quiet real_root=/dev/mapper/vg-root crypt_root=/dev/sdb2 dolvm acpi_backlight=vendor"
 </pre>
 <p>You're using initrd to set everything up for the kernel, so you need <em>real_root</em> and <em>real_init</em> instead of
 regular ones. <em>cryptdevice</em> no longer works, use <em>crypt_root</em> And
@@ -376,8 +376,8 @@ you with open crypt container and kernel panic just afterwards. Also
 notice GRUB_DEVICE, GRUB_CRYPTODISK_ENABLE and GRUB_PRELOAD_MODULES. Make sure the first partition on the disk you're
 installing grub onto is starting at 2048. If it's any earlier grub just
 won't be able to fit its magic in there. Finally, install grub</p>
-<pre class="code text"><a name="rest_code_caa158f5f70b4b2e8e3f7e89f44d3dd0-1"></a>grub2-install --modules="configfile linux crypto search_fs_uuid luks lvm" --recheck /dev/sda
-<a name="rest_code_caa158f5f70b4b2e8e3f7e89f44d3dd0-2"></a>grub2-mkconfig -o /boot/grub/grub.cfg
+<pre class="code text"><a name="rest_code_b8f29bed937b438fabd8385e14e3a0ac-1"></a>grub2-install --modules="configfile linux crypto search_fs_uuid luks lvm" --recheck /dev/sda
+<a name="rest_code_b8f29bed937b438fabd8385e14e3a0ac-2"></a>grub2-mkconfig -o /boot/grub/grub.cfg
 </pre>
 <p>That should be sufficient to boot the system and initialize root. What
 about those other encrypted partitions like /home though ? Well, init
@@ -386,16 +386,16 @@ subsystem needs to initialize them, OpenRC did such by reading
 bit different here. You still need your /etc/fstab entries for it to
 know which partitions need to be initialized. The place where you say
 how to map and decrypt crypto containers, however, is in /etc/crypttab.</p>
-<pre class="code text"><a name="rest_code_987f9e120c484037b1afa6f85e80437e-1"></a>dagrey ~ # cat /etc/fstab
-<a name="rest_code_987f9e120c484037b1afa6f85e80437e-2"></a>
-<a name="rest_code_987f9e120c484037b1afa6f85e80437e-3"></a>/dev/sdb1              /boot     ext2    defaults    1 2
-<a name="rest_code_987f9e120c484037b1afa6f85e80437e-4"></a>/dev/mapper/vg-root    /         ext4    defaults    0 1
-<a name="rest_code_987f9e120c484037b1afa6f85e80437e-5"></a>/dev/mapper/vg-swap    none      swap    sw          0 0
-<a name="rest_code_987f9e120c484037b1afa6f85e80437e-6"></a>/dev/mapper/crypthome  /home     ext4    defaults    0 2
-<a name="rest_code_987f9e120c484037b1afa6f85e80437e-7"></a>
-<a name="rest_code_987f9e120c484037b1afa6f85e80437e-8"></a>dagrey ~ # cat /etc/crypttab
-<a name="rest_code_987f9e120c484037b1afa6f85e80437e-9"></a>#crypthome /dev/sda1
-<a name="rest_code_987f9e120c484037b1afa6f85e80437e-10"></a>crypthome /dev/sda1 /etc/conf.d/dmcrypt.key
+<pre class="code text"><a name="rest_code_0a51c8c0cb214c258ed8969be7c13dea-1"></a>dagrey ~ # cat /etc/fstab
+<a name="rest_code_0a51c8c0cb214c258ed8969be7c13dea-2"></a>
+<a name="rest_code_0a51c8c0cb214c258ed8969be7c13dea-3"></a>/dev/sdb1              /boot     ext2    defaults    1 2
+<a name="rest_code_0a51c8c0cb214c258ed8969be7c13dea-4"></a>/dev/mapper/vg-root    /         ext4    defaults    0 1
+<a name="rest_code_0a51c8c0cb214c258ed8969be7c13dea-5"></a>/dev/mapper/vg-swap    none      swap    sw          0 0
+<a name="rest_code_0a51c8c0cb214c258ed8969be7c13dea-6"></a>/dev/mapper/crypthome  /home     ext4    defaults    0 2
+<a name="rest_code_0a51c8c0cb214c258ed8969be7c13dea-7"></a>
+<a name="rest_code_0a51c8c0cb214c258ed8969be7c13dea-8"></a>dagrey ~ # cat /etc/crypttab
+<a name="rest_code_0a51c8c0cb214c258ed8969be7c13dea-9"></a>#crypthome /dev/sda1
+<a name="rest_code_0a51c8c0cb214c258ed8969be7c13dea-10"></a>crypthome /dev/sda1 /etc/conf.d/dmcrypt.key
 </pre>
 <p>The keyfile is available from then already decrypted root partition. You can also skip the key and the
 you'll get a password prompt, sometimes hidden somewhere in systemd messages. Hit enter to reveal it once more.</p>

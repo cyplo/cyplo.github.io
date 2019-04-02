@@ -75,75 +75,75 @@ solution. <a class="reference external" href="https://access.redhat.com/articles
 rescue ! There are still some assumptions made here about permissions,
 directories layout and some stuff not failing, but I'm sure you'll be
 able to figure this out and tweak to your needs.</p>
-<pre class="code bash"><a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-1"></a><span class="ch">#!/bin/bash</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-2"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-3"></a><span class="nv">TUNNEL_CREDS</span><span class="o">=</span><span class="s2">"user@tunnelhost"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-4"></a><span class="nv">TUNNEL_PORT</span><span class="o">=</span><span class="m">123</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-5"></a><span class="nv">STORAGE_CREDS</span><span class="o">=</span><span class="s2">"storage_user@localhost"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-6"></a><span class="nv">STORAGE_ADDRESS</span><span class="o">=</span><span class="s2">"storagehost.example.org"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-7"></a><span class="nv">SOCKET</span><span class="o">=</span><span class="s2">"/tmp/black_socket"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-8"></a><span class="nv">REMOTE_VAULT_PATH</span><span class="o">=</span><span class="s2">"/somepath/.vault.tar.gpg"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-9"></a><span class="nv">TMP_VAULT</span><span class="o">=</span><span class="s2">"/tmp/.vault.tar.gpg"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-10"></a><span class="nv">TMP_VAULT_TAR</span><span class="o">=</span><span class="s2">"/tmp/.vault.tar"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-11"></a><span class="nv">TMP_VAULT_DIR</span><span class="o">=</span><span class="s2">"/tmp/.vault"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-12"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-13"></a><span class="nv">TMP_LOCAL_PORT</span><span class="o">=</span><span class="m">10022</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-14"></a><span class="nv">LOCAL_VAULT_DIR</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.vault"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-15"></a><span class="nv">LOCAL_VAULT_BACKUP_DIR</span><span class="o">=</span><span class="s2">"</span><span class="nv">$LOCAL_VAULT_DIR</span><span class="s2">.bak"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-16"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-17"></a><span class="nb">pushd</span> <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-18"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-19"></a><span class="nb">echo</span> <span class="s2">"removing old vault backup at </span><span class="nv">$LOCAL_VAULT_BACKUP_DIR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-20"></a>rm -rI <span class="s2">"</span><span class="nv">$LOCAL_VAULT_BACKUP_DIR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-21"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-22"></a><span class="nb">set</span> -e
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-23"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-24"></a><span class="nb">echo</span> <span class="s2">"backing up local vault..."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-25"></a>cp -r <span class="s2">"</span><span class="nv">$LOCAL_VAULT_DIR</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$LOCAL_VAULT_BACKUP_DIR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-26"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-27"></a><span class="nb">echo</span> <span class="s2">"establishing tunnel ..."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-28"></a>ssh -L <span class="nv">$TMP_LOCAL_PORT</span>:<span class="nv">$STORAGE_ADDRESS</span>:22 <span class="nv">$TUNNEL_CREDS</span> -p <span class="nv">$TUNNEL_PORT</span> -N -f -M -S <span class="s2">"</span><span class="nv">$SOCKET</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-29"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-30"></a><span class="nb">echo</span> <span class="s2">"tunnel ready, copying remote version of the vault..."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-31"></a>rsync --progress -avz -e <span class="s2">"ssh -p </span><span class="nv">$TMP_LOCAL_PORT</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$STORAGE_CREDS</span><span class="s2">:</span><span class="nv">$REMOTE_VAULT_PATH</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$TMP_VAULT</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-32"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-33"></a><span class="nb">echo</span> <span class="s2">"decrypting new vault..."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-34"></a>gpg -d <span class="s2">"</span><span class="nv">$TMP_VAULT</span><span class="s2">"</span> &gt; <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-35"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-36"></a><span class="nb">echo</span> <span class="s2">"unpacking new vault..."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-37"></a>mkdir -p <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-38"></a>tar xf <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span> -C <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-39"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-40"></a><span class="nb">echo</span> <span class="s2">"pulling from remote vault..."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-41"></a><span class="nb">cd</span> <span class="s2">"</span><span class="nv">$LOCAL_VAULT_DIR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-42"></a>git pull <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-43"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-44"></a><span class="nb">echo</span> <span class="s2">"pulling to remote vault..."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-45"></a><span class="nb">cd</span> <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-46"></a>git pull <span class="s2">"</span><span class="nv">$LOCAL_VAULT_DIR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-47"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-48"></a><span class="nb">echo</span> <span class="s2">"cleaning up a bit..."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-49"></a>rm -fr <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-50"></a>rm -fr <span class="s2">"</span><span class="nv">$TMP_VAULT</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-51"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-52"></a><span class="nb">echo</span> <span class="s2">"packing refreshed remote vault..."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-53"></a>tar pcf <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span> -C <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span> .
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-54"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-55"></a><span class="nb">echo</span> <span class="s2">"encrypting refreshed remote vault..."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-56"></a>gpg -c <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-57"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-58"></a><span class="nb">echo</span> <span class="s2">"sending out updated vault"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-59"></a>rsync --progress -avz <span class="s2">"</span><span class="nv">$TMP_VAULT</span><span class="s2">"</span> -e <span class="s2">"ssh -p </span><span class="nv">$TMP_LOCAL_PORT</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$STORAGE_CREDS</span><span class="s2">:</span><span class="nv">$REMOTE_VAULT_PATH</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-60"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-61"></a><span class="nb">echo</span> <span class="s2">"cleaning up.. "</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-62"></a>rm -fr <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-63"></a>rm -fr <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-64"></a>rm -fr <span class="s2">"</span><span class="nv">$TMP_VAULT</span><span class="s2">"</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-65"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-66"></a><span class="nb">echo</span> <span class="s2">"closing tunnel.."</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-67"></a>ssh -S <span class="s2">"</span><span class="nv">$SOCKET</span><span class="s2">"</span> -O <span class="nb">exit</span> <span class="nv">$TUNNEL_CREDS</span>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-68"></a>
-<a name="rest_code_d1f8f743de0a4ed5a3e2ce095e696981-69"></a><span class="nb">popd</span>
+<pre class="code bash"><a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-2"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-3"></a><span class="nv">TUNNEL_CREDS</span><span class="o">=</span><span class="s2">"user@tunnelhost"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-4"></a><span class="nv">TUNNEL_PORT</span><span class="o">=</span><span class="m">123</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-5"></a><span class="nv">STORAGE_CREDS</span><span class="o">=</span><span class="s2">"storage_user@localhost"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-6"></a><span class="nv">STORAGE_ADDRESS</span><span class="o">=</span><span class="s2">"storagehost.example.org"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-7"></a><span class="nv">SOCKET</span><span class="o">=</span><span class="s2">"/tmp/black_socket"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-8"></a><span class="nv">REMOTE_VAULT_PATH</span><span class="o">=</span><span class="s2">"/somepath/.vault.tar.gpg"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-9"></a><span class="nv">TMP_VAULT</span><span class="o">=</span><span class="s2">"/tmp/.vault.tar.gpg"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-10"></a><span class="nv">TMP_VAULT_TAR</span><span class="o">=</span><span class="s2">"/tmp/.vault.tar"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-11"></a><span class="nv">TMP_VAULT_DIR</span><span class="o">=</span><span class="s2">"/tmp/.vault"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-12"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-13"></a><span class="nv">TMP_LOCAL_PORT</span><span class="o">=</span><span class="m">10022</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-14"></a><span class="nv">LOCAL_VAULT_DIR</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.vault"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-15"></a><span class="nv">LOCAL_VAULT_BACKUP_DIR</span><span class="o">=</span><span class="s2">"</span><span class="nv">$LOCAL_VAULT_DIR</span><span class="s2">.bak"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-16"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-17"></a><span class="nb">pushd</span> <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-18"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-19"></a><span class="nb">echo</span> <span class="s2">"removing old vault backup at </span><span class="nv">$LOCAL_VAULT_BACKUP_DIR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-20"></a>rm -rI <span class="s2">"</span><span class="nv">$LOCAL_VAULT_BACKUP_DIR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-21"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-22"></a><span class="nb">set</span> -e
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-23"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-24"></a><span class="nb">echo</span> <span class="s2">"backing up local vault..."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-25"></a>cp -r <span class="s2">"</span><span class="nv">$LOCAL_VAULT_DIR</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$LOCAL_VAULT_BACKUP_DIR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-26"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-27"></a><span class="nb">echo</span> <span class="s2">"establishing tunnel ..."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-28"></a>ssh -L <span class="nv">$TMP_LOCAL_PORT</span>:<span class="nv">$STORAGE_ADDRESS</span>:22 <span class="nv">$TUNNEL_CREDS</span> -p <span class="nv">$TUNNEL_PORT</span> -N -f -M -S <span class="s2">"</span><span class="nv">$SOCKET</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-29"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-30"></a><span class="nb">echo</span> <span class="s2">"tunnel ready, copying remote version of the vault..."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-31"></a>rsync --progress -avz -e <span class="s2">"ssh -p </span><span class="nv">$TMP_LOCAL_PORT</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$STORAGE_CREDS</span><span class="s2">:</span><span class="nv">$REMOTE_VAULT_PATH</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$TMP_VAULT</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-32"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-33"></a><span class="nb">echo</span> <span class="s2">"decrypting new vault..."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-34"></a>gpg -d <span class="s2">"</span><span class="nv">$TMP_VAULT</span><span class="s2">"</span> &gt; <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-35"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-36"></a><span class="nb">echo</span> <span class="s2">"unpacking new vault..."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-37"></a>mkdir -p <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-38"></a>tar xf <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span> -C <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-39"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-40"></a><span class="nb">echo</span> <span class="s2">"pulling from remote vault..."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-41"></a><span class="nb">cd</span> <span class="s2">"</span><span class="nv">$LOCAL_VAULT_DIR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-42"></a>git pull <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-43"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-44"></a><span class="nb">echo</span> <span class="s2">"pulling to remote vault..."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-45"></a><span class="nb">cd</span> <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-46"></a>git pull <span class="s2">"</span><span class="nv">$LOCAL_VAULT_DIR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-47"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-48"></a><span class="nb">echo</span> <span class="s2">"cleaning up a bit..."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-49"></a>rm -fr <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-50"></a>rm -fr <span class="s2">"</span><span class="nv">$TMP_VAULT</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-51"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-52"></a><span class="nb">echo</span> <span class="s2">"packing refreshed remote vault..."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-53"></a>tar pcf <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span> -C <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span> .
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-54"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-55"></a><span class="nb">echo</span> <span class="s2">"encrypting refreshed remote vault..."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-56"></a>gpg -c <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-57"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-58"></a><span class="nb">echo</span> <span class="s2">"sending out updated vault"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-59"></a>rsync --progress -avz <span class="s2">"</span><span class="nv">$TMP_VAULT</span><span class="s2">"</span> -e <span class="s2">"ssh -p </span><span class="nv">$TMP_LOCAL_PORT</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$STORAGE_CREDS</span><span class="s2">:</span><span class="nv">$REMOTE_VAULT_PATH</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-60"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-61"></a><span class="nb">echo</span> <span class="s2">"cleaning up.. "</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-62"></a>rm -fr <span class="s2">"</span><span class="nv">$TMP_VAULT_DIR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-63"></a>rm -fr <span class="s2">"</span><span class="nv">$TMP_VAULT_TAR</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-64"></a>rm -fr <span class="s2">"</span><span class="nv">$TMP_VAULT</span><span class="s2">"</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-65"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-66"></a><span class="nb">echo</span> <span class="s2">"closing tunnel.."</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-67"></a>ssh -S <span class="s2">"</span><span class="nv">$SOCKET</span><span class="s2">"</span> -O <span class="nb">exit</span> <span class="nv">$TUNNEL_CREDS</span>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-68"></a>
+<a name="rest_code_08fe72222f3a4bf988e9fdf89508c9a8-69"></a><span class="nb">popd</span>
 </pre>
 </div>
             </div>
@@ -176,46 +176,46 @@ able to figure this out and tweak to your needs.</p>
 very dirty hack to do so. Proper patch will probably follow. Did I
 mention that the hack is dirty and will make your hands burn if you're
 gonna type it in ?</p>
-<pre class="code console"><a name="rest_code_922063051bd443cab35a243a851f99f6-1"></a><span class="go">git clone https://github.com/git/git.git</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-2"></a><span class="go">cd git</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-3"></a><span class="go">git checkout v2.0.1</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-4"></a><span class="go">autoconf</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-5"></a><span class="go">./configure</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-6"></a><span class="gp">#</span> so far so good...
-<a name="rest_code_922063051bd443cab35a243a851f99f6-7"></a><span class="go">make</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-8"></a>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-9"></a><span class="gp">#</span> oops
-<a name="rest_code_922063051bd443cab35a243a851f99f6-10"></a><span class="gp">#</span> ....
-<a name="rest_code_922063051bd443cab35a243a851f99f6-11"></a>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-12"></a><span class="go">SUBDIR perl</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-13"></a><span class="go">make[2]: /home/cplotnicki/dev/git/perl/0: Command not found</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-14"></a><span class="go">perl.mak:375: recipe for target 'blib/lib/.exists' failed</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-15"></a><span class="go">make[2]: *** [blib/lib/.exists] Error 127</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-16"></a><span class="go">Makefile:16: recipe for target 'all' failed</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-17"></a><span class="go">make[1]: *** [all] Error 2</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-18"></a><span class="go">Makefile:1653: recipe for target 'all' failed</span>
-<a name="rest_code_922063051bd443cab35a243a851f99f6-19"></a><span class="go">make: *** [all] Error 2</span>
+<pre class="code console"><a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-1"></a><span class="go">git clone https://github.com/git/git.git</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-2"></a><span class="go">cd git</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-3"></a><span class="go">git checkout v2.0.1</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-4"></a><span class="go">autoconf</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-5"></a><span class="go">./configure</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-6"></a><span class="gp">#</span> so far so good...
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-7"></a><span class="go">make</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-8"></a>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-9"></a><span class="gp">#</span> oops
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-10"></a><span class="gp">#</span> ....
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-11"></a>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-12"></a><span class="go">SUBDIR perl</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-13"></a><span class="go">make[2]: /home/cplotnicki/dev/git/perl/0: Command not found</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-14"></a><span class="go">perl.mak:375: recipe for target 'blib/lib/.exists' failed</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-15"></a><span class="go">make[2]: *** [blib/lib/.exists] Error 127</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-16"></a><span class="go">Makefile:16: recipe for target 'all' failed</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-17"></a><span class="go">make[1]: *** [all] Error 2</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-18"></a><span class="go">Makefile:1653: recipe for target 'all' failed</span>
+<a name="rest_code_7c0588487dc04975b2349c42e4ffa78e-19"></a><span class="go">make: *** [all] Error 2</span>
 </pre>
 <p>Want perl as '0' ? Well, why not. Here you are:</p>
-<pre class="code console"><a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-1"></a><span class="gp">#</span> link perl as <span class="m">0</span> to some directory that is in your path
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-2"></a><span class="go">ln -s /usr/bin/perl ~/tools/0</span>
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-3"></a><span class="gp">#</span> also link here, obviously.
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-4"></a><span class="gp">#</span> <span class="s1">'perl'</span> is a direct subdir <span class="k">for</span> your git checkout
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-5"></a><span class="go">ln -s /usr/bin/perl perl/0</span>
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-6"></a>
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-7"></a><span class="go">make # should now compile</span>
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-8"></a>
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-9"></a><span class="gp">#</span> cygwin<span class="err">'</span>s permission scheme is very peculiar
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-10"></a><span class="gp">#</span> here, have a dirty hack <span class="k">for</span> your default install
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-11"></a><span class="gp">#</span> where there is no su or sudo
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-12"></a><span class="go">chmod a+rwX -R /usr/local/share/man/man3</span>
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-13"></a><span class="go">chmod a+rwX -R /usr/local/lib/perl5/site_perl</span>
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-14"></a>
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-15"></a><span class="go">make install</span>
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-16"></a><span class="go">git --version</span>
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-17"></a><span class="gp">#</span> should display <span class="m">2</span>.0.1.
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-18"></a><span class="gp">#</span> update man pages<span class="err">'</span> cache manually
-<a name="rest_code_1cbf6ab929ae4a0794cff3ab61f48560-19"></a><span class="go">/etc/postinstall/man-db.sh</span>
+<pre class="code console"><a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-1"></a><span class="gp">#</span> link perl as <span class="m">0</span> to some directory that is in your path
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-2"></a><span class="go">ln -s /usr/bin/perl ~/tools/0</span>
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-3"></a><span class="gp">#</span> also link here, obviously.
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-4"></a><span class="gp">#</span> <span class="s1">'perl'</span> is a direct subdir <span class="k">for</span> your git checkout
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-5"></a><span class="go">ln -s /usr/bin/perl perl/0</span>
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-6"></a>
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-7"></a><span class="go">make # should now compile</span>
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-8"></a>
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-9"></a><span class="gp">#</span> cygwin<span class="err">'</span>s permission scheme is very peculiar
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-10"></a><span class="gp">#</span> here, have a dirty hack <span class="k">for</span> your default install
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-11"></a><span class="gp">#</span> where there is no su or sudo
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-12"></a><span class="go">chmod a+rwX -R /usr/local/share/man/man3</span>
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-13"></a><span class="go">chmod a+rwX -R /usr/local/lib/perl5/site_perl</span>
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-14"></a>
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-15"></a><span class="go">make install</span>
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-16"></a><span class="go">git --version</span>
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-17"></a><span class="gp">#</span> should display <span class="m">2</span>.0.1.
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-18"></a><span class="gp">#</span> update man pages<span class="err">'</span> cache manually
+<a name="rest_code_0d16d05cb86041d48dbfbb4d160e8c34-19"></a><span class="go">/etc/postinstall/man-db.sh</span>
 </pre>
 </div>
             </div>
@@ -447,24 +447,24 @@ realm of hobby stuff:</p>
 <p>It turns out this was not that obvious, at least for me, how to change
 various profile preferences for Gnome Terminal under Gnome 3. You can go
 and fetch the list of profiles this way:</p>
-<pre class="code console"><a name="rest_code_e9379ef2d3ac43a2a956ebf2cf76404a-1"></a><span class="go">~# dconf list /org/gnome/terminal/legacy/profiles:/</span>
-<a name="rest_code_e9379ef2d3ac43a2a956ebf2cf76404a-2"></a><span class="go">:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/</span>
+<pre class="code console"><a name="rest_code_7c8d8c6fb5ce491cbb3a1eb26bda30b4-1"></a><span class="go">~# dconf list /org/gnome/terminal/legacy/profiles:/</span>
+<a name="rest_code_7c8d8c6fb5ce491cbb3a1eb26bda30b4-2"></a><span class="go">:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/</span>
 </pre>
 <p>And then you can use the profile id to list and change various settings:</p>
-<pre class="code console"><a name="rest_code_bf1881372a75403181ef397aa70b434d-1"></a><span class="go">~# dconf list /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-2"></a><span class="go">foreground-color</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-3"></a><span class="go">login-shell</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-4"></a><span class="go">palette</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-5"></a><span class="go">use-system-font</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-6"></a><span class="go">use-theme-colors</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-7"></a><span class="go">font</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-8"></a><span class="go">bold-color-same-as-fg</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-9"></a><span class="go">bold-color</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-10"></a><span class="go">background-color</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-11"></a><span class="go">audible-bell</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-12"></a>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-13"></a><span class="go">~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Inconsolata for Powerline Medium 18'"</span>
-<a name="rest_code_bf1881372a75403181ef397aa70b434d-14"></a><span class="go">~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/login-shell true</span>
+<pre class="code console"><a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-1"></a><span class="go">~# dconf list /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-2"></a><span class="go">foreground-color</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-3"></a><span class="go">login-shell</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-4"></a><span class="go">palette</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-5"></a><span class="go">use-system-font</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-6"></a><span class="go">use-theme-colors</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-7"></a><span class="go">font</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-8"></a><span class="go">bold-color-same-as-fg</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-9"></a><span class="go">bold-color</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-10"></a><span class="go">background-color</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-11"></a><span class="go">audible-bell</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-12"></a>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-13"></a><span class="go">~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Inconsolata for Powerline Medium 18'"</span>
+<a name="rest_code_4cfcf723007d459ab2c22973e7ba8d15-14"></a><span class="go">~# dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/login-shell true</span>
 </pre>
 </div>
             </div>
@@ -532,18 +532,18 @@ easy to get this on the webs, I’ve took a liberty of uploading them
 <p>Easiest way I've found to configure wifi on RaspberryPi, not really
 being mentioned when you search for such. Not using separate
 wpa_supplicant configuration at all.</p>
-<pre class="code console"><a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-1"></a><span class="gp">root@frontend:~#</span> cat /etc/network/interfaces
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-2"></a><span class="go">auto lo</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-3"></a><span class="go">iface lo inet loopback</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-4"></a>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-5"></a><span class="go">iface eth0 inet dhcp</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-6"></a>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-7"></a><span class="go">allow-hotplug wlan0</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-8"></a><span class="go">iface wlan0 inet dhcp</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-9"></a><span class="go">wpa-ssid  NETWORK_NAME</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-10"></a><span class="go">wpa-psk NETWORK_KEY</span>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-11"></a>
-<a name="rest_code_c4b72f964a31461ab5225ba97d8ee53a-12"></a><span class="go">iface default inet dhcp</span>
+<pre class="code console"><a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-1"></a><span class="gp">root@frontend:~#</span> cat /etc/network/interfaces
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-2"></a><span class="go">auto lo</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-3"></a><span class="go">iface lo inet loopback</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-4"></a>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-5"></a><span class="go">iface eth0 inet dhcp</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-6"></a>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-7"></a><span class="go">allow-hotplug wlan0</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-8"></a><span class="go">iface wlan0 inet dhcp</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-9"></a><span class="go">wpa-ssid  NETWORK_NAME</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-10"></a><span class="go">wpa-psk NETWORK_KEY</span>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-11"></a>
+<a name="rest_code_1bc35d31e4aa44e6830a14cf5ec4196a-12"></a><span class="go">iface default inet dhcp</span>
 </pre>
 </div>
             </div>

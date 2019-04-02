@@ -78,66 +78,66 @@ with install. Then I tried spawning some clones of that, but having it
 done manually takes quite some time  and is error prone. Did somebody
 say automation ? Yes ! First, clone a VM, regenerating MAC addresses and
 making sure the resource caps are good:</p>
-<pre class="code bash"><a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-1"></a>vmrunner@storage:~$ cat prepare_vm
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-2"></a><span class="c1">#!/bin/bash</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-3"></a><span class="nb">set</span> -e
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-4"></a><span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -ne <span class="m">2</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-5"></a> <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> vm_name vm_number"</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-6"></a> <span class="nb">exit</span> <span class="m">0</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-7"></a><span class="k">fi</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-8"></a>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-9"></a><span class="nv">VM_NAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-10"></a><span class="nv">RAM_AMOUNT</span><span class="o">=</span><span class="s2">"128"</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-11"></a><span class="nv">DISK_SIZE</span><span class="o">=</span><span class="s2">"2000"</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-12"></a><span class="nv">VM_NUMBER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-13"></a><span class="nv">RDP_PORT</span><span class="o">=</span><span class="k">$((</span><span class="nv">$2</span><span class="o">+</span><span class="m">3389</span><span class="k">))</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-14"></a><span class="nv">EXECUTION_CAP</span><span class="o">=</span><span class="s2">"50"</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-15"></a>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-16"></a>VBoxManage clonevm fresh.cyplo.net --name <span class="nv">$VM_NAME</span> --mode machine --register
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-17"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --vrde on
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-18"></a><span class="nb">echo</span> <span class="s2">"setting RDP listening port to </span><span class="nv">$RDP_PORT</span><span class="s2">"</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-19"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --memory <span class="nv">$RAM_AMOUNT</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-20"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --vrdeport <span class="nv">$RDP_PORT</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-21"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --nic1 bridged --bridgeadapter1 eth0
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-22"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --pae on
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-23"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --cpuexecutioncap <span class="nv">$EXECUTION_CAP</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-24"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --hpet on
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-25"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --hwvirtex on
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-26"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --pagefusion on
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-27"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --dvd none
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-28"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --autostart-enabled on
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-29"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --macaddress1 auto
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-30"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --macaddress2 auto
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-31"></a><span class="nb">echo</span> <span class="s2">"vm set up, listing all VMs:"</span>
-<a name="rest_code_0c3d183ec2b147c9aadbabbee4a328f6-32"></a>VBoxManage list vms
+<pre class="code bash"><a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-1"></a>vmrunner@storage:~$ cat prepare_vm
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-2"></a><span class="c1">#!/bin/bash</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-3"></a><span class="nb">set</span> -e
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-4"></a><span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -ne <span class="m">2</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-5"></a> <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> vm_name vm_number"</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-6"></a> <span class="nb">exit</span> <span class="m">0</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-7"></a><span class="k">fi</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-8"></a>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-9"></a><span class="nv">VM_NAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-10"></a><span class="nv">RAM_AMOUNT</span><span class="o">=</span><span class="s2">"128"</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-11"></a><span class="nv">DISK_SIZE</span><span class="o">=</span><span class="s2">"2000"</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-12"></a><span class="nv">VM_NUMBER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-13"></a><span class="nv">RDP_PORT</span><span class="o">=</span><span class="k">$((</span><span class="nv">$2</span><span class="o">+</span><span class="m">3389</span><span class="k">))</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-14"></a><span class="nv">EXECUTION_CAP</span><span class="o">=</span><span class="s2">"50"</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-15"></a>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-16"></a>VBoxManage clonevm fresh.cyplo.net --name <span class="nv">$VM_NAME</span> --mode machine --register
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-17"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --vrde on
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-18"></a><span class="nb">echo</span> <span class="s2">"setting RDP listening port to </span><span class="nv">$RDP_PORT</span><span class="s2">"</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-19"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --memory <span class="nv">$RAM_AMOUNT</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-20"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --vrdeport <span class="nv">$RDP_PORT</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-21"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --nic1 bridged --bridgeadapter1 eth0
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-22"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --pae on
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-23"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --cpuexecutioncap <span class="nv">$EXECUTION_CAP</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-24"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --hpet on
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-25"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --hwvirtex on
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-26"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --pagefusion on
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-27"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --dvd none
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-28"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --autostart-enabled on
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-29"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --macaddress1 auto
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-30"></a>VBoxManage modifyvm <span class="nv">$VM_NAME</span> --macaddress2 auto
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-31"></a><span class="nb">echo</span> <span class="s2">"vm set up, listing all VMs:"</span>
+<a name="rest_code_12f34696490a4dfd9bb8caa4fbdd9c60-32"></a>VBoxManage list vms
 </pre>
 <p>Then run the VM and change it into Debian
 service host with new name and some software:</p>
-<pre class="code bash"><a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-1"></a>vmrunner@storage:~$ cat kickstart_debian
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-2"></a><span class="c1">#/bin/bash</span>
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-3"></a><span class="nb">set</span> -e
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-4"></a><span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -ne <span class="m">2</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-5"></a> <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> new_hostname new_domainname"</span>
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-6"></a> <span class="nb">exit</span> <span class="m">0</span>
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-7"></a><span class="k">fi</span>
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-8"></a>
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-9"></a><span class="nv">NEW_HOSTNAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-10"></a><span class="nv">NEW_DOMAINNAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span>
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-11"></a><span class="nv">NEW_FQDN</span><span class="o">=</span><span class="s2">"</span><span class="nv">$NEW_HOSTNAME</span><span class="s2">.</span><span class="nv">$NEW_DOMAINNAME</span><span class="s2">"</span>
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-12"></a>aptitude update
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-13"></a>aptitude dist-upgrade -y
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-14"></a>aptitude install vim atop sudo -y
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-15"></a>hostname
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-16"></a>ifconfig
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-17"></a><span class="nb">set</span> -v
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-18"></a><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$NEW_FQDN</span><span class="s2">"</span> &gt; /etc/mailname
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-19"></a><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$NEW_HOSTNAME</span><span class="s2">"</span> &gt; /etc/hostname
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-20"></a>sed -i <span class="s2">"s/dc_other_hostnames\='.*'/dc_other_hostnames='</span><span class="nv">$NEW_FQDN</span><span class="s2">'/g"</span> /etc/exim4/update-exim4.conf.conf
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-21"></a>sed -i <span class="s2">"s/127\.0\.1\.1.*/127.0.1.1 </span><span class="nv">$NEW_FQDN</span><span class="s2"> </span><span class="nv">$NEW_HOSTNAME</span><span class="s2">/g"</span> /etc/hosts
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-22"></a>
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-23"></a>rm /etc/ssh/ssh_host_*
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-24"></a>dpkg-reconfigure openssh-server
-<a name="rest_code_acf4cfcc7e544d17aedda7cfdd385102-25"></a>reboot
+<pre class="code bash"><a name="rest_code_b137738ea12b44049735b5e706f1ce8f-1"></a>vmrunner@storage:~$ cat kickstart_debian
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-2"></a><span class="c1">#/bin/bash</span>
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-3"></a><span class="nb">set</span> -e
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-4"></a><span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -ne <span class="m">2</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-5"></a> <span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> new_hostname new_domainname"</span>
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-6"></a> <span class="nb">exit</span> <span class="m">0</span>
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-7"></a><span class="k">fi</span>
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-8"></a>
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-9"></a><span class="nv">NEW_HOSTNAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-10"></a><span class="nv">NEW_DOMAINNAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span>
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-11"></a><span class="nv">NEW_FQDN</span><span class="o">=</span><span class="s2">"</span><span class="nv">$NEW_HOSTNAME</span><span class="s2">.</span><span class="nv">$NEW_DOMAINNAME</span><span class="s2">"</span>
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-12"></a>aptitude update
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-13"></a>aptitude dist-upgrade -y
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-14"></a>aptitude install vim atop sudo -y
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-15"></a>hostname
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-16"></a>ifconfig
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-17"></a><span class="nb">set</span> -v
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-18"></a><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$NEW_FQDN</span><span class="s2">"</span> &gt; /etc/mailname
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-19"></a><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$NEW_HOSTNAME</span><span class="s2">"</span> &gt; /etc/hostname
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-20"></a>sed -i <span class="s2">"s/dc_other_hostnames\='.*'/dc_other_hostnames='</span><span class="nv">$NEW_FQDN</span><span class="s2">'/g"</span> /etc/exim4/update-exim4.conf.conf
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-21"></a>sed -i <span class="s2">"s/127\.0\.1\.1.*/127.0.1.1 </span><span class="nv">$NEW_FQDN</span><span class="s2"> </span><span class="nv">$NEW_HOSTNAME</span><span class="s2">/g"</span> /etc/hosts
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-22"></a>
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-23"></a>rm /etc/ssh/ssh_host_*
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-24"></a>dpkg-reconfigure openssh-server
+<a name="rest_code_b137738ea12b44049735b5e706f1ce8f-25"></a>reboot
 </pre>
 <p>The script above needs to be run on guest, I'm using scp with known ssh keys to upload it and
 then run via ssh. This step is to be automated in the future. Points to
